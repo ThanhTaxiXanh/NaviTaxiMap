@@ -15,8 +15,9 @@ import xml.etree.ElementTree as ET
 
 OUT = Path(sys.argv[1] if len(sys.argv) > 1 else "smoke-evidence")
 OUT.mkdir(parents=True, exist_ok=True)
-EXPECTED_NAME = "navitaxi-saf-test.pmtiles"
-EXPECTED_HASH = "860e0383397b64eac881932bacf625bbb740db23abba4e008ac846967e7c1407"
+EXPECTED_NAME = os.environ.get("NAVITAXI_SAF_NAME", "navitaxi-saf-test.pmtiles")
+EXPECTED_HASH = os.environ.get("NAVITAXI_SAF_SHA256", "860e0383397b64eac881932bacf625bbb740db23abba4e008ac846967e7c1407")
+EXPECTED_BYTES = int(os.environ.get("NAVITAXI_SAF_BYTES", "1268"))
 UUID_FILE = re.compile(r"^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}\.pmtiles$")
 
 def adb(*args, binary=False, check=True):
@@ -162,11 +163,13 @@ def verify_persisted(before):
     index = adb("exec-out", "run-as", "vn.navitaximap",
                 "cat", f"files/offline-packs/{ident}.properties", binary=True)
     actual_hash = hashlib.sha256(archive).hexdigest()
+    if len(archive) != EXPECTED_BYTES:
+        raise AssertionError(f"SAF byte count mismatch: {len(archive)}")
     if actual_hash != EXPECTED_HASH:
         raise AssertionError(f"SAF-imported bytes mismatch: {actual_hash}")
     properties = index.decode("ISO-8859-1")
     for item in ["name=" + EXPECTED_NAME, "sha256=" + EXPECTED_HASH,
-                 "sourceApproval=UNVERIFIED", "size=1268"]:
+                 "sourceApproval=UNVERIFIED", "size=" + str(EXPECTED_BYTES)]:
         if item not in properties:
             raise AssertionError(f"Index missing {item}: {properties}")
     (OUT / "saf-imported-pack.pmtiles").write_bytes(archive)

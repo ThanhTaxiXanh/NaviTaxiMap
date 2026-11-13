@@ -35,6 +35,11 @@ import java.util.concurrent.atomic.AtomicBoolean
 import vn.navitaximap.data.DemoOfflinePack
 import vn.navitaximap.data.HanoiRoadPilot
 import vn.navitaximap.data.LocalPackStore
+import vn.navitaximap.data.PmtilesHeader
+import vn.navitaximap.data.Vietnam35Catalog
+import vn.navitaximap.data.VietnamRegionSpec
+import org.json.JSONObject
+import java.io.File
 import java.util.concurrent.Executors
 import org.maplibre.android.style.sources.VectorSource
 import org.maplibre.android.style.layers.LineLayer
@@ -97,7 +102,10 @@ class MainActivity : Activity(), LocationListener {
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync { map ->
             liveMap = map
-            if (intent.getBooleanExtra(EXTRA_OSM_ROADS_PILOT, false)) {
+            if ((applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0 &&
+                intent.getBooleanExtra(EXTRA_SHORTBREAD_PREVIEW, false)) {
+                showDebugShortbreadPreview()
+            } else if (intent.getBooleanExtra(EXTRA_OSM_ROADS_PILOT, false)) {
                 showHanoiRoadPilot(map)
             } else if (intent.getBooleanExtra(EXTRA_OFFLINE_DEMO, false)) {
                 showOfflineDemo(map)
@@ -200,7 +208,8 @@ class MainActivity : Activity(), LocationListener {
                 "Các gói đã nhập",
                 "Xem đường OSM Hà Nội offline (mẫu nhỏ)",
                 "Quản lý / tải gói OSM Hà Nội",
-                "Nguồn và giới hạn sử dụng"
+                "Nguồn và giới hạn sử dụng",
+                "35 gói Shortbread: xem offline sau khi nhập"
             )) { _, item ->
                 when (item) {
                     0 -> {
@@ -213,6 +222,7 @@ class MainActivity : Activity(), LocationListener {
                     1 -> showLocalPacks()
                     2 -> liveMap?.let { showHanoiRoadPilot(it) }
                     3 -> showPilotCatalog()
+                    5 -> showVietnam35Catalog()
                     else -> explain("Thông tin dữ liệu",
                         "Nguồn online: OpenFreeMap/OpenStreetMap. Gói PMTiles người dùng chọn sẽ chỉ được lưu trong ứng dụng, kiểm tra cấu trúc và SHA-256, chưa xác minh giấy phép hay tính chính xác địa lý. Chưa có giao diện vẽ gói tự nhập vì cần style/layer được duyệt. Gói đường OSM Hà Nội chỉ là một phần nhỏ có xuất xứ OSM, © OpenStreetMap contributors, ODbL 1.0; không phải bản đồ đầy đủ hoặc dữ liệu điều hướng. Gói tổng hợp dùng để thử bộ đọc, không dùng dẫn đường.")
                 }
@@ -577,6 +587,95 @@ class MainActivity : Activity(), LocationListener {
         }
     }
 
+
+    /** No automatic download or unapproved border overlay. SHA checked again before drawing. */
+    private fun showVietnam35Catalog() {
+        statusText.text = "Đang kiểm tra danh mục Shortbread 35 gói..."
+        packExecutor.execute {
+            val imported = packStore.listPacks()
+            runOnUiThread {
+                if (isDestroyed) return@runOnUiThread
+                val entries = Vietnam35Catalog.packages
+                val labels = entries.map { region ->
+                    region.code + " · " + region.label +
+                        if (imported.any { region.matches(it) }) " · đã nhập" else " · chưa nhập"
+                }.toTypedArray()
+                AlertDialog.Builder(this)
+                    .setTitle("Shortbread 1.0 · 35 gói chưa duyệt")
+                    .setMessage("Chỉ dùng PMTiles đã nhập bằng DocumentsUI với tên, zoom, SHA-256 chính xác. " +
+                        "Không có URL tải lâu dài đã duyệt. Không dẫn đường hay xác định biên giới.")
+                    .setItems(labels) { _, index ->
+                        val region = entries[index]
+                        val selected = imported.firstOrNull { region.matches(it) }
+                        if (selected == null) {
+                            explain("Chưa nhập " + region.label,
+                                "Tải gói thử nghiệm khi artifact còn hạn, rồi chọn " +
+                                "'Dữ liệu bản đồ → Nhập tệp PMTiles từ thiết bị'. " +
+                                "Tên tệp yêu cầu: " + region.fileName +
+                                ". Không tự động tải hoặc phân phối dữ liệu chưa được duyệt.")
+                        } else showVerifiedShortbread(region, selected)
+                    }
+                    .setNegativeButton("Đóng", null).show()
+            }
+        }
+    }
+
+    /** Debug-only real archive test; never silently install/download a 35-pack. */
+    private fun showDebugShortbreadPreview() {
+        packExecutor.execute {
+            val region = Vietnam35Catalog.packages.first { it.code == "24" }
+            val selected = packStore.listPacks().firstOrNull { region.matches(it) }
+            runOnUiThread {
+                if (isDestroyed) return@runOnUiThread
+                if (selected == null) {
+                    statusText.text = "SHORTBREAD_TEST_MISSING: chưa nhập Bắc Ninh"
+                    Log.e("NaviTaxiMapShortbread", "SHORTBREAD_TEST_MISSING")
+                } else showVerifiedShortbread(region, selected)
+            }
+        }
+    }
+
+    private fun showVerifiedShortbread(region: VietnamRegionSpec, imported: LocalPackStore.Pack) {
+        statusText.text = "Đang tính lại SHA-256: " + region.label
+        packExecutor.execute {
+            val checked = runCatching {
+                require(region.matches(imported)) { "Gói không khớp danh mục 35." }
+                check(packStore.verifyPack(imported.id)) { "SHA-256 / PMTiles bị thay đổi." }
+                val directory = File(filesDir, "offline-packs").canonicalFile
+                val archive = File(directory, imported.id + ".pmtiles").canonicalFile
+                require(archive.parentFile == directory && archive.isFile) { "Đường dẫn không an toàn." }
+                val header = PmtilesHeader.inspect(archive)
+                require(header.minZoom == region.minZoom && header.maxZoom == region.maxZoom)
+                val template = assets.open("shortbread_offline_style.json")
+                    .bufferedReader().use { it.readText() }
+                require(template.contains("\"__PMTILES_URL__\""))
+                val uri = "pmtiles://file://" + archive.absolutePath
+                val localStyle = template.replace("\"__PMTILES_URL__\"", JSONObject.quote(uri))
+                Pair(localStyle, header)
+            }
+            runOnUiThread {
+                if (isDestroyed) return@runOnUiThread
+                checked.onFailure { failure ->
+                    statusText.text = "Không mở được gói Shortbread: " + failure.message
+                    Log.e("NaviTaxiMapShortbread", "SHORTBREAD_VERIFY_FAIL", failure)
+                }.onSuccess { (localStyle, header) ->
+                    liveMap?.setStyle(Style.Builder().fromJson(localStyle)) {
+                        offlineDemo = true
+                        offlineButton.text = "Quay về bản đồ online"
+                        statusText.text = "Shortbread 1.0 · " + region.label +
+                            " · © OpenStreetMap contributors (ODbL) · KHÔNG dẫn đường"
+                        val center = if (region.code == "24") LatLng(21.273, 106.196)
+                            else LatLng(header.centerLat, header.centerLon)
+                        liveMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                            center, if (region.code == "VN") 5.5 else 12.3
+                        ))
+                        Log.i("NaviTaxiMapShortbread", "SHORTBREAD_STYLE_LOADED " + region.fileName)
+                    }
+                }
+            }
+        }
+    }
+
     private fun explainLocationPrivacy() {
         AlertDialog.Builder(this)
             .setTitle("Quyền vị trí và bản đồ trực tuyến")
@@ -717,6 +816,7 @@ class MainActivity : Activity(), LocationListener {
         private const val EXTRA_DEBUG_PINNED_FETCH = "vn.navitaximap.DEBUG_PINNED_CATALOG_FETCH"
         private const val EXTRA_OFFLINE_DEMO = "vn.navitaximap.OFFLINE_DEMO"
         private const val EXTRA_OSM_ROADS_PILOT = "vn.navitaximap.REAL_OSM_PILOT"
+        private const val EXTRA_SHORTBREAD_PREVIEW = "vn.navitaximap.SHORTBREAD_PREVIEW"
         private const val STREET_STYLE_LIGHT = "https://tiles.openfreemap.org/styles/liberty"
         private const val STREET_STYLE_DARK = "https://tiles.openfreemap.org/styles/dark"
     }
