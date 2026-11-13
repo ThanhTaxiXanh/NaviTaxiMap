@@ -39,3 +39,8 @@
 - First new build CI 43377995854 FAILED while attempting to compile Shapely 2.0.7 on runner default Python 3.14 (`geos_c.h` not found). No map packages published. Fixed in 7b7c57a by pinning Python 3.12 with binary wheel; final build 43378133931 ALL PASS.
 - OSM Geofabrik admin4 boundary PBF 332,558,874 B exported 33 polygons, missing Khánh Hòa relation area. Retrieved relation 1887959 with full member geometry through official OSM API; independently SHA256 audited, resulting 34/34 shapes. No fabricated fallback shape.
 - **Open QA risks:** OSM admin4 polygons are not legal boundaries; large maritime components in some provinces, whole-vector-tile rather than line-geometry clipping, Geofabrik Shortbread extract may omit disputed islands; style, distribution license review, 35-pack Android rendering and offline routing not yet done. No false claim of legally certified sovereign map.
+
+
+## 2026-11-13 unresolved Shortbread risks
+- The new real Bac Ninh emulator screenshot evidence is not yet available; static style validation does not prove visual compatibility.
+- GitHub Actions artifact data expires on 2026-11-27. In-app downloads blocked without durable approved distribution hosting. SHA matching is not ODbL/legal-border/navigation approval.

@@ -126,3 +126,10 @@ Cần chú ý: OpenFreeMap chỉ là online prototype. Không cào hàng loạt 
 ---
 
 **Ghi chú:** Bản này là checkpoint theo thời điểm, không thay thế GitHub HEAD/CI hiện tại. Nó không tự cấp quyền phát hành hoặc phê duyệt nội dung dữ liệu bản đồ.
+
+## Tiếp tục sau bàn giao 13/11/2026: Android Shortbread
+- HEAD đầu phiên: eba19b95b224194c641e529dbff399e877245f35; main không đổi ea76d1c110bd32f3393be7c4dbf24f8424772a2a.
+- CI cũ được kiểm tra: tạo 35 gói 43378133931 SUCCESS, xác minh độc lập SHA 43379440781 SUCCESS, Android 43379440694 SUCCESS. PMTiles artifact hết hạn 27/11/2026, manifest 13/12/2026.
+- Commit 4a55a873 thêm danh mục 35 SHA ghim, style offline Shortbread 1.0 không font/sprite/địa giới, UI xem sau nhập SAF, bộ test Kotlin/Python và QA emulator Bắc Ninh bằng PMTiles thật. Mẫu Hà Nội cũ được giữ.
+- CI feature mới 43385141310 (Android) và 43385141410 (Bắc Ninh offline pixel) chưa có kết quả PASS tại checkpoint. Phải kiểm lại trạng thái và sửa nếu thất bại.
+- Chưa có kho HTTPS bền vững, tải 35 gói từ app, Range resume, phê duyệt giấy phép, dẫn đường, ranh giới pháp lý hay thử Xiaomi. Không sửa main, PR, merge, release.

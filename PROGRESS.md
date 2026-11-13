@@ -53,3 +53,9 @@
 - 35 PMTiles built: nationwide 556,229,998 bytes/567,706 tiles; 34 provinces 287,504,805 bytes. All have source provenance, ODbL attribution and unreviewed/non-navigation status in manifest.
 - CI 43378133931 build PASS. CI 43379440781 independent rehash and structural PMTiles validation **35/35 PASS**. Artifacts and full file inventory in `VIETNAM35_PACKS.md`.
 - **Still needs** user-facing 35-pack catalog, Shortbread local MapLibre style, streamed transfer with resumability, independent spatial/license/sovereignty review, mobile hardware/performance tests.
+
+
+## 2026-11-13 Shortbread milestone candidate
+- Commit 4a55a873: 35-entry SHA-pinned manually imported catalog, offline-only MapLibre Shortbread style, Android menu, separate real Bac Ninh emulator workflow, and Kotlin/Python tests.
+- Old Hanoi real-road preview retained. CI 43385141310 (Android) and 43385141410 (Shortbread) pending; do not mark DONE.
+- Open: stable licensed hosting, integrity-pinned sizes for in-app downloading, Range resume, local fonts/labels, ODbL audit and physical Xiaomi QA.

@@ -40,3 +40,10 @@ Real OSM pilot source snapshot: workflow https://github.com/ThanhTaxiXanh/NaviTa
 - 34 polygons resolved from OpenStreetMap ODbL administrative relations, including independently recovered Khánh Hòa relation. Selection is tile-level intersection, not exact legal borders or full feature clipping. NOT navigation ready, NOT sovereignty overlays, NOT approved for public release.
 - **APK has NOT integrated all 35 files**: existing app only supports the small Hanoi visual-preview catalog. Latest Android build unchanged from prior successfully tested code.
 - See `VIETNAM35_PACKS.md` and `tools/vietnam34/SHA256SUMS.txt`.
+
+
+## 2026-11-13 Shortbread Android 35-pack candidate (new CI not yet verified)
+- Starting development HEAD eba19b95b224194c641e529dbff399e877245f35; feature commit 4a55a8734dff9f75b451cdb29414414c92a64104.
+- Android now includes SHA-pinned 35-pack manually imported preview catalog plus local Shortbread 1.0 style (streets/land/water/buildings). Existing tiny Hanoi road-only pilot preserved. Files are not bundled into APK.
+- New Android CI 43385141310 and real Bac Ninh SAF import / airplane-mode pixel CI 43385141410 are PENDING, not PASS at time of checkpoint.
+- OSM Shortbread packs and derived technical admin polygons are NOT road-routing, legal boundaries or approved distribution. No long-lived trusted 35-pack download URL, resume, labels, routing, traffic, Xiaomi tests or release.

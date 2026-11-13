@@ -36,3 +36,9 @@
 - [ ] Add streaming resume, partial-download recovery, device storage planning, expiration-safe artifact hosting and update manifests. GitHub Actions artifacts are temporary.
 - [ ] Review polygon overlaps, maritime disputed areas/island coverage, province boundary precision, source attribution, ODbL distribution and 35-pack legal release clearance independently.
 - [ ] Validate every generated pack with real Android pixel-render smoke, physical Xiaomi, latency, memory, storage and low-bandwidth connectivity tests.
+
+
+## 2026-11-13 Shortbread Android verification TODO
+- [ ] Inspect 43385141310 Android and 43385141410 real Bac Ninh in-airplane-mode screenshot pixel CI; fix any failures before claiming DONE.
+- [ ] Confirm 35-pack byte-accurate sizes from generated manifest and establish legal, durable, immutable distribution endpoints before enabling downloads.
+- [ ] Test all remaining regional archives, local glyphs/labels, boundary safeguards, ODbL rights and physical Xiaomi.

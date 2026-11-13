@@ -1,0 +1,11 @@
+# Shortbread 1.0 Android integration checkpoint
+
+**Status: code committed; new CI pending.** This is NOT a navigation or legally approved map.
+
+The SHA-pinned list of 35 OSM/Geofabrik Shortbread v1.0 research PMTiles is in app/src/main/java/vn/navitaximap/data/Vietnam35Catalog.kt. A catalog entry contains the exact official filename, code, zooms and SHA-256 from tools/vietnam34/SHA256SUMS.txt. No source URL is invented: the old GitHub Actions data artifacts are temporary and the project has no approved durable regional download host.
+
+Android user flow: import an original PMTiles archive with Data menu -> import from device (SAF). The new Data menu -> 35 Shortbread packs visualizes recognized files only after comparing filename+zoom+SHA and computing the whole-file SHA again before rendering. The style in app/src/main/assets/shortbread_offline_style.json uses only the app-private pmtiles://file:// archive, paints streets/land/water/buildings, no sprites, glyphs, labels or legal boundary overlays. It displays OSM attribution and a no-navigation warning. The separate 54KB Hanoi road-only pilot is unchanged.
+
+CI: Android debug workflow runs Kotlin unit tests and Python static schema/catalog tests. Dedicated android-shortbread-35-smoke workflow retrieves the previously generated 34-province artifact, checks actual Bắc Ninh PMTiles SHA-256, drives Android DocumentsUI SAF import and on-device SHA readback, switches to airplane mode, renders map and checks screenshot road-color pixel count, attribution and no-navigation warning. Only report PASS after CI 43385141310 and 43385141410 conclude successfully with evidence.
+
+Unfinished: durable approved storage/download URLs, exact size-pinned resumable download, legality/ODbL audit, physical Xiaomi, nationwide coverage pixel tests, POI labels and routing. Artifacts expire 2026-11-27. Main/PR/merge/release remain prohibited without owner's approval.

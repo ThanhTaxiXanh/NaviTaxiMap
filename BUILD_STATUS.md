@@ -66,3 +66,9 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 - [Independent CI 43379440781](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43379440781): **ALL JOBS PASS**; opened and rehashed all 35 files, checked PMTiles v3/MVT headers, reported identical source and regional manifest metadata.
 - Deliverables as two artifacts: `NaviTaxiMap-34-Provinces-OSM-UNREVIEWED` (about 287.5 MB) and `NaviTaxiMap-Vietnam-Whole-Country-OSM-UNREVIEWED` (about 556.2 MB), plus separate small `NaviTaxiMap-Vietnam35-Verified-Manifest-SHA256`.
 - **NO 35-pack Android runtime/emulator proof yet**; all 35 are GIS DATA output only. Need Shortbread-compatible style and catalog download integration. Status UNREVIEWED, no navigation approval, no official maritime/admin boundaries.
+
+
+## 2026-11-13 new Android Shortbread code
+- Existing Android CI 43379440694 SUCCESS; Geofabrik real 35-pack generation 43378133931 SUCCESS; independent checksum 43379440781 SUCCESS.
+- New feature commit 4a55a873, Android run 43385141310 and real Shortbread emulator run 43385141410: IN PROGRESS at checkpoint. Do NOT report successful new map rendering without pixel evidence.
+- No main edits, PR, merge, production APK signing or release.
