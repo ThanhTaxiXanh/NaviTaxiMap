@@ -34,6 +34,29 @@ internal class PinnedHttpsRangeTransfer(
 
     data class VerifiedStage(val file: File, val resumedBytes: Long)
 
+    /**
+     * Untrusted local progress snapshot for eventual UI. A full-size .partial
+     * is NOT verified and MUST NEVER be offered as an imported map.
+     * This method does not connect, fetch, hash, or activate distribution.
+     */
+    data class StagingProgress(val bytesStored: Long, val expectedBytes: Long) {
+        val completeButUnverified: Boolean get() = bytesStored == expectedBytes
+    }
+
+    @Synchronized
+    fun inspectProgress(pin: Pin): StagingProgress {
+        if (!scratchDirectory.exists()) return StagingProgress(0L, pin.bytes)
+        require(scratchDirectory.isDirectory && !Files.isSymbolicLink(scratchDirectory.toPath())) {
+            "Staging directory is not a regular private directory"
+        }
+        val target = part(pin)
+        require(!Files.isSymbolicLink(target.toPath())) { "Symlinked partial archive forbidden" }
+        require(!target.exists() || target.isFile) { "Unexpected partial archive type" }
+        val bytes = if (target.isFile) target.length() else 0L
+        require(bytes in 0L..pin.bytes) { "Oversized existing partial archive" }
+        return StagingProgress(bytes, pin.bytes)
+    }
+
     private fun validateEndpoint(pin: Pin, url: String, approvedHost: String): URL {
         val uri = URI(url)
         require(uri.scheme.equals("https", ignoreCase = true)) { "HTTPS is required" }
@@ -60,6 +83,9 @@ internal class PinnedHttpsRangeTransfer(
         check(scratchDirectory.isDirectory || scratchDirectory.mkdirs()) {
             "Cannot create app-private download staging"
         }
+        require(!Files.isSymbolicLink(scratchDirectory.toPath())) {
+            "Symlinked staging directory forbidden"
+        }
     }
 
     /**
@@ -76,9 +102,9 @@ internal class PinnedHttpsRangeTransfer(
         val endpoint = validateEndpoint(pin, url, approvedHost)
         ensureScratch()
         val target = part(pin)
-        require(!Files.isSymbolicLink(target.toPath())) { "Symlinked partial archive forbidden" }
-        val offset = if (target.isFile) target.length() else 0L
-        require(offset in 0L..pin.bytes) { "Invalid existing partial length" }
+        // Use the same read-only progress gate to reject malformed, oversized
+        // or symlinked partials before any network or file write.
+        val offset = inspectProgress(pin).bytesStored
 
         // The final import makes a second copy before atomic commit.
         val remaining = pin.bytes - offset
@@ -113,8 +139,15 @@ internal class PinnedHttpsRangeTransfer(
                 require(encoding == null || encoding.equals("identity", ignoreCase = true)) {
                     "Compressed transfer body cannot be range verified"
                 }
-                val advertised = connection.getHeaderField("Content-Length")?.toLongOrNull()
-                require(advertised == null || advertised == remaining) { "HTTP body size mismatch" }
+                val lengthHeader = connection.getHeaderField("Content-Length")
+                if (lengthHeader != null) {
+                    // A present but malformed/overflowing HTTP length is never
+                    // equivalent to an intentionally absent length header.
+                    val advertised = lengthHeader.toLongOrNull()
+                    require(advertised != null && advertised == remaining) {
+                        "HTTP body length is missing, malformed or differs from pinned Range"
+                    }
+                }
 
                 var written = 0L
                 connection.inputStream.use { input ->

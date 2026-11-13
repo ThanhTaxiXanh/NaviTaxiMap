@@ -199,4 +199,63 @@ class PinnedHttpsRangeTransferTest {
             assertFalse(File(root, "shortbread-${pin.sha256}.partial").exists())
         } finally { root.deleteRecursively() }
     }
+
+    @Test fun progressSnapshotNeverMarksUnverifiedBytesAsImported() {
+        val root = createTempDir(prefix = "navitaxi-range-progress-")
+        try {
+            val pin = PinnedHttpsRangeTransfer.Pin("24-bac-ninh.pmtiles",
+                payload.size.toLong(), sha(payload))
+            var requests = 0
+            val engine = PinnedHttpsRangeTransfer(root, { uri ->
+                requests++
+                FakeRange(uri, 206, payload, "bytes 0-${payload.size - 1}/${payload.size}")
+            }, { Long.MAX_VALUE })
+            assertEquals(0L, engine.inspectProgress(pin).bytesStored)
+            val partial = File(root, "shortbread-${pin.sha256}.partial")
+            partial.writeBytes(payload.copyOfRange(0, 125))
+            assertEquals(125L, engine.inspectProgress(pin).bytesStored)
+            assertFalse(engine.inspectProgress(pin).completeButUnverified)
+            partial.writeBytes(ByteArray(payload.size) { 33 })
+            val untrusted = engine.inspectProgress(pin)
+            assertTrue(untrusted.completeButUnverified)
+            assertEquals(0, requests)
+            // Even full-size partial bytes are not accepted without real SHA.
+            assertThrows(IllegalArgumentException::class.java) {
+                engine.stage(pin, "https://maps.example.test/24-bac-ninh.pmtiles",
+                    "maps.example.test")
+            }
+            assertFalse(partial.exists())
+            assertEquals(0, requests)
+        } finally { root.deleteRecursively() }
+    }
+
+    @Test fun malformedContentLengthAndOversizedPartialFailClosed() {
+        val root = createTempDir(prefix = "navitaxi-range-length-")
+        try {
+            val pin = PinnedHttpsRangeTransfer.Pin("24-bac-ninh.pmtiles",
+                payload.size.toLong(), sha(payload))
+            val url = "https://maps.example.test/24-bac-ninh.pmtiles"
+            for (length in listOf("invalid", "-1", "9223372036854775808", "1")) {
+                val engine = PinnedHttpsRangeTransfer(root, { uri ->
+                    FakeRange(uri, 206, payload, "bytes 0-${payload.size - 1}/${payload.size}",
+                        advertisedLength = length)
+                }, { Long.MAX_VALUE })
+                assertThrows(IllegalArgumentException::class.java) {
+                    engine.stage(pin, url, "maps.example.test")
+                }
+            }
+            val partial = File(root, "shortbread-${pin.sha256}.partial")
+            assertFalse(partial.exists())
+            partial.writeBytes(ByteArray(payload.size + 1))
+            val engine = PinnedHttpsRangeTransfer(root, { _ ->
+                throw AssertionError("A corrupt partial must not initiate a network request")
+            }, { Long.MAX_VALUE })
+            assertThrows(IllegalArgumentException::class.java) {
+                engine.inspectProgress(pin)
+            }
+            assertThrows(IllegalArgumentException::class.java) {
+                engine.stage(pin, url, "maps.example.test")
+            }
+        } finally { root.deleteRecursively() }
+    }
 }
