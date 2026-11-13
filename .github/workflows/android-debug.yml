@@ -24,6 +24,8 @@ jobs:
           gradle-version: '8.9'
       - name: Install Android platform
         run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+      - name: Validate emulator smoke script syntax before building
+        run: bash -n ci/smoke-emulator.sh
       - name: Test Android and assemble debug APK
         run: gradle --no-daemon --stacktrace :app:testDebugUnitTest :app:assembleDebug
       - name: Verify synthetic PMTiles v3 fixture

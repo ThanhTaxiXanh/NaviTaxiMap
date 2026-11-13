@@ -82,14 +82,33 @@ for attempt in $(seq 1 9); do
   fi
   echo "Synthetic offline vector geometry not visible (attempt $attempt/9); retrying"
 done
-adb shell uiautomator dump /sdcard/navitaxi-window.xml > /dev/null
-adb pull /sdcard/navitaxi-window.xml smoke-evidence/offline-window.xml
 adb logcat -d -s AndroidRuntime:E > smoke-evidence/offline-runtime-errors.txt || true
 adb logcat -d -v brief > smoke-evidence/offline-full-logcat.txt || true
 python3 ci/check-offline-screenshot.py smoke-evidence/offline-screenshot.png
 
+# Under CI load, Android's Pixel Launcher occasionally shows a system ANR
+# dialog OVER an otherwise correct MapLibre map. UIAutomator then dumps only
+# the dialog, not the app's status text. Recover that specific Android-system
+# overlay once; do NOT accept a missing app status or weakened vector pixels.
+for attempt in 1 2 3; do
+    adb shell uiautomator dump /sdcard/navitaxi-window.xml > /dev/null
+    adb pull /sdcard/navitaxi-window.xml smoke-evidence/offline-window.xml >/dev/null
+    if grep -q 'PMTiles offline' smoke-evidence/offline-window.xml; then
+        echo "OFFLINE_DEMO_STATUS_READY attempt=$attempt"
+        break
+    fi
+    if grep -q "Pixel Launcher isn't responding" smoke-evidence/offline-window.xml; then
+        echo "OFFLINE_DEMO_LAUNCHER_ANR_OVERLAY attempt=$attempt" | tee -a smoke-evidence/launcher-anr-recovery.txt
+        adb shell input keyevent 4 || true
+        adb shell am force-stop com.google.android.apps.nexuslauncher || true
+        sleep 4
+    else
+        echo "Offline demo status missing without Android Launcher ANR overlay" >&2
+        exit 1
+    fi
+done
 if ! grep -q 'PMTiles offline' smoke-evidence/offline-window.xml; then
-    echo "Offline demo status was not exposed in UI" >&2
+    echo "Offline demo status remains hidden after bounded Launcher ANR recovery" >&2
     exit 1
 fi
 if ! adb shell pidof vn.navitaximap | tr -d '\r' | grep -Eq '^[0-9]+'; then
