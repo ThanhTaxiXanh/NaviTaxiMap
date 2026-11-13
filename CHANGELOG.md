@@ -90,3 +90,8 @@
 ## 2026-11-13 source-approval gate hardening
 - Source registry `ReviewedShortbreadSources.byCode` is statically empty; `ApprovedCatalogPackDownloader.fetchApproved(code)` no longer accepts arbitrary URL/hostname caller input, preventing accidental future bypass on distribution approval. Catalog `distributionApproved=false` unchanged.
 - Added three negative/edge JUnit tests for complete corrupted partial SHA, contaminated resume prefix, insufficient free disk space and compressed HTTPS range response. Previous Android CI run 43459478560 now all green; feature CI 43468092472 pending.
+
+
+## 2026-11-14 00:16 ICT strict Range staging and untrusted progress
+- Added network-free `inspectProgress` for app-private PMTiles .partial staging; full byte count is visibly *not yet SHA verified*. Reused validation before network. Reject malformed present Content-Length, bad/stale oversized partial, symlinked staging/partial. Two more JVM test scenarios for fake 206 responses and corrupted full-size progress.
+- Existing source approval remains two-gate CLOSED; no URL, host, user UI, release or unauthorized OSM redistribution. CI 43471067313 pending.

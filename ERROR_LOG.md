@@ -128,3 +128,8 @@
 ## 2026-11-13 Pixel Launcher regression closed, downloader now two-gate protected
 - CI 43459478560 SUCCESS both Gradle and emulator. `OFFLINE_DEMO_STATUS_READY` + `REAL_OSM_PIXELS_READY` in logs, confirming prior missing UI 43458014933 was system launcher modal masking a valid rendered map, not corruption.
 - Downloader code formerly accepted a caller-provided `reviewedHost` argument, a future-policy bypass risk if distribution approval were enabled. Fixed a0a0be16: only static compiled `ReviewedShortbreadSources.byCode` permitted, currently empty and catalog redistribution flag still false. New mocked negative JUnit tests added; 43468092472 awaiting verdict.
+
+
+## 2026-11-14 00:16 ICT security hardening follow-up
+- No outstanding failure from previous 43468092472: GitHub workflow completed SUCCESS in both compile/JUnit and emulator.
+- Found potential fail-open HTTP header interpretation in original Range staging: present but unparsable `Content-Length` was previously treated like absent. Commit 076bd58f now explicitly rejects malformed, negative, overflow or incorrect present values before writing. Also rejects oversized/symlinked partial and staging dir. New JVM regressions added; 43471067313 awaiting result.

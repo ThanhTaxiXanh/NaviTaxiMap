@@ -146,3 +146,9 @@
 ## 2026-11-13 23:58 origin pinning and verified offline regression
 - CI 43459478560 both Android build/JUnit and emulator SUCCESS: offline demo colored geometry + exposed UI state + OSM Hanoi road pixels. Earlier failure 43458014933 was system Pixel Launcher overlay.
 - Downloader hardening a0a0be16: reviewed host is no longer a free caller argument of `ApprovedCatalogPackDownloader`, only compiled `ReviewedShortbreadSources.byCode` (empty), plus distribution approval remains false. Added integrity/space/encoding JUnit tests. CI 43468092472 in progress.
+
+
+## 2026-11-14 00:16 ICT continued execution
+- Confirmed latest previous Android CI 43468092472 **all SUCCESS**, closing pending emulator test.
+- Commit 076bd58f adds read-only untrusted progress accounting and strict HTTP Content-Length / partial symlink/oversize input validation, with 8 mocked Range JUnit total. Download source list remains empty and distribution approval false.
+- CI 43471067313 in progress; no claim of new emulator PASS without final log.

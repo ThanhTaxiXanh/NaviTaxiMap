@@ -170,3 +170,8 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 ## 2026-11-13 23:58 build checkpoint
 - 43459478560 Android-debug + emulator two jobs **SUCCESS** at code 3b141de, strict PMTiles screenshot/status and real OSM pilot passed.
 - 43468092472 following a0a0be16 origin-approval hardening + 6 JUnit range tests **PENDING** at writing; not yet declared green. Catalog download gate still disabled and source list empty.
+
+
+## 2026-11-14 00:16 ICT CI evidence and pending code run
+- Run 43468092472 **SUCCESS** both Android build/JUnit and emulator on code a0a0be16.
+- Run 43471067313 tests new 076bd58f Range integrity/progress hardening, **PENDING** at checkpoint. Real 35/35 source archive emulator proof stays on already completed workflows; new downloader still dormant.

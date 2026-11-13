@@ -150,3 +150,9 @@ Real OSM pilot source snapshot: workflow https://github.com/ThanhTaxiXanh/NaviTa
 ## 2026-11-13 final Android full CI restored; safe downloader origin policy tightened
 - Standard Android debug + full emulator 43459478560 SUCCESS, strict offline PMTiles synthetic screenshot and UI status + Hanoi OSM pilot proofs. Launcher system overlay regression resolved in CI-only bounded retry.
 - Code a0a0be16 removes runtime caller-supplied URL and reviewedHost from catalog transfer interface, forces static empty `ReviewedShortbreadSources.byCode` *and* `Vietnam35Catalog.distributionApproved=false`. Adds three more JUnit scenarios: corrupt full partial, corrupt resume prefix, missing free space/gzip response. Now 6 Range JUnit cases. Approval and actual host still absent; no network activated. Android CI 43468092472 PENDING at checkpoint.
+
+
+## 2026-11-14 00:16 ICT: dormant Range engine progress inspection tightened
+- Android CI 43468092472 **SUCCESS both Gradle/JUnit and device emulator** for approved-source-gated Range code a0a0be16. Production download gate still CLOSED: `distributionApproved=false`, compiled reviewed origins empty, no URL in app.
+- New feature 076bd58f adds `PinnedHttpsRangeTransfer.inspectProgress` to read *untrusted* .partial byte count without network, even when size equals expected bytes; only full SHA can mark verified. Rejects symlinked staging directory, symlinked or oversized partial and malformed/negative/overflow `Content-Length` when present. Two more JUnit tests (total 8). New Android CI 43471067313 pending as of checkpoint.
+- Real OSM Shortbread 35/35 original PMTiles offline visual proof unchanged, legal/admin/routing/redistribution approvals absent.

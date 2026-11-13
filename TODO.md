@@ -155,3 +155,11 @@
 - [x] Expand mocked Range failure tests to corrupt partial, corrupt resume prefix, low space and gzip body, preserving no-network guarantees.
 - [ ] Read final 43468092472 Android compile+JUnit+emulator verdict; if FAIL inspect compiler/assertion logs and fix. No user-triggered downloader or permanent source host has been approved.
 - [ ] Independent legal ODbL/attribution review and reviewed HTTPS provider with immutable manifest, physical Xiaomi QA, resumable UI with consent, and routing-specific data constraints remain open.
+
+
+## 2026-11-14 00:16 ICT gates
+- [x] Verify 43468092472 all-success build and emulator.
+- [x] Add untrusted read-only progress snapshot and fail-closed malformed Content-Length + symlink/oversized partial checks; 8 JUnit Range test methods, 076bd58f.
+- [ ] Verify 43471067313 final Android CI build/JUnit/emulator and fix any genuine errors without weakening checksum or pixel tests.
+- [ ] Before any live HTTPS transfer, obtain explicit approved ODbL distribution source, reviewed exact origin and manifest. Catalog `distributionApproved` remains false, registry empty.
+- [ ] Later add user-consented progress UI, partial retention policy, physical Xiaomi test and mobile network interruptions. Do not tie current tests to unapproved public URL.
