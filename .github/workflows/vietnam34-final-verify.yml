@@ -1,0 +1,93 @@
+name: Verify every produced Vietnam 35 PMTiles checksum and publish small manifest
+
+on:
+  push:
+    branches: ['develop/**']
+    paths: ['.github/workflows/vietnam34-final-verify.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  validate-35-output-files:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: NaviTaxiMap-34-Provinces-OSM-UNREVIEWED
+          run-id: 43378133931
+          github-token: ${{ github.token }}
+          path: input/provinces
+      - uses: actions/download-artifact@v4
+        with:
+          name: NaviTaxiMap-Vietnam-Whole-Country-OSM-UNREVIEWED
+          run-id: 43378133931
+          github-token: ${{ github.token }}
+          path: input/national
+      - name: Independently validate all 35 PMTiles v3 files and SHA256
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, json, struct
+          src=Path('input/provinces/manifest.json').read_bytes()
+          assert src == Path('input/national/manifest.json').read_bytes()
+          m=json.loads(src)
+          catalog=json.loads(Path('tools/vietnam34/provinces_34.json').read_text())
+          expected=[(p['code'],p['name']) for p in catalog['provinces']]
+          actual=[(p['code'],p['name']) for p in m['packages'][1:]]
+          assert expected==actual,(expected,actual)
+          assert len(m['packages'])==35 and m['files_count']==35
+          assert m['navigation_approved'] is False and m['distribution_approved'] is False
+          assert m['osm_source_license'].startswith('ODbL')
+          report=[]
+          lines=[]
+          for p in m['packages']:
+            directory='national' if p['code']=='VN' else 'provinces'
+            file=Path('input')/directory/p['file']
+            assert file.is_file(),file
+            h=hashlib.sha256()
+            with file.open('rb') as stream:
+              head=stream.read(127)
+              assert head[:8]==b'PMTiles\x03',file
+              assert head[99]==1,'Non-vector PMTiles file'
+              minimum,maximum=head[100],head[101]
+              assert minimum==p['minzoom'] and maximum==p['maxzoom']
+              assert maximum==14
+              index=struct.unpack_from('<11Q',head,8)
+              assert 0<index[1]<=16384
+              assert index[6]+index[7]<=file.stat().st_size
+              h.update(head)
+              for chunk in iter(lambda: stream.read(1024*1024),b''):
+                h.update(chunk)
+            digest=h.hexdigest()
+            assert file.stat().st_size == p['size_bytes']
+            assert digest == p['sha256']
+            assert p['tiles']>0
+            report.append({'code':p['code'],'name':p['name'],
+                           'file':p['file'],'bytes':file.stat().st_size,
+                           'sha256':digest,'tiles':p['tiles']})
+            lines.append(f"{digest}  {p['file']}")
+            print('INDEPENDENT_SHA256_OK',p['code'],p['file'],
+                  file.stat().st_size,p['tiles'],digest,flush=True)
+          out=Path('verified-vietnam35')
+          out.mkdir(exist_ok=True)
+          (out/'manifest.json').write_bytes(src)
+          (out/'SHA256SUMS.txt').write_text('\n'.join(lines)+'\n')
+          (out/'verification.json').write_text(json.dumps({
+            'status':'ALL_35_PM_TILES_INDEPENDENTLY_CHECKED',
+            'count':len(report),'source_run_id':43378133931,
+            'packaging':'34 geographic tile-footprint packs and one whole-country pack',
+            'navigation_approved':False,'distribution_approved':False,
+            'packages':report},ensure_ascii=False,indent=2)+'\n')
+          print('ALL_35_PACKS_VERIFIED',len(report),
+                'national_bytes',report[0]['bytes'],
+                'province_sum_bytes',sum(p['bytes'] for p in report[1:]))
+          PY
+      - name: Publish independent 35-file checksums and manifest (small)
+        uses: actions/upload-artifact@v4
+        with:
+          name: NaviTaxiMap-Vietnam35-Verified-Manifest-SHA256
+          path: verified-vietnam35/
+          if-no-files-found: error
+          retention-days: 30
