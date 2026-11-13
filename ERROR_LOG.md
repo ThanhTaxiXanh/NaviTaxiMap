@@ -1,5 +1,11 @@
 # ERROR_LOG
-- OPEN: Chưa thể kiểm thử cài đặt/khởi chạy trên Xiaomi vì không có ADB/Termux của thiết bị trong phiên này.
-- OPEN: Chưa có dữ liệu bản đồ offline có nguồn hợp lệ; demo style cần Internet.
-- OPEN: PMTiles decoder, navigation, routing, traffic và các bộ dữ liệu chưa triển khai.
-- PENDING: Kết quả biên dịch CI trên GitHub; không tự nhận DONE.
+## Resolved from actual GitHub Actions logs
+1. CI 43351850610: Android setup action v3 attempted obsolete SDK tools package. Fixed by v4.
+2. CI 43351946604: MapLibre 13.5.4 Kotlin metadata 2.2.0 vs Kotlin compiler 2.0.21. Fixed by Kotlin Gradle plugin 2.2.10.
+3. CI 43352195061: Gradle unit tests and APK assembly PASS.
+
+## Open
+- Emulator installation and launch: pending CI smoke evidence.
+- Real Xiaomi: no ADB/Shizuku/Termux channel in current environment, so hardware QA blocked.
+- Demo map style is online, not production tile service.
+- No PMTiles runtime or approved data, GPS only tested at build level; full navigation not available.
