@@ -17,7 +17,7 @@ main: protected; do not push, merge, create PR or release until owner explicitly
 - Pack import: `data/LocalPackStore.kt`, `data/PmtilesHeader.kt`.
 - Unit tests: `app/src/test/java/vn/navitaximap/data/`.
 - Emulator CI script: `ci/smoke-emulator.sh`.
-- Latest verified CI: https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43371354137 (tested code 08afe5a16b316f363750fc21b006cf82f39817de, all jobs PASS: Android build, SAF, recovery, real OSM road geometry in airplane mode).
+- Latest verified CI: https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43374393332 (tested code 43a70acc220235fd1f6f13fdf5332eb37f286c59, all jobs PASS: Android build/23 JVM tests, pinned real HTTPS transfer, SAF, crash recovery, real OSM offline map and catalog UI).
 
 ## Not demonstrated
 No complete province/city PMTiles packs (only a tiny real OSM sample), PMTiles download manager, route graph, POI/search, navigation, traffic, speed signs, terrain/3D or approved legal maritime overlays.
@@ -25,3 +25,10 @@ Not installed or tested on the owner's Xiaomi. No production-ready release APK.
 
 ## Next verification
 Real OSM pilot source snapshot: workflow https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43369521518 (17,828 nodes, 354 road ways); deterministic build: https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43370147765 (21 tiles, 53,956 bytes). Full regression CI https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43371354137 **ALL JOBS PASS**: 58,015 real OSM local-road-colored screenshot pixels in central map viewport, source/license warning exposed, no FATAL EXCEPTION. See HANOI_OSM_PILOT.md.
+
+## Phase 4: versioned preview pack catalog, verified 2026-11-13
+- **Implemented, limited pilot only:** `PilotCatalog`, `CatalogPackStore`, `PinnedHttpsPackDownloader`. One user-initiated download option, immutable 40-hex GitHub source commit URL, pin to exact 53,956 bytes and SHA-256 `ff932662ba476e570debd19d8323e2c9fed11dfa98322dfd39a4023ed3e0cf9d`.
+- Catalog pack installation is private, streamed and staged; archive is validated before atomically promoting index. Failed updates preserve prior installed version in tested scenarios; recovery removes generated orphan files. This is NOT a cross-process/durable database transaction.
+- Local catalog UI supports checking installed version/hash, reinstalling from APK, confirmed delete and explicitly confirmed HTTPS transfer with cancellation hook.
+- CI [43374393332](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43374393332) ALL JOBS PASS. Emulator online received actual file through `PinnedHttpsPackDownloader` (origin=PINNED_HTTPS), re-read 53,956 bytes SHA exact, then airplane mode displayed roads and 58,015 colored pixels. Native DocumentsUI picker, simulated interrupted imports and provenance dialog PASS.
+- **sourceApproval=UNREVIEWED_VISUAL_PREVIEW; navigationApproved=false**. Full 34-region catalog, signed external manifests, pause/resume downloads, usable navigation and physical Xiaomi QA remain NOT STARTED/IN PROGRESS as appropriate.

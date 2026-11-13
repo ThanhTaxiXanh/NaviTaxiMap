@@ -24,3 +24,8 @@ Do not use the public OpenFreeMap server for bulk scraping or unauthorized offli
 - **Derived road-only PMTiles**: 21 tiles, zoom 14–17, 53,956 bytes, SHA-256 `ff932662ba476e570debd19d8323e2c9fed11dfa98322dfd39a4023ed3e0cf9d`. Source, converter and manifest are pinned in git; generator CI 43370147765 PASS.
 - **License**: OpenStreetMap ODbL 1.0, mandatory attribution **© OpenStreetMap contributors**. User-visible attribution displayed in dedicated preview status; full public distribution/share-alike audit remains OPEN.
 - **Source review**: UNREVIEWED for turn restrictions, navigation, admin/maritime boundaries. Snapshot is a tiny rectangular crop, not a verified province. No Geofabrik full-country data was downloaded. See `HANOI_OSM_PILOT.md`.
+
+## Single allowlisted HTTPS pack source (development only)
+- Immutable source URL: `https://raw.githubusercontent.com/ThanhTaxiXanh/NaviTaxiMap/554cfe62013c80146842aea85cb3625e583f2ced/app/src/main/assets/hanoi_real_roads.pmtiles`.
+- Android CI 43374393332 fetched this exact 53,956-byte byte sequence from HTTPS, verified SHA-256 `ff932662ba476e570debd19d8323e2c9fed11dfa98322dfd39a4023ed3e0cf9d` and then rendered offline in airplane mode. Filename/URL is pinned in `PilotCatalog` and refuses branch-name substitutions.
+- This is source-identical to the frozen OpenStreetMap API bbox snapshot, not a verified 34-province map. ODbL attribution remains mandatory; `UNREVIEWED_VISUAL_PREVIEW` is not geographic/legal approval.

@@ -46,3 +46,13 @@ App modules currently live in `app`; the future module boundaries below are arch
 - Source snapshot and PMTiles SHA-256 are pinned; converter tested with no third-party Python packages. The 21-tile archive contains actual OSM way geometry cropped into map tile viewports.
 - No remote style, sprite or glyph dependencies for this preview. Attribution and safety warning appear in the status display.
 - This is a tiny road-only sample, not a local route graph, offline search index, traffic feed or any legally reviewed geographic boundary overlay.
+
+## Phase 4 pinned catalog and transfer manager
+`APK PilotCatalog (id, version, HTTPS immutable commit URL, SHA-256, size, OSM source SHA, ODbL)`
+→ **explicit user consent** → `PinnedHttpsPackDownloader` (TLS, no redirects, timeout)
+→ `CatalogPackStore.install` (staged streamed copy, SHA/size/header, quota margin, fsync, atomic data promotion, index commit)
+→ app-private `catalog-packs` (versioned archive + properties, `UNREVIEWED_VISUAL_PREVIEW`)
+→ MapLibre native local `pmtiles://file://` renderer with attribution, **no navigation**.
+- Local asset install uses the exact same catalog store/checks and works in airplane mode.
+- Prior metadata/PMTiles version persists through failed update tests; no background scheduler or remote manifest. One catalog item now; no signed distribution channel.
+- CI 43374393332: 23 JVM tests, real HTTPS to emulator, on-device SHA readback, switch to airplane mode, real-road colored pixels and catalog UI passed.

@@ -51,3 +51,8 @@ A limited road-only map preview can be opened via **Dữ liệu bản đồ** �
 
 ## Real-road offline emulator result
 [CI 43371354137](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43371354137): **ALL JOBS PASS** for the tiny real OSM Hanoi pilot. Android API 34 in airplane mode visibly rendered road geometry from the locally bundled PMTiles; image regression counted 58,015 road-colored pixels, and UI displayed ODbL attribution and **KHÔNG dẫn đường**. Same run retained prior system picker, checksum/recovery and synthetic PMTiles renderer checks. This is still not a usable road navigation product.
+
+## NEW: Versioned offline pack management + explicit HTTPS (pilot only)
+Open **Dữ liệu bản đồ** → **Quản lý / tải gói OSM Hà Nội**. You can inspect v1/source/hash, use a bundled offline copy, explicitly consent to a tiny (54 KB) HTTPS download from a fixed GitHub commit, verify SHA-256, or delete the app-owned copy. Only this limited visual road-preview is available. The pack is **UNREVIEWED**, cannot navigate, and is not a countrywide offline basemap.
+
+[CI 43374393332](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43374393332): **ALL JOBS PASS**, including an **actual** Android HTTPS fetch of the exact pinned PMTiles, byte-for-byte and metadata verification, then offline road-rendering while in airplane mode (58,015 road-colored pixels), Android file picker and catalog UI tests. See [CATALOG_PACK_EVIDENCE.md](CATALOG_PACK_EVIDENCE.md).

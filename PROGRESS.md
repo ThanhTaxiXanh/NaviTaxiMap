@@ -35,3 +35,13 @@
 - Added separate MapLibre Native real-road offline pilot (line categories road_major, road_local, road_pedestrian) with visible © OpenStreetMap contributors (ODbL) attribution and KHÔNG dẫn đường label. Existing synthetic diagnostic remains separate.
 - Android emulator screenshot run 43370534933 confirmed real OSM roads are visible offline in airplane mode. Test script failed due missing Pillow in CI, not due map rendering; corrected with existing stdlib PNG decoder, latest retry 43371354137 **ALL JOBS PASS**, including 58,015 locally rendered road-colored pixels verified by stdlib PNG checker and on-screen ODbL / no-navigation warning.
 - No citywide data, accurate driving navigation or licensed full 34-province package yet.
+
+## Phase 4 versioned catalog + HTTPS verified, 2026-11-13
+- Added APK-pinned `CatalogPackSpec` with strict HTTPS GitHub raw allowlist requiring immutable 40-digit commit SHA (not mutable `develop` or `main`), checksum, size, zoom range, OSM source SHA, ODbL and attribution. Only one tiny Hanoi road-only preview entry is currently present.
+- Added `CatalogPackStore`: streamed input with 8 MiB free-space safety margin, exact pinned size/SHA/MVT header checks, atomic same-filesystem data/index commit, previous-version rollback on failures, generated-orphan cleanup and deletion without changing external documents.
+- Added `PinnedHttpsPackDownloader`: explicit network GET with redirect denial, 15s connect and 20s read timeouts; no remote JSON trust, no background synchronization. Added cancellation/progress.
+- Refactored `HanoiRoadPilot` to use the same catalog for APK-local or pinned-HTTPS installation; real offline renderer continues to work after airplane-mode transition.
+- Added **12 JVM tests** for URL restrictions, catalog versions, tampering, update rollback, failure/cancel cleanup, storage pressure, source checks and injected downloader.
+- Added Android catalog manager UI: information, verify SHA-256, repair from bundled APK, manual HTTPS transfer with confirmation and cancel, delete app-private copy.
+- CI 43374393332 ALL JOBS PASS, including actual HTTPS download, SHA readback from emulator, ODbL/non-navigation metadata, offline colored roads (58,015 pixels), catalog dialog UI, SAF importer and simulated interruption cleanup.
+- Kept `main` untouched. Real Hanoi pilot remains a very small **unreviewed visual sample**; NOT navigation-ready, NOT 34 provinces.

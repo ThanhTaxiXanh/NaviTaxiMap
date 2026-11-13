@@ -1,6 +1,6 @@
 # Phase 4: Local PMTiles pack manager
 
-**Status (2026-11-13): IN PROGRESS.** Local import / verification prototype is present. This is not a downloader or a complete offline map distribution system.
+**Status (2026-11-13): IN PROGRESS.** Local PMTiles import and a **single pinned HTTPS visual-preview download** are verified, but this is not a general downloader, 34-province package manager or approved navigation-data distribution system.
 
 ## Implemented
 
@@ -28,7 +28,7 @@
 1. **Real source provenance:** A calculated checksum detects later changes, but does not prove the publisher, license, correctness or legal approval of a user-selected file. Signed/approved manifests and an independent provenance audit are still missing.
 2. **No arbitrary PMTiles display:** The current import workflow stores and audits files. Arbitrary external PMTiles cannot be safely rendered without identifying the correct vector source layers and an approved offline style, sprites, glyphs and data extent.
 3. **Crash recovery:** Basic startup/pre-import cleanup of incomplete generated UUID files is implemented and emulator-tested (CI 43364225600 PASS). However, atomic moves do **not** form an actual metadata/database transaction: cross-process locking, filesystem directory fsync, real power-loss testing and rollback of an existing installed version remain TODO.
-4. **Download manager:** Remote downloading, pause/resume/cancel, retry, range requests and updates are NOT implemented. No mass downloading from OpenFreeMap.
+4. **Download manager:** One explicit, pinned HTTPS download with per-chunk cancel/streaming, checksum validation and versioned local atomic promotion is implemented for the tiny Hanoi **visual preview**. Download pause/resume, durable retry, range requests, signed remote manifests, production update lifecycle and large multi-region transfer are NOT implemented. No mass downloading from OpenFreeMap.
 5. **34 provinces:** Real licensed provincial PMTiles, POI, search and routing datasets are NOT present.
 6. **Device QA:** Android emulator testing is not physical Xiaomi/Termux/GPS testing; Android system DocumentsUI picker flow VERIFIED in Android 34 emulator CI 43367761361; Xiaomi hardware and broader permission/lifecycle variations still require follow-up.
 
@@ -42,3 +42,11 @@ References:
 - System returns a selected content URI, app copies to app-private storage and displays success. Exact 1,268 bytes and SHA-256 are independently verified from `run-as` file, not only status text.
 - Stored index retains `sourceApproval=UNVERIFIED`. No broad storage permission, no remote tile download.
 - Verified: [GitHub Actions 43367761361](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43367761361), artifact `NaviTaxiMap-emulator-evidence`; see `SAF_PICKER_EVIDENCE.md`.
+
+## Versioned visual catalog (CI 43374393332 VERIFIED)
+- `PilotCatalog` currently lists **one** real OSM Hanoi road-preview. All identity, source SHA, archive SHA, size, version and HTTPS URL are compiled into APK. Only an immutable 40-character commit ref hosted at `raw.githubusercontent.com/ThanhTaxiXanh/NaviTaxiMap` is allowed. The renderer shows **© OpenStreetMap contributors**, ODbL and a non-navigation warning.
+- User menu **Dữ liệu bản đồ** → **Quản lý / tải gói OSM Hà Nội** shows catalog version/hash/provenance and actions to reinstall from local APK, manual HTTPS transfer, verify and delete. HTTPS transfer requires explicit user agreement; never silently triggered in production.
+- `CatalogPackStore`: stage source stream, check SHA-256 + exact size + PMTiles MVT header + free-space margin, atomically move new data and then commit .properties index. Old file remains visible until valid new index commit; cleanup removes generated orphan data.
+- `PinnedHttpsPackDownloader`: HTTPS-only allowlisted commit path, no redirects, timeout, no unauthenticated remote manifest. Progress and cancel callback; test injection avoids real network in JVM.
+- App-private index explicitly records `origin=PINNED_HTTPS`, `sourceApproval=UNREVIEWED_VISUAL_PREVIEW`, `navigationApproved=false`, `license=ODbL-1.0`. This **does not prove permission to publicly redistribute or routing correctness**.
+- Emulator 43374393332 actually downloaded 53,956 bytes through Android HTTPS, verified SHA and metadata, then switched to airplane mode, rendered real road colored pixels, and opened catalog metadata UI. All jobs PASS. Audit in `CATALOG_PACK_EVIDENCE.md`.

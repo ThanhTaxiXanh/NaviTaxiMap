@@ -31,3 +31,12 @@
 - Committed frozen compressed normalized road snapshot and 53,956-byte PMTiles asset to dev branch.
 - Added offline MapLibre real-road preview with explicit ODbL and no-navigation label.
 - Android emulator screenshot run 43370534933 shows real roads in airplane mode; new QA initially failed because Pillow was missing. Replaced Pillow dependency with existing stdlib PNG parser. Final CI 43371354137 **ALL JOBS PASS**, including user-selected PMTiles import, simulated interrupted-import cleanup and real OSM Hanoi road screenshot assertion.
+
+## 2026-11-13 Phase 4 versioned OSM pack catalog and real HTTPS
+- Added pinned catalog with immutable commit GitHub raw URL, source OSM SHA, PMTiles SHA, size, version, ODbL and explicit non-navigation status.
+- Added atomic versioned pack storage, bounded streaming SHA, previous-version preservation on failed update, orphan cleanup and opt-in HTTPS fetcher with redirect denial.
+- Added Android catalog manager with inspect, reinstall from bundled asset, manually download/verify, cancel and delete actions.
+- Added 12 JVM tests covering tampering, downgrade, rollback, cancellation, storage pressure and allowlist; 23 total tests PASS.
+- Android API 34 in CI 43374393332: **ALL JOBS PASS**. Fetched 53,956 bytes via real HTTPS into app-private pack, independently checked SHA/version/license/non-navigation status, then rendered actual real OSM roads in airplane mode and verified catalog UI.
+- One early test incorrectly rejected URL due `/main/` within Android's legitimate `src/main/assets` path; corrected to check the repository Git ref segment in `510c12c`.
+- Retains development-only status; no main merge, no 34-province data or route graph.

@@ -17,3 +17,12 @@
 - [ ] POI/search, offline routing graph, navigation/TTS, road warnings, traffic, 3D.
 - [ ] Hoàng Sa/Trường Sa legal/historical archive with independent source review.
 - [ ] Production build, third-party attribution audit and signed release only after owner approval.
+
+## Phase 4 versioned pack download
+- [x] Add **one** locally pinned/allowlisted HTTPS archive and source-hash-provenance catalog entry (Hanoi visual road preview v1).
+- [x] Add bounded on-device HTTPS streaming, checksum/size/PMTiles header verification, rollback-safe versioned promotion, no redirect, manual confirmation/cancel, installed-version UI.
+- [x] Verify **actual** HTTPS GET into app-private storage on Android emulator, then airplane-mode drawing of the same 53,956-byte OSM pack and independent SHA-256 readback (CI 43374393332 ALL PASS).
+- [ ] Build signed/audited remote manifest and approved release/distribution pipeline; APK-pinned checksum is NOT legal or navigation approval.
+- [ ] Download/resume with range requests, pause/resume after process death, retry/backoff, configurable data budget, per-region catalog and 34 provincial packages.
+- [ ] Cross-process locking, fsync of parent metadata directories, tested atomic update rollback through sudden power loss on physical device.
+- [ ] Test real Android UI cancellation, download retry, corrupt data and delete/reinstall under network loss and rotation; currently only core cancellation is JVM tested.

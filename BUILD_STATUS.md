@@ -48,3 +48,13 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 
 - Latest PASS-run debug APK 44,709,152 bytes, SHA-256 `7a91b814c4b6cf1a32b12eb56cf4a863b7b3e7e85bf70afb9c83e1245abd6c36`, ZIP integrity checked. Artifact `NaviTaxiMap-debug`; evidence `NaviTaxiMap-emulator-evidence`, both from CI 43371354137.
 - See `HANOI_OSM_PILOT_EVIDENCE.md` for independent source/citywide-scope limitations.
+
+## Latest Phase 4 catalog + real HTTPS transfer (2026-11-13)
+- Tested code SHA: `43a70acc220235fd1f6f13fdf5332eb37f286c59`.
+- [GitHub Actions 43374393332](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43374393332) **ALL JOBS PASS**: Android `:app:testDebugUnitTest`, `:app:assembleDebug`, PMTiles generator tests, Vietnam policy tests, emulator online + airplane-mode offline tests.
+- JVM: 23 tests (12 new `CatalogPackStoreTest`, plus existing import/verifier tests). Covers pinned URL allowlist/version, checksum, rollback of failed update, zero stale files, cancellation, storage pressure, deletion and tamper rejection.
+- Actual Android HTTPS GET: 53,956-byte Hanoi pilot pack fetched from immutable GitHub commit and validated SHA-256 `ff932662ba476e570debd19d8323e2c9fed11dfa98322dfd39a4023ed3e0cf9d` before activation. App-private `catalog-packs/hanoi-roads-visual.properties` confirms `origin=PINNED_HTTPS`, `version=1`, `navigationApproved=false`, `sourceApproval=UNREVIEWED_VISUAL_PREVIEW` and ODbL 1.0.
+- After airplane mode, road-only OSM PMTiles rendered successfully; image checker detected 58,015 local-road pixels. SAF file picker/import, interruption cleanup and catalog UI/provenance checks all PASS.
+- Debug APK 44,725,536 bytes (ZIP integrity PASS), SHA-256 `5428dcc5ae920b7f3a183de27883f626703a116757136efba9b5c6b5782911e0`. Downloaded from run's `NaviTaxiMap-debug` artifact, NOT a signed/production APK.
+- Emulator evidence: `NaviTaxiMap-emulator-evidence` artifact of 43374393332, including downloaded on-device bytes and properties, catalog-dialog screenshot/XML, offline OSM screenshot, SAF picker and corruption/recovery output.
+- NOT tested: full regional catalogs, download pause/resume over actual poor connectivity, physically installed Xiaomi, production provenance approval, route graph, ODbL public distribution audit.

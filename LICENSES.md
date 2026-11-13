@@ -14,3 +14,7 @@ These checks do not clear third-party data licensing for a production APK. Keep 
 - One small rectangular OpenStreetMap API v0.6 bbox snapshot, attribution `© OpenStreetMap contributors`, **Open Database License 1.0**. See https://www.openstreetmap.org/copyright and https://osmfoundation.org/wiki/Licence/Attribution_Guidelines.
 - Raw data source SHA-256 `db180ccb4a19e287888af400513dff2104d4c692b32d060a8416f1b6c08c7697`; normalized frozen roads stored as `tools/osm_hanoi_pilot/snapshot/roads.json.gz` and derived PMTiles as `app/src/main/assets/hanoi_real_roads.pmtiles`.
 - Source attribution is displayed in real-road preview UI. **No endorsement of dataset fitness for navigation, legal borders or production distribution**. ODbL share-alike/Produced Work, style credit and release compliance remain open.
+
+## Downloadable visual pilot (not a production release)
+- The development APK pins a single exact SHA-256 from OSM-derived 53,956-byte PMTiles, downloadable from a fixed commit on the project's public GitHub repository only on user request. Attribution **© OpenStreetMap contributors (ODbL 1.0)** is preserved in UI and the private index.
+- App-private catalog metadata flags `sourceApproval=UNREVIEWED_VISUAL_PREVIEW` and `navigationApproved=false`. Passing checksum/CI cannot replace ODbL publication assessment, proper data credits, any share-alike requirements, geographic fitness review or independent legal overlay verification.
