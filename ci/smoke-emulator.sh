@@ -114,3 +114,19 @@ PY
 adb exec-out run-as vn.navitaximap cat "files/offline-packs/$PACK_ID.pmtiles" > smoke-evidence/recovered-pack.pmtiles
 cmp smoke-evidence/imported-pack.pmtiles smoke-evidence/recovered-pack.pmtiles
 echo "Crash recovery PASS: committed PMTiles content is byte-identical after app restart."
+
+
+# Real Android system picker flow. Push just one local fixture, never download OSM
+# or public map tiles in CI. Keep the emulator in airplane mode.
+python3 - <<'PY'
+import base64
+from pathlib import Path
+data = base64.b64decode(Path("app/src/main/assets/offline_demo.pmtiles.b64").read_text().strip())
+Path("smoke-evidence/navitaxi-saf-test.pmtiles").write_bytes(data)
+PY
+adb push smoke-evidence/navitaxi-saf-test.pmtiles /sdcard/Download/navitaxi-saf-test.pmtiles
+adb shell am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d file:///sdcard/Download/navitaxi-saf-test.pmtiles > smoke-evidence/saf-scanner.txt || true
+adb shell am force-stop vn.navitaximap
+adb shell am start -W -n vn.navitaximap/.MainActivity | tee smoke-evidence/saf-launch.txt
+sleep 6
+python3 ci/saf-picker-smoke.py smoke-evidence | tee smoke-evidence/saf-result.txt
