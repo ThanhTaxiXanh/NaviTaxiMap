@@ -117,3 +117,9 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 ## 2026-11-13 15:40 CI exact outcomes
 - 43393047973 overall **FAIL**, 34/34 original provincial archives checked, 28 PASS screenshot+SAF+SHA, six 0-road-pixel images: codes 31/46/48/56/91/96. All are NOT navigation approved.
 - 43395054211 34-province regression **PENDING** after adding grounded preview cameras ad7a8dde; related runs 43395054123 (Android debug), 43395054234 (Bắc Ninh), 43395054268 (Hà Nội + HCM) PENDING. No claim of all-green while still executing.
+
+
+## 2026-11-13 20:55 new CI checkpoint
+- 43395054211 34-province workflow CANCELLED due shard0 launcher hang; shards 1,2,3 25/25 SUCCESS, 4 coastal/large-area previous 0-pixel regions now PASS. Combined older shard0 valid proofs gives 32/34 distinct province images. 31 Hai Phong and 48 Da Nang still open.
+- 43396020034 Android debug + emulator SUCCESS. 43396019905 HN+HCM FAIL because Pixel Launcher ANR after correct Android Downloads SHA for Hanoi.
+- 43438393919 targeted Hai Phong/Da Nang CI PENDING, 43438780443 nationwide 556MB real archive CI PENDING. New national workflow validates QA shell/Python syntax and Kotlin unit tests, consumes original source artifact, streaming Android readback, pixel and attribution, retaining only evidence instead of 556MB copies.

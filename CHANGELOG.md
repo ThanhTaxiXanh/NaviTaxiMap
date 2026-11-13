@@ -69,3 +69,9 @@
 ## 2026-11-13 improved real provincial visual previews
 - Four-shard 34 original archive QA 43393047973 checked all 34 provinces; 28 PASS screenshot, six blank at geographic archive midpoint. Distinct SHA data verified independently, source unchanged.
 - Visual-only product fix ad7a8dde sets known populated viewing anchors for Hai Phong, Hue, Da Nang, Khanh Hoa (Nha Trang), An Giang (Rach Gia), Ca Mau, based on city coordinates from UNGEGN/GeoNames/UNT; no changes to jurisdiction/navigation. Strict offline real-geometry QA rerun launched.
+
+
+## 2026-11-13 targeted 34-province closure and national OSM QA
+- First real 34-province QA with corrected urban cameras yielded 25 new successes in three completed shards, four formerly empty areas fixed; one shard cancelled from emulator Launcher ANR. 32/34 distinct provincial screenshot proofs remain valid across workflow attempts.
+- Code af381426 creates 31/48 targeted bounded emulator test to avoid long stalled shards.
+- Code a9cd6ce introduces streaming 556MB PMTiles host-side adb readback hash verification for nationwide QA, longer SAF modal wait, debug-only urban detail screenshot without modifying normal national overview. Targeted and nationwide result pending; no release or legal approval.

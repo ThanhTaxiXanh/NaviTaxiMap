@@ -90,3 +90,10 @@
 - [x] Add grounded urban preview cameras for six failing regions, preserving SHA-pinned sources and strict pixel threshold; commit ad7a8dde.
 - [ ] Verify 43395054211 on four shards after camera fix. Require all provinces each >=500 pixels and end-of-shard pass=selected before asserting 34/34.
 - [ ] Distinct nationwide 556,229,998-byte OSM PMTiles: streaming full-file storage and pixel test on emulator, no huge Python in-memory buffering; test Xiaomi later.
+
+
+## 2026-11-13 20:55 active verification next
+- [x] Verify 43395054211 cancelled, not success; count 25 PASS in three shards plus 7 historical shard0 PASS = 32/34 unique provinces with Android pixel proofs.
+- [ ] Check 43438393919 for both real 31 Hai Phong and 48 Da Nang; require 2/2 SOURCE SHA+SAF+offline pixels and no launcher hang before claiming 34/34 unique provinces.
+- [ ] Check 43438780443 for national 556,229,998 byte archive; require genuine streaming Android readback SHA and offline screenshot, not merely download/build. Debug-only camera at Hà Nội proves one urban spot within national archive, not all 63 regions nor legal boundaries.
+- [ ] Check 43438780381 normal Android regression and other workflows after national code edit. No release, main, PR/merge or ODbL distribution approval.

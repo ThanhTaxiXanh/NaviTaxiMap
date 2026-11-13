@@ -48,3 +48,9 @@ Despite three independently proven full region PMTiles renders (CI 43387711796 a
 ## 2026-11-13 nationwide 34-province coverage attempt
 - Full original 34-province emulator 43393047973: 28/34 per-province SHA+SAF+airplane-mode >=500 road-pixel screenshot PASS. Six archive-header-centered viewpoints yielded 0 pixels, causing strict CI FAIL, even though files were selected and imported. Do not interpret a center mismatch as incomplete underlying OSM file without additional evidence.
 - `MainActivity.kt` visual-only camera fix ad7a8dde chooses referenced urban centers for six regions, maintaining original zoom 12.3, PMTiles SHA and navigation-disabled ODbL status. Repeat CI 43395054211 pending; no success claim yet.
+
+
+## 2026-11-13 20:55 concrete Android coverage status
+- Provincials: across 43393047973 and 43395054211, 32/34 individually proven offline Android; three completed new shards (25/25 PASS) verified previous blank visual fixes Huế, Khánh Hòa, An Giang and Cà Mau. One remaining shard cancelled on Android launcher ANR. Codes 31 and 48 yet to get successful urban screenshots. Do not claim all 34 despite successful SHA manifest.
+- Targeted CI 43438393919 launched to retry 31 Hai Phong and 48 Da Nang with hard per-archive deadline and one ANR-only retry.
+- First nationwide 556MB real PMTiles emulator test code a9cd6ce: SAF import and exact SHA/byte streamed in Python to avoid entire 556MB RAM duplication, then debug-only detailed Hanoi screenshot on national archive without changing normal map overview. CI 43438780443 pending, cannot claim 35/35. No automatic download/distribution.

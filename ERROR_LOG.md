@@ -85,3 +85,9 @@
 ## 2026-11-13 six sparse/coastal default-view screenshots under investigation
 - True all-34 run 43393047973 found **zero displayed road pixels** for 31 Hải Phòng, 46 Huế, 48 Đà Nẵng, 56 Khánh Hòa, 91 An Giang, 96 Cà Mau on 12.3 zoom at PMTiles archive-header geographic center. The other 28 provinces all passed source SHA, SAF and offline screenshots; 34-shard workflow overall FAILED as intended.
 - Cause not yet conclusively proven; geographic region bounding box midpoint can be over water or remote terrain. Candidate fix ad7a8dde uses verified urban points, not synthetic map data, for only these six; test rerun 43395054211 pending. Do not change >500 pixel threshold or treat a camera change as proof before screenshots.
+
+
+## 2026-11-13 20:55 unresolved emulator UI availability
+- 43395054211 34-province full CI CANCELLED: 3 independently successful shard jobs proved 25 real regional archives, but shard0 ANR after first opening and remained blocked until run cancelled. Individual archive SHA and absence of pixels cannot be inferred from incomplete shard0; preserve 32/34 unique province proof count from earlier CI.
+- 43396019905 HN/HCM workflow FAIL at launcher modal `Pixel Launcher isn't responding`; live on-device downloaded Hanoi file SHA `ad6f2a...` validated, so failure was before true SAF import (not a shown corrupt PMTiles source). Targeted workflow 43438393919 uses bounded `timeout` with one launcher-only retry, other failures remain hard FAIL.
+- National pack memory risk: earlier Python smoke buffered whole original archive; a9cd6ce changes new national QA to `Popen` streamed 1MB readback hash, requires 556,229,998 exact bytes, and prevents retaining raw 556MB archive in evidence. National emulator output pending, not proof yet.

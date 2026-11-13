@@ -97,3 +97,9 @@
 ## 2026-11-13 15:40 28/34 real provincial visual PASS; retest 6 initial viewpoints
 - Completed 34-province QA 43393047973: 28 province-level SHA+SAF+offline screenshot PASS; 6 failed pixel=0 due to unverified initial view. This yields 28/35 total large archives visually proven (national still untested).
 - ad7a8dde changed visual initial camera for those six using sourced urban points, not PMTiles or checksum content; 43395054211 launched to verify strict 34/34 again. Keep legal approval false and route disabled.
+
+
+## 2026-11-13 20:55 continued execution
+- **32/34 unique provincial Shortbread archives Android screenshot-proven** over runs 43393047973 + 43395054211, while latter overall CANCELLED (shard 0 launcher freeze). Codes 31/48 still require proof; exact SHA/source-file ledger 34/34 already known.
+- Normal Android debug + emulator CI 43396020034 SUCCESS. HN/HCM standalone 43396019905 FAIL on Android Launcher ANR, not SHA mismatch.
+- Narrow 31/48 real CI 43438393919 started by af381426; nationwide real 556,229,998 byte stream SHA/SAF/offline CI 43438780443 started by a9cd6ce, results PENDING.
