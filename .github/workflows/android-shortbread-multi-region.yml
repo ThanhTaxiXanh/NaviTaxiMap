@@ -7,6 +7,7 @@ on:
       - 'app/src/main/java/vn/navitaximap/data/Vietnam35Catalog.kt'
       - 'app/src/main/java/vn/navitaximap/data/LocalPackStore.kt'
       - 'ci/shortbread-multi-region.sh'
+      - 'ci/push-emulator-download.sh'
       - '.github/workflows/android-shortbread-multi-region.yml'
   workflow_dispatch:
 

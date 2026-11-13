@@ -9,7 +9,7 @@ test -s "$PACK"
 echo "$SHA  $PACK" | sha256sum -c -
 SIZE="$(stat -c %s "$PACK")"
 adb install -r "$APK" | tee shortbread-evidence/install.txt
-adb push "$PACK" /sdcard/Download/24-bac-ninh.pmtiles
+bash ci/push-emulator-download.sh "$PACK" "24-bac-ninh.pmtiles"
 adb shell am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d file:///sdcard/Download/24-bac-ninh.pmtiles > shortbread-evidence/media-scan.txt || true
 adb shell am start -W -n vn.navitaximap/.MainActivity
 sleep 7

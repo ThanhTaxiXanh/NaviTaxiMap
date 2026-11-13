@@ -7,6 +7,7 @@ on:
       - 'app/src/main/java/vn/navitaximap/data/Vietnam35Catalog.kt'
       - 'app/src/main/assets/shortbread_offline_style.json'
       - 'ci/shortbread-emulator.sh'
+      - 'ci/push-emulator-download.sh'
       - 'ci/check-shortbread-screenshot.py'
       - 'ci/saf-picker-smoke.py'
       - '.github/workflows/android-shortbread-35-smoke.yml'

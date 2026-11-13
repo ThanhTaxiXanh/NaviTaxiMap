@@ -16,7 +16,7 @@ for record in "01 01-ha-noi.pmtiles $HANOI" "79 79-ho-chi-minh.pmtiles $HCM"; do
     esac
     test "$(stat -c %s "$FILE")" = "$SIZE"
     echo "$SHA  $FILE" | sha256sum -c -
-    adb push "$FILE" "/sdcard/Download/$NAME"
+    bash ci/push-emulator-download.sh "$FILE" "$NAME" | tee "$OUT/push.txt"
     adb shell am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d "file:///sdcard/Download/$NAME" > "$OUT/media-scan.txt" || true
     adb shell am force-stop vn.navitaximap || true
     adb shell am start -W -n vn.navitaximap/.MainActivity | tee "$OUT/import-launch.txt"
