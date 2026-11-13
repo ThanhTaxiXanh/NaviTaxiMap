@@ -2,7 +2,7 @@
 - [x] Render deterministic synthetic PMTiles vector tile in airplane mode on Android emulator.
 - [x] Add local streamed PMTiles import, SHA-256, PMTiles header checks and JUnit tests.
 - [x] Add SAF import and list/verify/delete user interface code.
-- [ ] Confirm byte-level importer emulator smoke after replacing logcat-only signal (CI 43362607683).
+- [x] Confirm byte-level importer emulator smoke after replacing logcat-only signal (CI 43362607683 PASS).
 - [ ] Automate real system picker interaction, file deletion, tampered file recovery and process interruption tests.
 - [ ] Add signed/approved pack manifests, attribution and independent provenance approval.
 - [ ] Add crash recovery and orphan staging cleanup, free-space checks, consistent metadata transaction.

@@ -8,5 +8,5 @@
 - Added DEBUG-only fixture import for emulator, runs while airplane mode enabled.
 - GitHub build / testDebugUnitTest PASS for Phase 4 source.
 - CI 43361851396: metadata and archive exist on emulator but smoke falsely failed due to empty tag-filtered logcat output; revised smoke to read and hash actual app-private archive.
-- Latest byte-level smoke CI 43362607683: pending result.
+- Latest byte-level smoke CI 43362607683: PASS. 1268-byte PMTiles archive re-read with Android run-as, SHA-256 matched and index sourceApproval=UNVERIFIED. Emulator and Android/Python test jobs PASS.
 - All changes on develop branch, no main merge.

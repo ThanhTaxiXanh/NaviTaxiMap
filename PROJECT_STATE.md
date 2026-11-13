@@ -9,7 +9,7 @@ main: protected; do not push, merge, create PR or release until owner explicitly
 - Phase 1: IN PROGRESS; Kotlin Android shell and UI, build/emulator smoke proven.
 - Phase 2: IN PROGRESS; MapLibre + OpenFreeMap online roads rendered in emulator. Still not a production basemap.
 - Phase 3: IN PROGRESS; native PMTiles v3 offline reader/render **proof verified only for synthetic MVT data** (CI 43359838414).
-- Phase 4: IN PROGRESS; LocalPackStore, PmtilesHeader and Android SAF import UI written, unit tested, APK assembled. The emulator test observed actual archive + metadata files; new byte-level regression test is pending full result.
+- Phase 4: IN PROGRESS; LocalPackStore, PmtilesHeader and Android SAF import UI written, unit tested, APK assembled. The emulator test observed actual archive + metadata files; byte-level archive/index regression was verified in CI 43362607683 (PASS). System file-picker interaction and real map packs remain pending.
 - Phase 5-18: NOT STARTED, apart from preparatory data-policy validators and simple location code.
 
 ## Current code / workflow

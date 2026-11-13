@@ -17,7 +17,7 @@
 - JUnit `LocalPackStoreTest`: positive import, checksum mismatch, corruption, storage limit and ID validation.
 - Existing `OfflinePackVerifierTest` plus Python fixture/data-policy suites.
 - GitHub CI `43361851396` showed Android created a `.pmtiles` and a `.properties` file in app-private storage, while a logcat-only assertion produced a false negative.
-- A subsequent CI script reads the actual imported bytes via `run-as`, checks their SHA-256 and verifies the index remains `UNVERIFIED`. Await the latest emulator result before marking this complete.
+- A subsequent CI script reads the actual imported bytes via `run-as`, checks their SHA-256 and verifies the index remains `UNVERIFIED`. Run 43362607683 PASS: CI read the imported PMTiles bytes via Android run-as, verified SHA-256 and confirmed sourceApproval=UNVERIFIED in the index. This verifies the debug import path on emulator, not the interactive Android file picker.
 - Previous PMTiles renderer proof (synthetic z0/z1 fixture) was VERIFIED in airplane mode: run `43359838414`.
 
 ## Open requirements

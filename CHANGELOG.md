@@ -5,7 +5,7 @@
 - Added PMTiles v3 structural checks and MVT-only type gating in `PmtilesHeader`.
 - Added Android system file picker, imported-pack listing, checksum re-check and confirmed deletion.
 - Added JUnit regression tests and emulator fixture import check.
-- Replaced fragile logcat-only CI signal with direct verification of imported archive bytes and metadata.
+- Replaced fragile logcat-only CI signal with direct verification of imported archive bytes and metadata, confirmed in CI 43362607683 (all jobs PASS).
 - Phase 4 not complete until real packages, Android picker and lifecycle/recovery are tested.
 
 ## Earlier

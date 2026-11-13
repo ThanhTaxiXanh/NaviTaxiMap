@@ -36,3 +36,6 @@ CI config: [`.github/workflows/android-debug.yml`](.github/workflows/android-deb
 Verified geographic offline data packs for 34 provinces/cities, download/pause/resume, search/POI, routing/navigation/TTS, live traffic, Road Intelligence, 3D, legal/historical archive, comprehensive UI and real-device Xiaomi testing.
 
 Nine images provided by the project owner are design references, not screenshots of implemented features. Do not infer real road-network completeness or approved borders from a synthetic test image.
+
+## Phase 4 verified smoke
+Run 43362607683 confirms that Android can import a synthetic PMTiles archive into app-private storage with airplane mode enabled, re-read its bytes and check SHA-256 without changing its unverified source status. Full interactive system picker and real provincial data remain untested.

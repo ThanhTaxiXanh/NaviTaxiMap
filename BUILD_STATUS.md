@@ -10,8 +10,8 @@
 
 ## Latest pipeline
 - Code commit: `62a7cc55bee4b3a44f905fb4360be9dbb5f9d48e`
-- Run [43362607683](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43362607683): latest byte-level emulator result pending at time of documentation update.
-- Debug APK (earlier same Kotlin code): created, zip integrity verified. Not a production release.
+- Run [43362607683](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43362607683): ALL JOBS PASS: Gradle debug + JUnit, Python PMTiles 3/3, geographic policy 4/4, Android emulator online launch, offline rendering in airplane mode, and importer readback SHA-256 match. Evidence: 1268 bytes, SHA-256 860e0383397b64eac881932bacf625bbb740db23abba4e008ac846967e7c1407, index sourceApproval=UNVERIFIED.
+- Latest APK extracted from run 43362607683, ZIP/APK integrity checked. APK SHA-256 d2cca8abe753af410d44b9fe99ffa342f524edc714fdda9d66c6f2c47737dee4. NOT a production release.
 
 ## Blocked
 Physical Xiaomi debugging and live GPS; actual Android system-picker interaction; real Vietnam regional tiles, download lifecycle and licensed styles; production signing and navigation QA.
