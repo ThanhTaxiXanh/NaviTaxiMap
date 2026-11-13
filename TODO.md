@@ -109,3 +109,9 @@
 - [x] Establish true 556,229,998-byte national source SHA and byte-identical Android Downloads transfer from 43438780443.
 - [ ] Verify actual full national file SAF import, streaming readback SHA (without 556MB Python in-memory copy), style loaded and offline road screenshot via run 43439851626; do NOT mark 35/35 until then.
 - [ ] Investigate continued CI Android launcher ANR if one recovery also fails; preserve source SHA, UI screenshots and hard fail checks. 34/34 distinct provincial visual proofs are already completed independently.
+
+
+## 2026-11-13 follow-up after all-green provincial run
+- [x] Verify single-workflow 34/34 success 43438780272 (9+9+8+8, screenshots and pinned SHA). Keep legal/navigation approval FALSE.
+- [ ] Analyze 43441211821 logs, especially `SAF_SELECTED_STREAM` actual name, catalog pinned region and `isPmtilesV3`, to diagnose national 556MB `Not a PMTiles v3 archive` despite correct original and Android Download SHA.
+- [ ] Repeat national emulator until **imported** 556,229,998 exact bytes, streamed SHA, offline road screenshot PASS; without this NO 35/35. Do not bypass DocumentsUI or skip SHA/pixel acceptance.

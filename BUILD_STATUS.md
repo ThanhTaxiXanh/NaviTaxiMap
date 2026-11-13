@@ -134,3 +134,10 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 ## Current 2026-11-13 national CI runs
 - 43438780443 **FAIL** due Android Pixel Launcher ANR before selecting nationwide SAF. It DID pass checksum of 556,229,998-byte source and Android shared-storage copy. No stream readback / rendered map proof yet.
 - 43439851626 **RUNNING** after adding one ANR-only restart in aa2f975. 43438780281 HN+HCM SUCCESS; 43438780338 Bắc Ninh special run FAILED on launcher ANR; normal Android 43438780381 build SUCCESS (emulator status pending at checkpoint).
+
+
+## 2026-11-13 final CI evidence by scope
+- 43438780272 all 34 genuine provincial Android offline pack QA **SUCCESS** (5 jobs: compile and four shards 9/9, 9/9, 8/8, 8/8, no failures).
+- 43438780281 Hà Nội/TP.HCM standalone **SUCCESS**; 43438780381 standard Android **SUCCESS**.
+- 43438780443 national 556MB **FAIL before SAF** on Launcher ANR, 43439851626 national **FAIL during SAF** with `Not a PMTiles v3 archive` after correct Android Download full SHA. Cannot call national ready.
+- 43441211821 national QA with debug selected-stream magic diagnostics is **PENDING**. Do not report it green without `SAF_STREAM_SHA256_OK` + road pixels.

@@ -113,3 +113,9 @@
 ## 2026-11-13 new QA state
 - National 556MB: 43438780443 copied exact SHA byte-identical original to emulator /sdcard/Download but failed before DocumentsUI due Pixel Launcher ANR; rerun aa2f975/43439851626 has one bounded launcher retry; national visual proof pending, 34/35 distinct larger archives proven.
 - HN/HCM 43438780281 SUCCESS on latest byte-pin code (157,112 / 183,085 roads pixels), including actual Android shared-storage SHA and SAF.
+
+
+## 2026-11-13 full provincial CI milestone and 556MB diagnosis
+- **34/34 province PMTiles offline proof SUCCESS in single workflow** 43438780272, four shard totals 9/9+9/9+8/8+8/8. All named SHA pinned user-selected SAF imports; renderer offline checked via screenshots.
+- Nationwide original 556MB correct header/SHA in build verifier and correct full SHA on Android Downloads, but Android SAF UI import run 43439851626 failed as `Not a PMTiles v3 archive`, so 35th visual proof remains open.
+- Added 02b91f7 debug-only actual SAF stream magic/filename log, national CI 43441211821 underway, cannot claim result before end.

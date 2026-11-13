@@ -64,3 +64,8 @@ Despite three independently proven full region PMTiles renders (CI 43387711796 a
 ## Real national archive currently has only shared-storage SHA evidence
 - Source original nationwide PMTiles 556,229,998 bytes, SHA 678704befd7b4b42726199994671ddccb1c2c029daab40f53098709cd5b12d55 was byte-identical on emulator shared Downloads in 43438780443, but that run FAILED when Pixel Launcher ANR blocked Android SAF picker. Therefore 34/35 verified visual archives, NOT 35/35.
 - Latest a9cd6ce adds streaming 1MiB readback hash in Python, no extra raw evidence; aa2f975 adds one launcher-ANR-only reattempt. Final stream SHA+airplane mode test run 43439851626 still pending. Normal user national overview unchanged; test uses debug-only Hanoi detail camera.
+
+
+## 2026-11-13 all original 34 provinces passed one CI run, nationwide still gated
+- Run 43438780272 SUCCESS, original 34 region exact SHA/size, real DocumentsUI, byte readback, airplane-mode MapLibre and road pixels, 9/9+9/9+8/8+8/8. Normal Android 43438780381 and HN/HCM 43438780281 separately SUCCESS.
+- National 556,229,998-byte file full SHA verified on source and Android shared storage, but first SAF run blocked by Pixel Launcher, second failed `Not a PMTiles v3 archive` after entering DocumentsUI. Debug-only ContentResolver head/name probe 02b91f7 and national CI 43441211821 to distinguish selected URI stream from source; not yet run end-to-end.

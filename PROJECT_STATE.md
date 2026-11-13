@@ -114,3 +114,9 @@ Real OSM pilot source snapshot: workflow https://github.com/ThanhTaxiXanh/NaviTa
 - After 34/34 distinct provincial Android visual proofs, true nationwide archive `00-viet-nam-all.pmtiles`, 556,229,998 bytes, SHA `678704befd7b4b42726199994671ddccb1c2c029daab40f53098709cd5b12d55` was verified original and on Android Downloads by 43438780443. This job FAILED on Pixel Launcher ANR before SAF was invoked, not a rendering/PMTiles checksum failure.
 - Fix aa2f975 adds exactly one recovery/retry on launcher ANR, maintains mandatory streaming full-file readback SHA, correct-size assertion and actual airplane-mode road screenshot. New national QA 43439851626 IN PROGRESS. 35/35 NOT proven until real evidence.
 - Fresh HN and HCM visual QA 43438780281 SUCCESS; 34/34 province proofs intact. No approved source hosting, map legal borders or navigation approval.
+
+
+## 2026-11-13 confirmed single-run 34-province Android CI success, national unresolved
+- Run 43438780272 **SUCCESS (5/5 jobs)**: all 34 original provincial OSM Shortbread PMTiles in Android SAF+SHA+airplane-mode screenshot, shards 9+9+8+8=34 passing with zero failures. Standalone HN/HCM 43438780281 SUCCESS, full standard Android 43438780381 SUCCESS.
+- 556MB national run 43439851626 failed at Android SAF import with message `Not a PMTiles v3 archive`, despite original + Android Downloads full-file SHA correct and earlier independent artifact verifier checking PMTiles v3 magic. Another run 43438780443 had failed on Launcher ANR before SAF. Root cause unproven.
+- Debug-only probe 02b91f7 adds non-sensitive `SAF_SELECTED_STREAM` magic validity and region name matching log from ContentResolver stream and captures it in failure evidence. National CI 43441211821 RUNNING. 34/35 visual files proven, not 35/35.

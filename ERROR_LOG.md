@@ -101,3 +101,9 @@
 ## 2026-11-13 recurring Pixel Launcher ANR on national import
 - National QA 43438780443 verified real nationwide PMTiles source SHA/size and matching SHA within Android Downloads, then UIAutomator saw `Pixel Launcher isn't responding` overlay, blocked `Dữ liệu bản đồ` before SAF. This is **CI environment / system UI failure before data import**, not a map file checksum failure. Do not promote 556MB into proven Android rendered catalog.
 - Fix aa2f975: bounded retry **only when** exact Launcher ANR text is found; launch activity again after force-stop launcher, retain all original hash/SAF/pixel assertions. CI 43439851626 not yet concluded. Another separate Bac Ninh workflow 43438780338 also failed on same system dialog; HN/HCM 43438780281 independently succeeded.
+
+
+## 2026-11-13 national selected SAF stream discrepancy, still OPEN
+- Independently confirmed source national PMTiles v3 header and sha256 from 43379440781. Real nationwide source 556,229,998 byte SHA 678704... also confirmed byte-identical in Android shared Downloads by 43438780443 and 43439851626.
+- 43438780443 national **FAIL** on Android Pixel Launcher ANR before SAF; 43439851626 with one allowed retry **FAIL** during SAF import with `Not a PMTiles v3 archive`. Because the selected stream is via DocumentsUI, a mismatch between file stored in Download and content provider stream/name is possible, not yet proven. DO NOT label national archive malformed or count visual approval.
+- 02b91f7 adds debug-only peek using BufferedInputStream.mark/reset, logging expected catalog code and valid PMTiles v3 magic on actual URI stream, plus failure log capture; CI 43441211821 pending. Retains full original checks and no synthetic files.
