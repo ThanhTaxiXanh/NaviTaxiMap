@@ -54,3 +54,8 @@ Despite three independently proven full region PMTiles renders (CI 43387711796 a
 - Provincials: across 43393047973 and 43395054211, 32/34 individually proven offline Android; three completed new shards (25/25 PASS) verified previous blank visual fixes Huế, Khánh Hòa, An Giang and Cà Mau. One remaining shard cancelled on Android launcher ANR. Codes 31 and 48 yet to get successful urban screenshots. Do not claim all 34 despite successful SHA manifest.
 - Targeted CI 43438393919 launched to retry 31 Hai Phong and 48 Da Nang with hard per-archive deadline and one ANR-only retry.
 - First nationwide 556MB real PMTiles emulator test code a9cd6ce: SAF import and exact SHA/byte streamed in Python to avoid entire 556MB RAM duplication, then debug-only detailed Hanoi screenshot on national archive without changing normal map overview. CI 43438780443 pending, cannot claim 35/35. No automatic download/distribution.
+
+
+## All 34 provincial real archive proof milestone
+- Original source SHA+size verified and imported with SAF, airplane mode screenshots now evidenced for **all 34 provinces**, accumulated across independent CI workflow completions. Missing two 31 Hai Phong and 48 Da Nang closed by successful run 43438393919 (102,298 and 217,958 blue road-color pixels respectively). Not a release, province boundary or routing certification.
+- Nationwide 00-viet-nam-all.pmtiles (556,229,998 bytes) still **not** proven Android until CI 43438780443 completes with streamed exact-size/hash import and real screenshot.

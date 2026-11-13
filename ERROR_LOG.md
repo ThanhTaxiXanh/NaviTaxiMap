@@ -91,3 +91,8 @@
 - 43395054211 34-province full CI CANCELLED: 3 independently successful shard jobs proved 25 real regional archives, but shard0 ANR after first opening and remained blocked until run cancelled. Individual archive SHA and absence of pixels cannot be inferred from incomplete shard0; preserve 32/34 unique province proof count from earlier CI.
 - 43396019905 HN/HCM workflow FAIL at launcher modal `Pixel Launcher isn't responding`; live on-device downloaded Hanoi file SHA `ad6f2a...` validated, so failure was before true SAF import (not a shown corrupt PMTiles source). Targeted workflow 43438393919 uses bounded `timeout` with one launcher-only retry, other failures remain hard FAIL.
 - National pack memory risk: earlier Python smoke buffered whole original archive; a9cd6ce changes new national QA to `Popen` streamed 1MB readback hash, requires 556,229,998 exact bytes, and prevents retaining raw 556MB archive in evidence. National emulator output pending, not proof yet.
+
+
+## 2026-11-13 last provincial cases resolved
+- In targeted 43438393919 first attempt Hải Phòng blocked by Android Pixel Launcher ANR; one controlled retry succeeded with SHA-verified SAF import and 102,298 actual offline road pixels. Đà Nẵng succeeded 217,958 pixels on first try. These are not new PMTiles errors.
+- 34/34 distinct provincial visual proofs now exist across CI runs, although full one-workflow 34-shard success absent. Last 556MB nationwide PMTiles still being tested separately (43438780443).

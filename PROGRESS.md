@@ -103,3 +103,8 @@
 - **32/34 unique provincial Shortbread archives Android screenshot-proven** over runs 43393047973 + 43395054211, while latter overall CANCELLED (shard 0 launcher freeze). Codes 31/48 still require proof; exact SHA/source-file ledger 34/34 already known.
 - Normal Android debug + emulator CI 43396020034 SUCCESS. HN/HCM standalone 43396019905 FAIL on Android Launcher ANR, not SHA mismatch.
 - Narrow 31/48 real CI 43438393919 started by af381426; nationwide real 556,229,998 byte stream SHA/SAF/offline CI 43438780443 started by a9cd6ce, results PENDING.
+
+
+## 2026-11-13 evidence update
+- **34/34 actual provincial PMTiles imported/visually proven offline in Android**, accumulated across previously completed successful individual province checks and targeted SUCCESS 43438393919 (31 102,298 px, 48 217,958 px). 34-province all-green in a single workflow remains blocked by emulator launcher.
+- Nationwide 556MB streaming SHA/SAF and screenshot CI 43438780443 underway; do not call 35/35 unless its end-to-end proof succeeds.

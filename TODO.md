@@ -97,3 +97,9 @@
 - [ ] Check 43438393919 for both real 31 Hai Phong and 48 Da Nang; require 2/2 SOURCE SHA+SAF+offline pixels and no launcher hang before claiming 34/34 unique provinces.
 - [ ] Check 43438780443 for national 556,229,998 byte archive; require genuine streaming Android readback SHA and offline screenshot, not merely download/build. Debug-only camera at Hà Nội proves one urban spot within national archive, not all 63 regions nor legal boundaries.
 - [ ] Check 43438780381 normal Android regression and other workflows after national code edit. No release, main, PR/merge or ODbL distribution approval.
+
+
+## 2026-11-13 confirmed milestone
+- [x] Close last two province archive screenshot gaps: 31 Hải Phòng 102,298 pixels, 48 Đà Nẵng 217,958 pixels, CI 43438393919 PASS; 34/34 provincial maps proven offline individually across runs.
+- [ ] Await and analyze nationwide 556MB CI 43438780443. Its success is still necessary for 35/35 distinct archives.
+- [ ] Normalize emulator launcher race without diluting real SHA/SAF/pixel assertions; possible independent CI regressions can fail even if a region was proven previously.

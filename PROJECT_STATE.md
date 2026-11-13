@@ -102,3 +102,9 @@ Real OSM pilot source snapshot: workflow https://github.com/ThanhTaxiXanh/NaviTa
 - 43395054211 cancellation does not negate 3 *completed successful* emulator shards: 25 provincial original Shortbread PMTiles imported through SAF and shown offline, including four previously blank provinces 46/56/91/96. Shard 0 had unrecovered launcher ANR and was cancelled; its 7 other provinces succeeded on previous 43393047973, yielding 32/34 unique proven provincial maps across runs. 31 Hai Phong and 48 Da Nang have urban camera fix but no new screenshot proof as of checkpoint.
 - 43396020034 Android full debug + emulator SUCCESS. 43396019905 HN/HCM special workflow FAIL because Pixel Launcher ANR despite Android Downloads SHA matched original.
 - Code af381426 adds bounded and independently logged remaining 31/48 Android proof, workflow 43438393919 PENDING. Code a9cd6ce adds **streaming** 556MB national archive SHA QA and debug urban road camera without changing standard nationwide overview, workflow 43438780443 PENDING. Preserve no-navigation, no distribution permission, no fabricated URLs.
+
+
+## 2026-11-13 Android real provinces: 34/34 distinct screenshots now demonstrated
+- Narrow [43438393919](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43438393919) SUCCESS, original 31 Hai Phong 7,279,113 bytes / 102,298 actual offline road-color pixels, 48 Da Nang 11,974,113 bytes / 217,958 pixels. Correct source SHA, native SAF and OSM/no-navigation UI. Hai Phong recovered from one Launcher ANR.
+- Together with 32 proven before, **all 34 distinct provincial archives** have real offline Android pixel evidence from multiple workflow runs. Entire 34-shard single run not all green because an emulator job was cancelled; do not conflate those claims.
+- Genuinely independent nationwide 556,229,998-byte PMTiles Android QA run 43438780443 remains in progress at writing. No nationwide proof, endorsed navigation, legal boundary or approved distribution.
