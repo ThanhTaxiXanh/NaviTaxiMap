@@ -161,3 +161,9 @@ Real OSM pilot source snapshot: workflow https://github.com/ThanhTaxiXanh/NaviTa
 ## 2026-11-14 ~00:24 ICT: new Range safety QA independently green
 - 43471067313 GitHub Actions **SUCCESS** Gradle/JUnit and emulator, code 076bd58f. Emulator synthetic PMTiles offline geometry and UI status pass, exact SHA SAF fixture import pass, real Hanoi OSM pilot road pixels plus attribution pass.
 - Range `inspectProgress` is read-only/unverified and HTTP Content-Length invalid lengths, symlinked staging or oversized partial are strictly rejected. 8 mocked Range JUnit cases; no actual approved network origin, download UI, shipping or routing.
+
+
+## 2026-11-14 source artifact full-stream private preservation verifier
+- New Python CLI `tools/vietnam34/verify_private_preservation.py` reads both original GitHub artifacts or downloaded/extracted local copies WITHOUT upload or extraction. Checks 35 pinned file names and codes from PACK_BYTES_VERIFIED.tsv cross-consistent with SHA256SUMS, byte sizes, full 1MiB-stream SHA256 and PMTiles v3 8-byte magic; rejects directory symlink, ZIP traversal, duplicate/extra/missing PMTiles. Optional metadata-only JSON receipt with 0600 mode. Tests `test_preservation_receipt.py` mock zip/directories/attacks.
+- Actual real 843,734,803 original PMTiles bytes verified in new workflow 43526911330 **SUCCESS**, only receipt ZIP artifact id 14085237703 (~2.9k) uploaded. NO enduring private backup made; original 34 + VN source artifacts run 43378133931 expire Nov 27 2026 around 06:25 UTC. Manual backup guidance `PRIVATE_ORIGINAL_BACKUP.md`.
+- Android CI initial 43526690969 FAILED because test glob included Shapely-dependent test_pipeline. Narrowed patterns to two independent unittest modules in 8d6f17462. New Android 43527115725 pending at checkpoint. No approved distribution, routing, or legal borders.

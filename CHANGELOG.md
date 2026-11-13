@@ -99,3 +99,9 @@
 
 ## 2026-11-14 verified local Range engine hardening
 - 076bd58f progress inspection, strict HTTP lengths and safe staging files; 8 mocked Range tests. GitHub Actions 43471067313 SUCCESS in both Android debug/Gradle/JUnit and emulator, including offline geometry, OSM attribution, SAF SHA fixture. No real network source configured or enabled.
+
+
+## 2026-11-14 private original archive verification workflow
+- Added `tools/vietnam34/verify_private_preservation.py` for read-only ZIP/extracted folder PMTiles full SHA+size/header checks, metadata-only private receipt (no server/upload/data copy) and seven attack/corruption regression tests.
+- Added on-push CI `private-shortbread-preservation.yml` to download both original GitHub source artifacts from run 43378133931 into disposable runner and upload only receipt. First workflow 43526911330 SUCCESS with 843734803 source bytes and metadata artifact ~2.9 KB.
+- Fixed Android test selection to exclude Shapely-dependent geography pipeline tests while still running all preservation mock tests, 8d6f17462. Pending Android 43527115725. Permanent original data copies require owner-approved private storage before Nov 27 expiration.

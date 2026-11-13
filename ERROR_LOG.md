@@ -138,3 +138,8 @@
 ## 2026-11-14 CI resolved after Range hardening
 - Run 43471067313 full SUCCESS. Previous potential failures (malformed HTTP length treated absent; oversized or symlink partial) now blocked, tests passed. Emulator passes synthetic offline UI status, real OSM road screenshot and app-private SHA SAF fixture. No open compiler/emulator regression from these changes.
 - Lack of legally reviewed host/distribution remains a deliberate gate, not a CI error.
+
+
+## 2026-11-14 Python test discovery error isolated, original pack data verified
+- Initial Android run 43526690969 failed: replacing specific `-p test_android_shortbread.py` with `-p test_*.py` made unittest load `tools/vietnam34/test_pipeline.py`, which imports `shapely` absent in Android runner; seven new `test_preservation_receipt` cases all PASS. Not a data loss nor a failed map hash. Fix 8d6f17462 runs explicit two unittest modules independently.
+- Real 35 original PMTiles ZIP artifact verifier CI 43526911330 SUCCESS, 843734803 bytes; only 2872 bytes receipt uploaded; do not misstate this as true backup.

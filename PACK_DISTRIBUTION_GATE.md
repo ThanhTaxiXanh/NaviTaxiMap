@@ -56,3 +56,9 @@ Chạy bằng `gradle --no-daemon :app:testDebugUnitTest :app:assembleDebug` tro
 ## CI xác nhận 14/11/2026 ~00:24 ICT
 - `43471067313` **SUCCESS**: compile/JUnit với 8 phép thử mô phỏng Range, Android emulator offline PMTiles status/geometry + SAF SHA fixture + OSM attribution PASS. Đây chỉ là nghiệm thu core và hồi quy, KHÔNG phải kiểm thử tải 35 tệp trên máy chủ HTTPS thực.
 - Nguồn `ReviewedShortbreadSources.byCode` vẫn rỗng, `Vietnam35Catalog.distributionApproved=false`; muốn bật cần xét duyệt host, quyền phân phối ODbL, manifest, tích hợp UI opt-in và thử mạng thật/thiết bị thật.
+
+
+## 2026-11-14 backup verification is not distribution approval
+- `PRIVATE_ORIGINAL_BACKUP.md` provides only an owner-run **private** offline preservation workflow. Python verifier reads actual 35 files or original ZIP artifacts, checks full SHA256/byte size/header and writes JSON receipt containing NO PMTiles data. CI 43526911330 successful; original source GitHub Actions artifact still expires Nov 27.
+- **No private durable backup has yet been made by this CI.** The successful metadata-only receipt (artifact 14085237703, 2872 bytes) cannot recreate the original 843734803 bytes.
+- `Vietnam35Catalog.distributionApproved=false` and empty reviewed host registry unchanged. Public cloud upload, product downloading, legal borders/routing approval remain forbidden until explicit approval.

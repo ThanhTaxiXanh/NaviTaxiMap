@@ -170,3 +170,12 @@
 - [ ] Get explicit ODbL redistribution/hosting approval and stable reviewed immutable HTTPS origin(s) before any live downloader or enabling `distributionApproved`. Reviewed map remains empty.
 - [ ] After source approval, add user-consented UI and full real HTTPS Range interruption/resume tests plus Xiaomi physical QA; preserve zero-cost constraint.
 - [ ] Preserve original 35 generated PMTiles before short-lived Actions artifacts expire 27/11/2026, via a storage destination approved by the project owner; do not silently publish them.
+
+
+## 2026-11-14 urgent original PMTiles retention gate
+- [x] Build local file/ZIP streaming verifier against 35 pinned hashes + bytes + PMTiles v3, reject missing/extra/duplicate/symlink/ZIP traversal; add seven mock Python tests and receipt-only mode.
+- [x] Run actual private original 35-pack verification on GitHub ephemeral CI: 43526911330 success, 843734803 bytes, only 2872-byte metadata receipt artifact 14085237703.
+- [x] Document manual private original ZIP backup and validation in `PRIVATE_ORIGINAL_BACKUP.md`; NO private durable backup has been created.
+- [ ] **Before 2026-11-27 06:25 UTC**, save BOTH original artifacts (14015875271, 14015113186) to an owner-approved PRIVATE durable destination, verify the copies with script. Do NOT upload to Releases/CDN/repo/third-party public service; ask owner for private storage approval if needed.
+- [ ] Confirm Android CI 43527115725 after isolating from optional Shapely pipeline tests.
+- [ ] Long-term ODbL rights/attribution, durable reviewed HTTPS hosting and manifest, network opt-in UI, Xiaomi physical QA and navigation-ready routing remain unapproved.

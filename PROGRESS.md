@@ -156,3 +156,9 @@
 
 ## 2026-11-14 ~00:24 ICT acceptance completed
 - CI 43471067313 **SUCCESS** compile + unit tests + Android emulator. Range staging 8 mocked JUnit tests + strict offline/SAF/real OSM regression passed. Code 076bd58f fully exercised in CI insofar as its local mocked behavior; real HTTPS transfer remains untested and prohibited until approval.
+
+
+## 2026-11-14 06:29 ICT original source preservation readiness
+- Real source artifact recheck 43526911330 **SUCCESS** 35 archives, 843,734,803 bytes streamed with SHA & PMTiles v3 headers, evidence artifact 14085237703 only metadata (<3k ZIP), no data republished.
+- Added manual local ZIP/folder verification tool and seven Python tests, independent of Shapely. Android CI first run 43526690969 failed due accidental Shapely-dependent test discovery, corrected by 8d6f17462. New 43527115725 still in progress.
+- No durable backup of original PMTiles and no source hosting approval. Original source artifacts expire Nov 27 2026 UTC; user must approve private storage destination to retain bytes.

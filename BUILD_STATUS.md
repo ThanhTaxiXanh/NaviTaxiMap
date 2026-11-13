@@ -179,3 +179,8 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 
 ## 2026-11-14 ~00:24 ICT final workflow result
 - **43471067313 SUCCESS both jobs** on 076bd58f: Android debug/8 Range JUnit test methods plus emulator. Emulator `SYNTHETIC_OFFLINE_PIXELS_READY`, `OFFLINE_DEMO_STATUS_READY`, SAF picker exact SHA 1268 byte fixture, `REAL_OSM_PIXELS_READY` + OpenStreetMap attribution. Release not started.
+
+
+## 2026-11-14 06:29 ICT full original archive recheck
+- Private preservation QA [43526911330](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43526911330) **SUCCESS** on all 35 original files; 843734803 bytes SHA/PMTiles magic verified, receipt-only 2872-byte artifact 14085237703.
+- Android 43526690969 **FAIL** due CI unittest glob unexpectedly loading tools/vietnam34/test_pipeline.py which requires optional Shapely; seven preservation tests passed. Android CI narrowed patterns in commit 8d6f17462; rerun 43527115725 **PENDING**. Pre-existing Android 43471067313 fully SUCCESS.
