@@ -138,7 +138,7 @@ def find_pilot_file():
     raise RuntimeError("PMTiles document was not visible in Downloads")
 
 def verify_ui():
-    until = time.monotonic() + 30
+    until = time.monotonic() + int(os.environ.get("NAVITAXI_SAF_UI_TIMEOUT", "30"))
     while time.monotonic() < until:
         root = snapshot("result")
         text = " ".join((n.get("text", "") or "") for n in nodes(root))
@@ -158,13 +158,38 @@ def verify_persisted(before):
     if len(new) != 1:
         raise RuntimeError(f"Expected exactly one new SAF archive; before={before}, after={after}")
     ident = next(iter(new)).removesuffix(".pmtiles")
-    archive = adb("exec-out", "run-as", "vn.navitaximap",
-                  "cat", f"files/offline-packs/{ident}.pmtiles", binary=True)
+    path = f"files/offline-packs/{ident}.pmtiles"
+    # National 556MB QA cannot buffer the entire adb readback into Python RAM.
+    # Preserve legacy byte-for-byte evidence for small fixture runs by default.
+    stream = os.environ.get("NAVITAXI_SAF_VERIFY_STREAM", "0") == "1"
+    archive = None
+    if stream:
+        command = ["adb", "exec-out", "run-as", "vn.navitaximap", "cat", path]
+        digest = hashlib.sha256()
+        byte_count = 0
+        with subprocess.Popen(command, stdout=subprocess.PIPE,
+                              stderr=subprocess.PIPE) as proc:
+            while True:
+                chunk = proc.stdout.read(1024 * 1024)
+                if not chunk:
+                    break
+                digest.update(chunk)
+                byte_count += len(chunk)
+                if byte_count > EXPECTED_BYTES:
+                    raise AssertionError("Streamed SAF file exceeded pinned size")
+            error_text = proc.stderr.read().decode(errors="replace")
+            if proc.wait() != 0:
+                raise RuntimeError(f"Streamed adb run-as readback failed: {error_text}")
+        actual_hash = digest.hexdigest()
+        print(f"SAF_STREAM_SHA256_OK bytes={byte_count} sha256={actual_hash}")
+    else:
+        archive = adb("exec-out", "run-as", "vn.navitaximap", "cat", path, binary=True)
+        byte_count = len(archive)
+        actual_hash = hashlib.sha256(archive).hexdigest()
     index = adb("exec-out", "run-as", "vn.navitaximap",
                 "cat", f"files/offline-packs/{ident}.properties", binary=True)
-    actual_hash = hashlib.sha256(archive).hexdigest()
-    if len(archive) != EXPECTED_BYTES:
-        raise AssertionError(f"SAF byte count mismatch: {len(archive)}")
+    if byte_count != EXPECTED_BYTES:
+        raise AssertionError(f"SAF byte count mismatch: {byte_count}")
     if actual_hash != EXPECTED_HASH:
         raise AssertionError(f"SAF-imported bytes mismatch: {actual_hash}")
     properties = index.decode("ISO-8859-1")
@@ -175,9 +200,11 @@ def verify_persisted(before):
     # Keep legacy evidence-bytes default. Bulk 34-province CI retains hashes,
     # metadata and screenshots instead of republishing hundreds of MB of PMTiles.
     if os.environ.get("NAVITAXI_SAF_PRESERVE_ARCHIVE", "1") == "1":
+        if archive is None:
+            raise RuntimeError("Do not preserve giant raw archives during streaming SHA QA")
         (OUT / "saf-imported-pack.pmtiles").write_bytes(archive)
     (OUT / "saf-imported-pack.properties").write_bytes(index)
-    print(f"SAF picker PASS: selected {EXPECTED_NAME} in system UI, stored {len(archive)} bytes, SHA-256={actual_hash}")
+    print(f"SAF picker PASS: selected {EXPECTED_NAME} in system UI, stored {byte_count} bytes, SHA-256={actual_hash}")
 
 def main():
     before = installed_archives()

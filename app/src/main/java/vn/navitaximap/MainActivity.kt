@@ -701,7 +701,13 @@ class MainActivity : Activity(), LocationListener {
                         // centroid, routing waypoint or legal boundary assertion.
                         // City reference coordinates: UNGEGN/GNS (Da Nang, Ca Mau,
                         // Nha Trang, Rach Gia), GeoNames (Hue), UNT GeoNames (Hai Phong).
-                        val center = when (region.code) {
+                        // Debug QA probes the nationwide 556MB archive at an
+                        // explicitly chosen urban road location. Normal nationwide
+                        // browsing retains the zoomed-out header-center overview.
+                        val nationalDetailProbe = region.code == "VN" &&
+                            (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0 &&
+                            intent.getBooleanExtra(EXTRA_SHORTBREAD_NATIONAL_DETAIL, false)
+                        val center = if (nationalDetailProbe) LatLng(21.0285, 105.8542) else when (region.code) {
                             "24" -> LatLng(21.273, 106.196)
                             "01" -> LatLng(21.0285, 105.8542)
                             "79" -> LatLng(10.7769, 106.7009)
@@ -714,7 +720,7 @@ class MainActivity : Activity(), LocationListener {
                             else -> LatLng(header.centerLat, header.centerLon)
                         }
                         liveMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                            center, if (region.code == "VN") 5.5 else 12.3
+                            center, if (region.code == "VN" && !nationalDetailProbe) 5.5 else 12.3
                         ))
                         Log.i("NaviTaxiMapShortbread", "SHORTBREAD_STYLE_LOADED " + region.fileName)
                     }
@@ -865,6 +871,7 @@ class MainActivity : Activity(), LocationListener {
         private const val EXTRA_OSM_ROADS_PILOT = "vn.navitaximap.REAL_OSM_PILOT"
         private const val EXTRA_SHORTBREAD_PREVIEW = "vn.navitaximap.SHORTBREAD_PREVIEW"
         private const val EXTRA_SHORTBREAD_REGION = "vn.navitaximap.SHORTBREAD_REGION"
+        private const val EXTRA_SHORTBREAD_NATIONAL_DETAIL = "vn.navitaximap.SHORTBREAD_NATIONAL_DETAIL"
         private const val STREET_STYLE_LIGHT = "https://tiles.openfreemap.org/styles/liberty"
         private const val STREET_STYLE_DARK = "https://tiles.openfreemap.org/styles/dark"
     }
