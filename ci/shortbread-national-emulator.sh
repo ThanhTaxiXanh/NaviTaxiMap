@@ -23,11 +23,36 @@ adb shell am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE \
 adb shell am start -W -n vn.navitaximap/.MainActivity | tee "$OUT/import-start.txt"
 sleep 7
 # The 556MB importer needs more time than the 30s normal-sized SAF fixture.
-timeout -s TERM -k 5s 360s env NAVITAXI_SAF_NAME="$NAME" \
-  NAVITAXI_SAF_SHA256="$SHA" NAVITAXI_SAF_BYTES="$SIZE" \
-  NAVITAXI_SAF_VERIFY_STREAM=1 NAVITAXI_SAF_PRESERVE_ARCHIVE=0 \
-  NAVITAXI_SAF_UI_TIMEOUT=180 \
-  python3 ci/saf-picker-smoke.py "$OUT" | tee "$OUT/import-check.txt"
+national_saf_attempt() {
+  local log="${1:?log}"
+  timeout -s TERM -k 5s 360s env NAVITAXI_SAF_NAME="$NAME" \
+    NAVITAXI_SAF_SHA256="$SHA" NAVITAXI_SAF_BYTES="$SIZE" \
+    NAVITAXI_SAF_VERIFY_STREAM=1 NAVITAXI_SAF_PRESERVE_ARCHIVE=0 \
+    NAVITAXI_SAF_UI_TIMEOUT=180 \
+    python3 ci/saf-picker-smoke.py "$OUT" > "$log" 2>&1
+}
+if national_saf_attempt "$OUT/import-first.log"; then
+  echo "NATIONAL_SAF_IMPORT_FIRST_PASS"
+elif grep -q "Pixel Launcher isn't responding" "$OUT/import-first.log"; then
+  # Exactly one retry only for emulator SYSTEM UI ANR, not for PMTiles/hash failures.
+  echo "NATIONAL_SAF_LAUNCHER_ANR_RECOVERY"
+  adb shell input keyevent 4 || true
+  adb shell am force-stop com.google.android.apps.nexuslauncher || true
+  adb shell am force-stop vn.navitaximap || true
+  adb shell am start -W -n vn.navitaximap/.MainActivity | tee "$OUT/launcher-recovery-start.txt"
+  sleep 12
+  if national_saf_attempt "$OUT/import-retry.log"; then
+    echo "NATIONAL_SAF_IMPORT_RETRY_PASS"
+  else
+    tail -80 "$OUT/import-retry.log" >&2
+    exit 1
+  fi
+else
+  tail -80 "$OUT/import-first.log" >&2
+  exit 1
+fi
+# Only logged after the original on-device archive has passed full streaming SHA.
+grep -E "SAF_STREAM_SHA256_OK|SAF picker PASS" "$OUT/import-"*.log
 adb shell am force-stop vn.navitaximap
 adb shell cmd connectivity airplane-mode enable
 adb shell svc wifi disable
