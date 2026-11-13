@@ -45,3 +45,6 @@ Latest [CI 43364225600](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/run
 
 ## User-selected file import, verified in emulator
 [CI 43367761361](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43367761361) confirms Android's real DocumentsUI picker can open a local `.pmtiles` file, return its content URI to NaviTaxiMap, and finish a private streamed copy with SHA-256 matching the original. In the app, tap **Dữ liệu bản đồ** -> **Nhập tệp PMTiles từ thiết bị** to reach this prototype workflow. Imports are unapproved storage entries, not usable offline driving maps. See [SAF_PICKER_EVIDENCE.md](SAF_PICKER_EVIDENCE.md).
+
+## NEW: Small real OpenStreetMap road preview (Phase 4)
+A limited road-only map preview can be opened via **Dữ liệu bản đồ** → **Xem đường OSM Hà Nội offline (mẫu nhỏ)**. It uses 354 real OSM highway ways from a tiny bbox (105.849–105.858 E, 21.031–21.037 N), rendered by MapLibre from 21 locally bundled PMTiles vector tiles (about 54 KB), **without network access**. Provenance, snapshots, deterministic generator, hashes and ODbL duties are in [HANOI_OSM_PILOT.md](HANOI_OSM_PILOT.md). The preview deliberately has no road labels, citywide coverage, driving graph or legal boundaries; do not use for navigation.

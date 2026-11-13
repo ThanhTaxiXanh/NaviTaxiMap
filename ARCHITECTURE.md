@@ -40,3 +40,9 @@ App modules currently live in `app`; the future module boundaries below are arch
 - A package is visible only when index/PMTiles pair is present with matching recorded file length. `verifyPack` re-hashes SHA-256 on demand.
 - Streamed free-space preflight preserves default 8 MiB reserve. Current in-process `@Synchronized` methods are not a multi-process lock, and directory fsync and production atomic updates are not implemented.
 - Emulator QA injected four interrupted-import files, force-stopped and restarted app, confirmed cleanup and unchanged valid PMTiles SHA-256.
+
+## Real road-only pilot (development-only, not routing)
+`OSM XML snapshot -> normalized highway ways (frozen JSON.gz) -> deterministic Python MVT/PMTiles builder -> bundled hanoi_real_roads.pmtiles -> app-private checksum-validated file -> MapLibre pmtiles://file:// source -> 3 local vector road line layers`.
+- Source snapshot and PMTiles SHA-256 are pinned; converter tested with no third-party Python packages. The 21-tile archive contains actual OSM way geometry cropped into map tile viewports.
+- No remote style, sprite or glyph dependencies for this preview. Attribution and safety warning appear in the status display.
+- This is a tiny road-only sample, not a local route graph, offline search index, traffic feed or any legally reviewed geographic boundary overlay.

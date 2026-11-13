@@ -41,3 +41,8 @@ Menu: **Dữ liệu bản đồ** → **Xem đường OSM Hà Nội offline (m�
 - There are no real legal/administrative boundaries, historical maritime claims or traffic estimates in the pilot. Do not infer map accuracy, national territory or safe navigation from OSM tags.
 - Does **not** replace original source provenance review, ODbL audit, full tile directory validation, style/fonts/labels review, Xiaomi hardware testing or signed distribution.
 - This asset is only a debug/technical preview, not a product release.
+
+## Renderer test evidence, 2026-11-13
+- Android/API34 airplane-mode screenshot saved in CI [43370534933](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43370534933), `osm-pilot-screenshot.png`. Direct inspection shows actual colored road segments; independent image analysis counted about 66,575 pixels of local road color and 32,027 pixels of major-road color in the central map viewport.
+- That workflow did **not** pass overall: only the new image check failed because `PIL`/Pillow was missing, before the PNG geometry assertion ran. It did not record an app crash.
+- Corrected in code commit `08afe5a16b316f363750fc21b006cf82f39817de`, using the existing standard-library PNG decoder. Latest pipeline [43371354137](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43371354137) pending full result.

@@ -24,3 +24,10 @@
 - Fixed test confusion between file title and the DocumentsUI preview icon, after inspecting saved evidence from first failing run.
 - Verified user-selected synthetic PMTiles import, UI confirmation, app-private file and metadata, SHA-256 readback in offline emulator (CI 43367761361 all jobs PASS).
 - No change to data-provenance approval or production readiness, no merge into main.
+
+## 2026-11-13 tiny real Hanoi OSM road pilot
+- Fetched one small real OSM API bbox and preserved raw XML SHA-256, timestamp and ODbL attribution.
+- Added deterministic Python pipeline for MVT/PMTiles with Hilbert tile ordering and three category-based vector layers.
+- Committed frozen compressed normalized road snapshot and 53,956-byte PMTiles asset to dev branch.
+- Added offline MapLibre real-road preview with explicit ODbL and no-navigation label.
+- Android emulator screenshot run 43370534933 shows real roads in airplane mode; new QA initially failed because Pillow was missing. Replaced Pillow dependency with existing stdlib PNG parser. Final CI 43371354137 pending.

@@ -37,3 +37,11 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 - APK 44,638,931 bytes; sha256 `bd70084157c20928df57e62e81273e091f24be80b81d9f5c1192e819d16ece50`; ZIP integrity PASS.
 - Artifact `NaviTaxiMap-emulator-evidence` contains `saf-success.png`, `saf-result.xml`, imported archive and metadata plus prior smoke screenshots.
 - LIMITS: still no hardware Xiaomi/real road map/route graph, no production signing, no true source provenance approval; actual picker test was on Android 34 emulator.
+
+## Hanoi real OSM road-only preview, 2026-11-13
+- Source workflow [43369521518](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43369521518): PASS. Original official OpenStreetMap small-bbox XML 6,321,243 bytes, SHA-256 `db180ccb4a19e287888af400513dff2104d4c692b32d060a8416f1b6c08c7697`, extracted 17,828 nodes and 354 highway ways.
+- Deterministic PMTiles conversion [43370147765](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43370147765): PASS. 21 MVT tiles, zooms 14–17, 53,956 bytes; three road source layers, source checksum embedded; PMTiles SHA-256 `ff932662ba476e570debd19d8323e2c9fed11dfa98322dfd39a4023ed3e0cf9d`.
+- Generator + asset byte-for-byte regeneration: Android build job in [43370534933](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43370534933) PASS.
+- **Android screenshot from 43370534933 visibly contains real OSM road geometry** with more than 66,000 local-road and 32,000 major-road color pixels in the central viewport (independently measured from saved image). App runs offline in airplane mode, with attribution and non-navigation warning. Emulator job FAILED because new screenshot assertion imported missing Pillow (`ModuleNotFoundError: PIL`), not because the app failed.
+- Fixed screenshot assertion to reuse stdlib PNG decoder in `08afe5a`. Rerun [43371354137](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43371354137) PENDING.
+- Debug APK extracted from prior code-identical app build (43370534933), ZIP integrity PASS; 44,709,152 bytes, SHA-256 `1875279937b61b82e111a5cd0b6e1443e27bc971c3941f22f70d988d4bc04077`. No public release, no Xiaomi hardware validation.

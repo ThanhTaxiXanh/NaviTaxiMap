@@ -1,6 +1,6 @@
 # Vietnam real-road offline data: source-to-PMTiles acceptance plan
 
-**Status (2026-11-13): RESEARCH / SOURCE CANDIDATE ONLY.** No real road extract has been downloaded, processed or approved for inclusion in NaviTaxiMap. This document is NOT a certification of current maps or borders.
+**Status (2026-11-13): SMALL REAL OSM ROAD-ONLY PILOT BUILT, production source and provincial coverage still unapproved.** A separate one-time **official OSM API** snapshot for a tiny Hanoi bbox was acquired and converted to deterministic PMTiles; see [HANOI_OSM_PILOT.md](HANOI_OSM_PILOT.md). The following Geofabrik/tilemaker path is still a FUTURE larger-coverage option; neither a Geofabrik extract nor its full-country conversion has been executed. No certification of current maps or borders.
 
 ## Potential lawful open-data input
 
@@ -32,4 +32,4 @@
 
 ## Current blockers
 
-No Geofabrik dataset snapshot obtained; no available local `tilemaker` build tested; no reviewed small-region boundary, styles, scripts or independent offline real-road screenshot; no completed ODbL distribution review. This must remain IN PROGRESS.
+No Geofabrik dataset snapshot obtained; no local `tilemaker` full-data build tested; no reviewed province boundary, production style/font pack or citywide coverage; no completed ODbL distribution review. The new tiny OSM road-only pilot has a dated source and visible offline emulator screenshot but cannot be considered navigation-ready. This must remain IN PROGRESS.

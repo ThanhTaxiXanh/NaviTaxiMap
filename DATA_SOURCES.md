@@ -17,4 +17,10 @@ Do not use the public OpenFreeMap server for bulk scraping or unauthorized offli
 ## Pilot source candidate (researched, NOT downloaded)
 - **Geofabrik Vietnam**: https://download.geofabrik.de/asia/vietnam.html offers the OSM raw data PBF and publishes updates; Geofabrik states OSM-derived downloads use ODbL 1.0 and require attribution: https://www.geofabrik.de/data/download.html.
 - **tilemaker** can convert OSM PBF to PMTiles with explicit config/process scripts: https://github.com/systemed/tilemaker/blob/master/docs/RUNNING.md.
-- No downloaded real OSM snapshot, validated province boundary or reviewed style has been integrated. See `REAL_OSM_SOURCE_PLAN.md`.
+- A separate tiny OSM API source snapshot and real-road PMTiles pilot are now integrated and pinned, but there is still **no real provincial dataset, independently reviewed geometry, or production style**. See `HANOI_OSM_PILOT.md` and `REAL_OSM_SOURCE_PLAN.md`.
+
+## Verified small real-road pilot input (not full provincial coverage)
+- **OpenStreetMap API bbox**: https://api.openstreetmap.org/api/0.6/map?bbox=105.849,21.031,105.858,21.037 . One small snapshot on 2026-11-13 05:04:02 UTC. Download XML 6,321,243 bytes, SHA-256 `db180ccb4a19e287888af400513dff2104d4c692b32d060a8416f1b6c08c7697`, 17,828 nodes, 354 highway ways. Workflow evidence 43369521518.
+- **Derived road-only PMTiles**: 21 tiles, zoom 14–17, 53,956 bytes, SHA-256 `ff932662ba476e570debd19d8323e2c9fed11dfa98322dfd39a4023ed3e0cf9d`. Source, converter and manifest are pinned in git; generator CI 43370147765 PASS.
+- **License**: OpenStreetMap ODbL 1.0, mandatory attribution **© OpenStreetMap contributors**. User-visible attribution displayed in dedicated preview status; full public distribution/share-alike audit remains OPEN.
+- **Source review**: UNREVIEWED for turn restrictions, navigation, admin/maritime boundaries. Snapshot is a tiny rectangular crop, not a verified province. No Geofabrik full-country data was downloaded. See `HANOI_OSM_PILOT.md`.
