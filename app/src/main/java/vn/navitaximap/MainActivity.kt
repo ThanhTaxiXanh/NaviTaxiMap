@@ -695,10 +695,22 @@ class MainActivity : Activity(), LocationListener {
                         offlineButton.text = "Quay về bản đồ online"
                         statusText.text = "Shortbread 1.0 · " + region.label +
                             " · © OpenStreetMap contributors (ODbL) · KHÔNG dẫn đường"
+                        // A province's PMTiles bbox midpoint can fall in open sea,
+                        // marshland or sparsely mapped terrain. Prefer grounded urban
+                        // anchors ONLY for visual preview, never as an administrative
+                        // centroid, routing waypoint or legal boundary assertion.
+                        // City reference coordinates: UNGEGN/GNS (Da Nang, Ca Mau,
+                        // Nha Trang, Rach Gia), GeoNames (Hue), UNT GeoNames (Hai Phong).
                         val center = when (region.code) {
                             "24" -> LatLng(21.273, 106.196)
                             "01" -> LatLng(21.0285, 105.8542)
                             "79" -> LatLng(10.7769, 106.7009)
+                            "31" -> LatLng(20.86481, 106.68345)     // Hải Phòng urban centre
+                            "46" -> LatLng(16.46190, 107.59546)     // Huế urban centre
+                            "48" -> LatLng(16.067778, 108.220833)   // Đà Nẵng urban centre
+                            "56" -> LatLng(12.25, 109.183333)       // Nha Trang, Khánh Hòa
+                            "91" -> LatLng(10.016667, 105.083333)   // Rạch Giá, An Giang
+                            "96" -> LatLng(9.176944, 105.15)        // Cà Mau urban centre
                             else -> LatLng(header.centerLat, header.centerLon)
                         }
                         liveMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(
