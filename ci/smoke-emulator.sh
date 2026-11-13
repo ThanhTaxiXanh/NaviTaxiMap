@@ -68,9 +68,20 @@ adb shell svc wifi disable
 adb shell svc data disable
 adb logcat -c
 adb shell am start -W -n vn.navitaximap/.MainActivity --ez vn.navitaximap.OFFLINE_DEMO true | tee smoke-evidence/offline-launch.txt
-sleep 15
-adb shell screencap -p /sdcard/navitaximap-offline.png
-adb pull /sdcard/navitaximap-offline.png smoke-evidence/offline-screenshot.png
+# PMTiles source and OpenGL style loading is asynchronous under emulated GPU load.
+# Retry screenshot capture; never weaken or skip the true vector-pixel threshold.
+sleep 14
+for attempt in $(seq 1 9); do
+  sleep 6
+  adb shell screencap -p /sdcard/navitaximap-offline.png
+  adb pull /sdcard/navitaximap-offline.png smoke-evidence/offline-screenshot.png
+  if python3 ci/check-offline-screenshot.py smoke-evidence/offline-screenshot.png \
+       > smoke-evidence/offline-pixel-probe.txt 2>&1; then
+    echo "SYNTHETIC_OFFLINE_PIXELS_READY attempt=$attempt"
+    break
+  fi
+  echo "Synthetic offline vector geometry not visible (attempt $attempt/9); retrying"
+done
 adb shell uiautomator dump /sdcard/navitaxi-window.xml > /dev/null
 adb pull /sdcard/navitaxi-window.xml smoke-evidence/offline-window.xml
 adb logcat -d -s AndroidRuntime:E > smoke-evidence/offline-runtime-errors.txt || true
