@@ -1,0 +1,261 @@
+package vn.navitaximap
+
+import android.Manifest
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.Typeface
+import android.graphics.drawable.GradientDrawable
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
+import android.os.Bundle
+import android.view.Gravity
+import android.view.View
+import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.LinearLayout
+import android.widget.TextView
+import org.maplibre.android.MapLibre
+import org.maplibre.android.camera.CameraUpdateFactory
+import org.maplibre.android.geometry.LatLng
+import org.maplibre.android.maps.MapLibreMap
+import org.maplibre.android.maps.MapView
+import org.maplibre.android.maps.Style
+import java.util.Locale
+
+/**
+ * Phase 1/2 proof of concept. No fake routes, traffic, speed limits or offline coverage.
+ * The public demo style is for development only; production data needs a vetted provider.
+ */
+class MainActivity : Activity(), LocationListener {
+    private lateinit var mapView: MapView
+    private var liveMap: MapLibreMap? = null
+    private lateinit var locationText: TextView
+    private lateinit var statusText: TextView
+    private lateinit var titleBar: LinearLayout
+    private lateinit var bottomBar: LinearLayout
+    private lateinit var themeButton: Button
+    private lateinit var locateButton: Button
+    private var trackingRequested = false
+    private var darkChrome = false
+    private var locationStarted = false
+
+    private val locationManager by lazy {
+        getSystemService(LOCATION_SERVICE) as LocationManager
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        window.statusBarColor = Color.rgb(15, 83, 102)
+        window.navigationBarColor = Color.rgb(11, 44, 55)
+        MapLibre.getInstance(this)
+
+        val root = FrameLayout(this)
+        mapView = MapView(this)
+        root.addView(mapView, FrameLayout.LayoutParams(-1, -1))
+        buildChrome(root)
+        setContentView(root)
+
+        mapView.onCreate(savedInstanceState)
+        mapView.getMapAsync { map ->
+            liveMap = map
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(21.273, 106.196), 8.0))
+            map.setStyle(Style.Builder().fromUri(DEMO_STYLE)) {
+                statusText.text = "Bản đồ thử nghiệm trực tuyến • chưa có gói offline"
+            }
+        }
+    }
+
+    private fun buildChrome(root: FrameLayout) {
+        titleBar = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(dp(14), dp(12), dp(14), dp(12))
+            background = rounded(Color.WHITE)
+            elevation = dp(6).toFloat()
+        }
+        val heading = TextView(this).apply {
+            text = "◉ NaviTaxiMap"
+            textSize = 20f
+            typeface = Typeface.DEFAULT_BOLD
+            setTextColor(Color.rgb(0, 113, 126))
+        }
+        statusText = TextView(this).apply {
+            text = "Đang tải bản đồ thử nghiệm..."
+            textSize = 12f
+            setTextColor(Color.DKGRAY)
+            setPadding(0, dp(6), 0, 0)
+        }
+        val actions = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            setPadding(0, dp(10), 0, 0)
+        }
+        val searchButton = actionButton("Tìm kiếm")
+        searchButton.setOnClickListener {
+            explain("Tìm kiếm địa điểm", "Chức năng đang trong giai đoạn xây dựng. Ứng dụng chưa có cơ sở dữ liệu POI hoặc kết quả tìm kiếm được xác minh.")
+        }
+        themeButton = actionButton("Giao diện tối")
+        themeButton.setOnClickListener { darkChrome = !darkChrome; updateChrome() }
+        actions.addView(searchButton, LinearLayout.LayoutParams(0, dp(44), 1f))
+        actions.addView(themeButton, LinearLayout.LayoutParams(0, dp(44), 1f).apply {
+            marginStart = dp(8)
+        })
+        titleBar.addView(heading)
+        titleBar.addView(statusText)
+        titleBar.addView(actions)
+        root.addView(titleBar, FrameLayout.LayoutParams(-1, -2, Gravity.TOP).apply {
+            setMargins(dp(12), dp(12), dp(12), 0)
+        })
+
+        bottomBar = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(dp(14), dp(12), dp(14), dp(12))
+            background = rounded(Color.WHITE)
+            elevation = dp(6).toFloat()
+        }
+        locationText = TextView(this).apply {
+            text = "GPS chưa được bật • chỉ xin quyền khi bạn chọn Vị trí"
+            textSize = 14f
+            setTextColor(Color.rgb(25, 49, 59))
+        }
+        locateButton = actionButton("◎ Vị trí")
+        locateButton.setOnClickListener { requestLocationOnDemand() }
+        val dataButton = actionButton("Dữ liệu bản đồ")
+        dataButton.setOnClickListener {
+            explain("Trạng thái dữ liệu", "Bản đồ MapLibre đang dùng nguồn demo khi có Internet. PMTiles, tìm đường, giao thông, dữ liệu 34 tỉnh/thành và hồ sơ biển đảo chưa được tích hợp hoặc phê duyệt. Không dùng màn hình thử nghiệm để điều hướng khi lái xe.")
+        }
+        val bottomActions = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            setPadding(0, dp(10), 0, 0)
+        }
+        bottomActions.addView(locateButton, LinearLayout.LayoutParams(0, dp(46), 1f))
+        bottomActions.addView(dataButton, LinearLayout.LayoutParams(0, dp(46), 1f).apply {
+            marginStart = dp(8)
+        })
+        bottomBar.addView(locationText)
+        bottomBar.addView(bottomActions)
+        root.addView(bottomBar, FrameLayout.LayoutParams(-1, -2, Gravity.BOTTOM).apply {
+            setMargins(dp(12), 0, dp(12), dp(14))
+        })
+    }
+
+    private fun requestLocationOnDemand() {
+        trackingRequested = true
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+            checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ), LOCATION_REQUEST)
+        } else {
+            startLocation()
+        }
+    }
+
+    private fun startLocation() {
+        if (!trackingRequested || locationStarted) return
+        val fine = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        val coarse = checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        if (!fine && !coarse) return
+        val provider = when {
+            fine && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ->
+                LocationManager.GPS_PROVIDER
+            locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) ->
+                LocationManager.NETWORK_PROVIDER
+            else -> null
+        }
+        if (provider == null) {
+            locationText.text = "Chưa có nhà cung cấp vị trí. Hãy bật định vị của Android."
+            return
+        }
+        try {
+            locationManager.requestLocationUpdates(provider, 2000L, 3f, this)
+            locationStarted = true
+            locationText.text = "Đang chờ tín hiệu vị trí thực..."
+        } catch (error: SecurityException) {
+            locationText.text = "Quyền vị trí đã bị thu hồi."
+        } catch (error: IllegalArgumentException) {
+            locationText.text = "Không thể khởi tạo nhà cung cấp GPS."
+        }
+    }
+
+    private fun stopLocation() {
+        if (locationStarted) {
+            locationManager.removeUpdates(this)
+            locationStarted = false
+        }
+    }
+
+    override fun onLocationChanged(location: Location) {
+        val speed = if (location.hasSpeed()) {
+            String.format(Locale.getDefault(), " • %.0f km/h", location.speed * 3.6f)
+        } else ""
+        locationText.text = String.format(
+            Locale.getDefault(),
+            "GPS %.5f, %.5f • ±%.0f m%s",
+            location.latitude, location.longitude, location.accuracy, speed
+        )
+        liveMap?.animateCamera(CameraUpdateFactory.newLatLng(
+            LatLng(location.latitude, location.longitude)
+        ))
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == LOCATION_REQUEST) {
+            if (grantResults.any { it == PackageManager.PERMISSION_GRANTED }) startLocation()
+            else locationText.text = "Không có quyền vị trí. Bản đồ vẫn dùng được khi trực tuyến."
+        }
+    }
+
+    private fun updateChrome() {
+        val bg = if (darkChrome) Color.rgb(17, 34, 46) else Color.WHITE
+        val fg = if (darkChrome) Color.WHITE else Color.rgb(25, 49, 59)
+        titleBar.background = rounded(bg)
+        bottomBar.background = rounded(bg)
+        statusText.setTextColor(fg)
+        locationText.setTextColor(fg)
+        themeButton.text = if (darkChrome) "Giao diện sáng" else "Giao diện tối"
+        // Map theme switching will be enabled after approved light/dark styles exist.
+    }
+
+    private fun actionButton(label: String): Button = Button(this).apply {
+        text = label
+        textSize = 13f
+        isAllCaps = false
+        setTextColor(Color.WHITE)
+        background = rounded(Color.rgb(0, 119, 133))
+        setPadding(dp(6), 0, dp(6), 0)
+        stateListAnimator = null
+    }
+
+    private fun explain(title: String, message: String) {
+        AlertDialog.Builder(this).setTitle(title).setMessage(message)
+            .setPositiveButton("Đóng", null).show()
+    }
+
+    private fun rounded(color: Int): GradientDrawable = GradientDrawable().apply {
+        setColor(color)
+        cornerRadius = dp(16).toFloat()
+    }
+
+    private fun dp(n: Int): Int = (n * resources.displayMetrics.density + 0.5f).toInt()
+
+    override fun onStart() { super.onStart(); mapView.onStart() }
+    override fun onResume() { super.onResume(); mapView.onResume(); startLocation() }
+    override fun onPause() { stopLocation(); mapView.onPause(); super.onPause() }
+    override fun onStop() { mapView.onStop(); super.onStop() }
+    override fun onLowMemory() { super.onLowMemory(); mapView.onLowMemory() }
+    override fun onDestroy() { stopLocation(); mapView.onDestroy(); super.onDestroy() }
+    override fun onSaveInstanceState(outState: Bundle) {
+        mapView.onSaveInstanceState(outState)
+        super.onSaveInstanceState(outState)
+    }
+
+    companion object {
+        private const val LOCATION_REQUEST = 101
+        private const val DEMO_STYLE = "https://demotiles.maplibre.org/style.json"
+    }
+}

@@ -1,0 +1,9 @@
+{
+  "labels": {
+    "hoang-sa": "Quần đảo Hoàng Sa",
+    "truong-sa": "Quần đảo Trường Sa",
+    "bien-dong": "Biển Đông"
+  },
+  "viewpoint": "VN",
+  "inventory": ["mainland","islands","administrative","maritime","basemap","vector","raster","places","island-labels","overlays","offline-package"]
+}
