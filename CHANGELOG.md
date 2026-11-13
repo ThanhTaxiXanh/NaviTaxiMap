@@ -56,3 +56,8 @@
 - 01 Hà Nội: 157,112 offline road-color pixels; 79 Hồ Chí Minh: 183,085. Including earlier Bắc Ninh: 3/35 archives screenshot-proven.
 - CI file-storage race found in 43387058086. Added retry + byte-length verification helper in a3e53366, repeat CI pending.
 - No main, PR, release or distribution changes.
+
+
+## 2026-11-13 emulator stability follow-ups
+- CI storage readiness retry a3e53366 verified with two real Shortbread workflows all green, preserving 3/35 proven region visuals.
+- Standard Android debug 43387711858 exposed a one-frame regression in the old tiny Hanoi renderer (0 colored pixels); no production change, strict screenshot wait/retry CI fix 59c2192 and rerun pending.

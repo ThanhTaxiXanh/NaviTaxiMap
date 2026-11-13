@@ -91,3 +91,10 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 - 43387058111 Android debug build/unit tests: **build job SUCCESS**; full standard emulator regression job was still underway at this checkpoint.
 - 43387058322 Hà Nội + Hồ Chí Minh real Shortbread Android: **SUCCESS**; 01 file 17,562,631 bytes / 157,112 road pixels, 79 file 18,217,716 bytes / 183,085 road pixels, SHA and SAF PASS. Artifact 14019316787.
 - 43387058086 Bắc Ninh retest: **FAIL** at `adb push` into not-yet-writable emulator /sdcard/Download, unrelated to map pixel callback; do not count as successful regression. Fix a3e53366 and rerun 43387711796; multi recheck 43387711798 and Android full 43387711858 pending.
+
+
+## Corrected CI outcomes
+- 43387711796 (one real Bắc Ninh): SUCCESS, 266,196 road-color pixels with airplane mode; 11,049,420 byte SHA pinned.
+- 43387711798 (two real regions): SUCCESS, Hà Nội 157,112 and TP.HCM 183,085 road-color pixels; correct size/hash/SAF.
+- 43387711858 Android debug: compile/JVM tests SUCCESS, standard emulator FAILED during old 54KB Hanoi screenshot (pixel 0; strict check retained). Existing other stages up through synthetic PMTiles and import/recovery PASS.
+- Commit 59c2192 adds bounded screenshot retries (without weakening assertions) for existing Hanoi pilot; CI 43388632601 triggered; PENDING.

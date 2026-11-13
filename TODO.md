@@ -62,3 +62,9 @@
 - [x] Add expected byte-length cap and SHA-pinned preactivation checks to known-region SAF imports, with JVM negative cases (new build unit job successful).
 - [ ] Check latest CI of emulator storage-ready retry: 43387711796/43387711798, and full standard Android 43387711858.
 - [ ] Test remaining 32/35 packs on actual Android (especially 556 MB nationwide); establish approved long-lived artifact hosting and secure resumable download; no fabricated URLs.
+
+
+## Latest CI tasks
+- [x] Recheck new Android single- and multi-region Shortbread real pixel workflows after emulator-storage retry: 43387711796 and 43387711798 SUCCESS; 3/35 region visuals verified.
+- [ ] Recheck Android full smoke 43388632601 after 59c2192 wait/retry screenshot amendment. Prior 43387711858 failed at single-frame Hanoi small pilot screenshot, not marked PASS.
+- [ ] If strict retry still fails, inspect MapLibre lifecycle/source/loading diagnostics; preserve known-good 54KB Hanoi mode and screenshot evidence before further feature work.

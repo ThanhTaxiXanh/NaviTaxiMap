@@ -27,3 +27,8 @@ Not a demonstration of 35 region files rendered on device; 35 pins/catalog teste
 - SAF import of recognized file performs Android DocumentsUI size preflight if available, free-space check, then bounded streamed SHA/length validation before promotion; unrecognized imports remain untrusted.
 - Real screenshots: 01 Hà Nội 157,112 road pixels and 79 Ho Chi Minh City 183,085, CI https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43387058322 success, evidence artifact 14019316787. With 24 Bắc Ninh old run, 3/35 verified. Source NOT approved for navigation/legal maritime lines.
 - A fresh Bắc Ninh CI encountered emulator storage race before import (43387058086 FAIL). A separate retry helper was committed (a3e53366), new CI pending.
+
+
+## CI retest and legacy renderer status
+Real-region workflows with robust emulator storage helper are green: 43387711796 (Bắc Ninh 266,196 pixels) and 43387711798 (Hanoi 157,112, HCM 183,085). All were offline and SHA-verified, 3/35 Android real region proofs.
+Unrelated full Android smoke 43387711858 failed at legacy 54KB Hanoi screenshot (0 road pixels on one early sample) after compile/JUnit, synthetic tile tests, HTTPS and SAF/recovery steps succeeded. A strict bounded retry was added in 59c2192; full Android retest 43388632601 pending, not green. Do not infer loss or success from earlier code without new emulator evidence.

@@ -75,3 +75,8 @@
 - **PASS** CI 43387058322, true Android DocumentsUI importing original Hanoi and HCM OSM/Shortbread PMTiles, then airplane-mode screenshot verified 157,112 and 183,085 road-color pixels respectively. Combined with earlier Bắc Ninh pass: 3/35 actual Android visual proofs.
 - 35/35 entries now pin exact byte lengths as well as filenames/zooms/SHA; import rejects mismatched bytes or hash, with capacity preflight. Feature commit 7d747d1; checks from SHA-audited 43379440781 logs.
 - Emulator storage transient failure 43387058086 diagnosed, retry fix a3e53366; repeat CI pending. Stable hosting, Range resume, 32 other Android archives, ODbL and Xiaomi remain unfinished.
+
+
+## Latest 2026-11-13 CI update
+- Real northern/southern Shortbread: 43387711796 Bắc Ninh and 43387711798 Hà Nội + HCM both SUCCESS after robust emulator Download copy helper. Original 3/35 region proof intact.
+- Full Android emulator old Hanoi-only pilot regression run 43387711858 FAILED at screenshot 0 road pixels, though its build, HTTPS, synthetic, SAF/recovery checks PASS. Candidate 59c2192 adds bounded screenshot retries, still rejects absent geometry. Rerun 43388632601 PENDING.

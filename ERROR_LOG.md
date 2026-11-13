@@ -60,3 +60,9 @@
 - **Observed FAIL:** run 43387058086, original real Bắc Ninh archive SHA OK and debug APK installed, then `adb push ... /sdcard/Download/24-bac-ninh.pmtiles` failed `remote couldn't create file: Operation not permitted`, before SAF or map rendering. Do not attribute this to Shortbread data or style.
 - **Fix candidate:** commit a3e53366 adds `ci/push-emulator-download.sh`: waits for writable emulated storage, retries, and compares uploaded length; both single and multi-region workflows use it. New run 43387711796 PENDING, cannot mark resolved yet.
 - **Other evidence:** run 43387058322 independently PASS for real Hà Nội and HCM via older script, showing Android renderer worked for both provinces on that runner.
+
+
+## 2026-11-13 CI outcome update
+- Emulator /sdcard/Download not writable on cold boot from 43387058086: retested and resolved for observed jobs 43387711796 and 43387711798 with helper a3e53366; correct 11MB/17MB/18MB bytes pushed, imported and rendered.
+- New separate failure: 43387711858 standard Android emulator old real Hanoi 54KB road-only screenshot returned 0 target pixels after 15-second wait. Build passed, pinned HTTPS pilot, synthetic PMTiles, SAF import, interrupted recovery all passed. Baseline previous version returned 58,015 pixels; retain failure as unresolved until rerun.
+- Commit 59c2192 adds bounded screenshot polling after map load, does not remove test or reduce 500-pixel threshold. Retest 43388632601 PENDING; inspect log/PNG if still 0.
