@@ -100,9 +100,14 @@ def find_pilot_file():
     until = time.monotonic() + 15
     while time.monotonic() < until:
         root = snapshot("picker-recent")
-        hits = [n for n in nodes(root) if candidate(n, [EXPECTED_NAME])]
+        # DocumentsUI exposes both a file title and a separate preview control.
+        # The preview icon has content-desc "Preview the file ...", and selecting
+        # that icon does NOT return the document URI to the app.
+        hits = [n for n in nodes(root)
+                if n.get("text", "").strip() == EXPECTED_NAME
+                and n.get("resource-id", "").endswith(":id/title")]
         if hits:
-            tap_node(hits[-1])
+            tap_node(hits[0])
             return
         time.sleep(1)
 
@@ -118,7 +123,18 @@ def find_pilot_file():
         raise RuntimeError("DocumentsUI did not expose a Downloads root")
     tap_node(matches[-1])
     time.sleep(1.5)
-    select_text("picker-downloads", [EXPECTED_NAME], timeout=20)
+    # In the Downloads root, always select the title, not the preview icon.
+    until = time.monotonic() + 20
+    while time.monotonic() < until:
+        root = snapshot("picker-downloads")
+        titles = [n for n in nodes(root)
+                  if n.get("text", "").strip() == EXPECTED_NAME
+                  and n.get("resource-id", "").endswith(":id/title")]
+        if titles:
+            tap_node(titles[0])
+            return
+        time.sleep(1)
+    raise RuntimeError("PMTiles document was not visible in Downloads")
 
 def verify_ui():
     until = time.monotonic() + 30
