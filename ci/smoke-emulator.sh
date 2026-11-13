@@ -163,3 +163,51 @@ if grep -q 'FATAL EXCEPTION' smoke-evidence/osm-pilot-runtime-errors.txt; then
     exit 1
 fi
 echo "Real OSM road-only pilot PASS: offline geometry visible, ODbL attribution displayed."
+
+
+# Phase 4 catalog manager: the REAL OSM visual pilot must be pinned, versioned,
+# recoverable and explicitly NOT approved for road navigation.
+CATALOG_NAME="hanoi-roads-visual-v1-ff932662ba47.pmtiles"
+adb shell run-as vn.navitaximap ls files/catalog-packs | tee smoke-evidence/catalog-files.txt
+adb exec-out run-as vn.navitaximap cat "files/catalog-packs/$CATALOG_NAME" > smoke-evidence/catalog-installed.pmtiles
+adb exec-out run-as vn.navitaximap cat "files/catalog-packs/hanoi-roads-visual.properties" > smoke-evidence/catalog-installed.properties
+python3 - <<'PY'
+from pathlib import Path
+import hashlib
+binary = Path("smoke-evidence/catalog-installed.pmtiles").read_bytes()
+expected = Path("app/src/main/assets/hanoi_real_roads.pmtiles").read_bytes()
+props = Path("smoke-evidence/catalog-installed.properties").read_text()
+sha = "ff932662ba476e570debd19d8323e2c9fed11dfa98322dfd39a4023ed3e0cf9d"
+assert binary == expected
+assert len(binary) == 53956
+assert hashlib.sha256(binary).hexdigest() == sha
+for item in ["id=hanoi-roads-visual", "version=1", "sha256=" + sha,
+             "origin=BUNDLED", "size=53956",
+             "sourceApproval=UNREVIEWED_VISUAL_PREVIEW",
+             "navigationApproved=false",
+             "license=ODbL-1.0",
+             "sourceXmlSha256=db180ccb4a19e287888af400513dff2104d4c692b32d060a8416f1b6c08c7697"]:
+    assert item in props, f"Catalog metadata mismatch: {item}"
+print("VERSIONED CATALOG PASS: APK-pinned SHA256, v1, ODbL, unreviewed and navigation disabled")
+PY
+
+# Exercise catalog/provenance UI without actually starting a network transfer.
+python3 - <<'PY'
+from pathlib import Path
+import importlib.util
+p = Path("ci/saf-picker-smoke.py")
+modspec = importlib.util.spec_from_file_location("navitaxi_saf_ui", p)
+mod = importlib.util.module_from_spec(modspec)
+modspec.loader.exec_module(mod)
+mod.OUT = Path("smoke-evidence")
+mod.select_text("catalog-app", ["Dữ liệu bản đồ"])
+mod.select_text("catalog-menu", ["Quản lý / tải gói OSM Hà Nội"])
+root = mod.snapshot("catalog-dialog")
+mod.screenshot("catalog-dialog")
+texts = " ".join((node.get("text", "") or "") for node in mod.nodes(root))
+assert "ODbL" in texts, "Catalog dialog must show ODbL"
+assert "CHƯA DUYỆT" in texts, "Catalog dialog must clearly warn about navigation"
+assert "SHA-256" in texts, "Catalog dialog must show pinned SHA-256"
+assert "Đã cài v1" in texts, "Catalog dialog should detect verified installed version"
+print("VERSIONED CATALOG UI PASS: installed v1, pinned hash, source/license, non-navigation warning")
+PY
