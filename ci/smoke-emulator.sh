@@ -130,3 +130,36 @@ adb shell am force-stop vn.navitaximap
 adb shell am start -W -n vn.navitaximap/.MainActivity | tee smoke-evidence/saf-launch.txt
 sleep 6
 python3 ci/saf-picker-smoke.py smoke-evidence | tee smoke-evidence/saf-result.txt
+
+
+# Third map rendering mode: a tiny REAL OSM road-only archive from a pinned,
+# attributed snapshot. No network access, no navigation or legal map claims.
+adb shell am force-stop vn.navitaximap
+adb logcat -c
+adb shell am start -W -n vn.navitaximap/.MainActivity --ez vn.navitaximap.REAL_OSM_PILOT true | tee smoke-evidence/osm-pilot-launch.txt
+sleep 15
+adb shell screencap -p /sdcard/navitaxi-real-osm-roads.png
+adb pull /sdcard/navitaxi-real-osm-roads.png smoke-evidence/osm-pilot-screenshot.png
+adb shell uiautomator dump /sdcard/navitaxi-osm-pilot.xml > /dev/null
+adb pull /sdcard/navitaxi-osm-pilot.xml smoke-evidence/osm-pilot-ui.xml
+adb logcat -d -s AndroidRuntime:E > smoke-evidence/osm-pilot-runtime-errors.txt || true
+adb logcat -d -v brief > smoke-evidence/osm-pilot-full-logcat.txt || true
+python3 ci/check-osm-pilot-screenshot.py smoke-evidence/osm-pilot-screenshot.png
+if ! grep -q 'OpenStreetMap' smoke-evidence/osm-pilot-ui.xml; then
+    echo "Missing user-visible OpenStreetMap attribution in offline pilot UI" >&2
+    exit 1
+fi
+if ! grep -q 'KHÔNG dẫn đường' smoke-evidence/osm-pilot-ui.xml; then
+    echo "Missing prominent non-navigation warning for OSM sample" >&2
+    exit 1
+fi
+if ! adb shell pidof vn.navitaximap | tr -d '\r' | grep -Eq '^[0-9]+'; then
+    echo "OSM road-preview process did not survive" >&2
+    exit 1
+fi
+if grep -q 'FATAL EXCEPTION' smoke-evidence/osm-pilot-runtime-errors.txt; then
+    echo "OSM road-preview crashed" >&2
+    cat smoke-evidence/osm-pilot-runtime-errors.txt >&2
+    exit 1
+fi
+echo "Real OSM road-only pilot PASS: offline geometry visible, ODbL attribution displayed."
