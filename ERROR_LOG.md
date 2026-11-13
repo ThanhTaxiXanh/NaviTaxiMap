@@ -72,3 +72,7 @@
 - Run 43387711858: real Hanoi 54KB screenshot checker returned 0 pixels on one capture. Run 43388632601: synthetic PMTiles checker returned 0 pixels on one capture, though all earlier import and HTTPS tests passed. MapLibre draw timing under GitHub virtualized emulator is suspect but not yet proven root cause.
 - 59c2192 added strict pixel retry for real Hanoi and fddd00b5 added same for synthetic, without reducing minimum thresholds or skipping geometry verification. Run 43389395898 PENDING.
 - Dedicated real Shortbread region 43387711796 / 43387711798 remains SUCCESS, with 3/35 legitimate Android visual evidence.
+
+## 2026-11-13 screenshot timing fix CLOSED with evidence
+- CI 43389395898 **SUCCESS**, Android build + emulator including previously failing synthetic and tiny Hanoi screenshots. 39,985 synthetic and 58,015 real Hanoi road-color pixels. Both strict assertions preserved; errors from 43387711858 and 43388632601 were intermittent CI timing conditions under this test configuration; not proof of app deterministic bugs.
+- New test effort run 43391332272: original 34 provincial files assigned to four emulator shards, outcomes pending and must be inspected individually, especially remote centers in sparsely mapped areas.

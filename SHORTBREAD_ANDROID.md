@@ -36,3 +36,7 @@ Unrelated full Android smoke 43387711858 failed at legacy 54KB Hanoi screenshot 
 
 ## Pending overall Android regression
 Despite three independently proven full region PMTiles renders (CI 43387711796 and 43387711798), general Android emulator regression 43388632601 failed on a single early synthetic local PMTiles screenshot showing zero target road-color pixels. Earlier 43387711858 failed on a single early old Hanoi pilot screenshot. Both checks now use bounded pixel retry without weakening assertions (59c2192, fddd00b5); new full run 43389395898 PENDING. Do not collapse these results into a claim that all CI is green.
+
+## 2026-11-13 full real province coverage workflow
+- Android full standard regression run 43389395898 SUCCESS (synthetic offline 39,985 pixels; small real Hanoi roads 58,015, verified HTTPS, SAF, recovery, UI).
+- CI 43391332272 new `android-shortbread-coverage.yml` partitions **34 original provincial real PMTiles** into four independent Android emulator shards. Each must check source SHA/byte, interactive SAF import, stored SHA, airplane-mode actual vector screenshot with >=500 colored road pixels, UI OSM attribution/nonnavigation and no crashes. Evidence excludes redundant raw archive copies. Build passed, real region jobs pending as of checkpoint. Nationwide 556MB excluded and no 34/34 claim before results.

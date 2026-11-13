@@ -169,3 +169,8 @@ Cần chú ý: OpenFreeMap chỉ là online prototype. Không cào hàng loạt 
 - Android tổng thể 43387711858 FAIL ảnh mẫu Hà Nội 54KB 0 pixel; thử lại 43388632601 FAIL sớm ở ảnh PMTiles tổng hợp 0 pixel. Không khẳng định Android full CI xanh.
 - Các commit 59c2192 (real Hanoi) và fddd00b5 (synthetic) sửa đồng bộ CI: chờ thêm/chụp lại nhiều lần, giữ nguyên ngưỡng pixel, không bỏ kiểm thử. Đang chờ run 43389395898. Nếu tiếp tục chat mới phải kiểm run này và sửa/khảo sát renderer nếu còn lỗi.
 - Không sửa main/PR/merge/release; không có 35 gói tải trong APK hay dữ liệu dẫn đường.
+
+## CHECKPOINT SAU 15:10 ICT 13/11/2026: hồi quy full đã XANH, tiến hành QA 34 tỉnh
+- **Android full CI 43389395898 SUCCESS** ở code fddd00b5, cả biên dịch lẫn emulator. PMTiles tổng hợp 39.985 pixel; đường OSM Hà Nội 54KB có 58.015 pixel; các bước mạng HTTPS ghim hash, SAF, phục hồi, versioned catalog đều PASS. Đóng lỗi ảnh 0 pixel do chờ screenshot không đủ (các lỗi trước được giữ log).
+- Bắt đầu commit **32ff213997e35a6a1a8c844083ee6c56dd7bc1b2**: bốn nhóm emulator thực nghiệm 34 tệp PMTiles cấp tỉnh, dùng bản gốc artifact run 43378133931 và ledger SHA+byte, nhập SAF thật, bật chế độ máy bay, đếm pixel, lưu PNG/log; không phát hành dữ liệu. Workflow **43391332272**, build chung PASS, 4 jobs tỉnh đang chạy tại checkpoint; **CHƯA chứng minh 34/34 Android**. Trước đó chỉ **3/35** tệp lớn đã được kiểm ảnh (Bắc Ninh, Hà Nội, HCM).
+- Run Android hồi quy mới 43391332249 và Bắc Ninh 43391332168 khởi động theo commit, chưa xác minh kết luận. Gói toàn VN 556.229.998 byte chưa test thiết bị; không có HTTPS URL lâu dài, Range resume, Xiaomi, điều hướng hay ranh giới phê duyệt. Main vẫn giữ an toàn; mỗi phiên phải kiểm lại HEAD.

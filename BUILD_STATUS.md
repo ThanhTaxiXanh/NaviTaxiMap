@@ -103,3 +103,7 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 ## Latest 2026-11-13 status
 - 43388632601: build/JVM SUCCESS but emulator-smoke FAILURE (synthetic PMTiles 0 colored pixels on one screenshot). Total result FAILURE, not PASS.
 - Commit fddd00b5 adjusts test synchronization only (no lowered pixel thresholds) and triggered 43389395898, currently pending. Separate genuine Shortbread jobs 43387711796 and 43387711798 remained full SUCCESS.
+
+## 2026-11-13 CI checkpoint
+- Run 43389395898 **ALL SUCCESS**, including both jobs, resolves two previous flaky MapLibre screenshot failures without weakening pixel checks; synthetic 39,985 and original small Hanoi roads 58,015 pixels.
+- Run 43391332272: initial build/JUnit SUCCESS; four independent emulator shards assigned 34/34 original provincial PMTiles, not yet complete. Other CI on new SHA includes 43391332249 normal Android and 43391332168 Bắc Ninh; still pending at writing.

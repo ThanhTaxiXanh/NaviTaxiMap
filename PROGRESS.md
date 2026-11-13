@@ -85,3 +85,7 @@
 ## Android regression flake follow-up
 - 43388632601 build/JVM SUCCESS, emulator FAILED with 0 synthetic offline vector pixels on single screenshot. Earlier 43387711858 failed with 0 real Hanoi pilot pixels.
 - fddd00b5 adds bounded asynchronous MapLibre screenshot polling for synthetic test as well as existing real road sample polling. 43389395898 launched, result not yet verified. Existing 3/35 real Shortbread regional PASS unaffected.
+
+## 2026-11-13 15:10 verified Android regression / full province coverage in progress
+- **PASS:** run 43389395898 full debug Android + emulator; synthetic 39,985 colored pixels, real OSM tiny Hanoi 58,015 pixels, other regression UI/import checks PASS.
+- 32ff2139 adds four-shard original 34-province Android true-source SHA/SAF/airplane-mode pixel test; run 43391332272 compile PASS, awaiting all 34 per-province results, do not count any unverified regions yet.

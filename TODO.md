@@ -73,3 +73,8 @@
 ## Full Android emulator strict evidence next
 - [ ] Inspect result and logs for 43389395898 (fddd00b5), with bounded retry screenshots for both synthetic and real Hanoi pilots. Do not mark PASS before both genuine vector pixel assertions pass.
 - [ ] If still red, inspect local PMTiles lifecycle and MapLibre thread/source status, retain screenshot and log artifacts for diagnostic reproduction.
+
+## 2026-11-13 15:10 next steps
+- [x] Validate final screenshot retry fix via all-success Android run 43389395898, including synthetic PMTiles and real tiny OSM Hanoi pixels.
+- [ ] Read complete results for four-shard 34-province run 43391332272; prove each with original SHA, SAF and offline screenshot. Update coverage numerator only from successful individual gói, not from workflow startup.
+- [ ] After coverage, inspect 556,229,998-byte national PMTiles import on Android with bounded streaming verification and urban street view. National and physical Xiaomi not tested; no approved distribution host or navigation rights.
