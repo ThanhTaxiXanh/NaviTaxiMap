@@ -143,3 +143,7 @@
 ## 2026-11-14 Python test discovery error isolated, original pack data verified
 - Initial Android run 43526690969 failed: replacing specific `-p test_android_shortbread.py` with `-p test_*.py` made unittest load `tools/vietnam34/test_pipeline.py`, which imports `shapely` absent in Android runner; seven new `test_preservation_receipt` cases all PASS. Not a data loss nor a failed map hash. Fix 8d6f17462 runs explicit two unittest modules independently.
 - Real 35 original PMTiles ZIP artifact verifier CI 43526911330 SUCCESS, 843734803 bytes; only 2872 bytes receipt uploaded; do not misstate this as true backup.
+
+
+## 2026-11-14 06:33 ICT Shapely CI issue closed
+- Android CI 43526690969, 43526911079 failed because `-p test_*.py` imported `test_pipeline.py` from tools/vietnam34 requiring `shapely` that is not installed by Android workflow. All 7 preservation tests themselves succeeded. Fixed in 8d6f17462 with explicitly separate two test modules; 43527115725 SUCCESS across build/JUnit AND emulator, verified via job log. Data SHA correct; no PMTiles regression.

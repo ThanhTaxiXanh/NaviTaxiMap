@@ -167,3 +167,9 @@ Real OSM pilot source snapshot: workflow https://github.com/ThanhTaxiXanh/NaviTa
 - New Python CLI `tools/vietnam34/verify_private_preservation.py` reads both original GitHub artifacts or downloaded/extracted local copies WITHOUT upload or extraction. Checks 35 pinned file names and codes from PACK_BYTES_VERIFIED.tsv cross-consistent with SHA256SUMS, byte sizes, full 1MiB-stream SHA256 and PMTiles v3 8-byte magic; rejects directory symlink, ZIP traversal, duplicate/extra/missing PMTiles. Optional metadata-only JSON receipt with 0600 mode. Tests `test_preservation_receipt.py` mock zip/directories/attacks.
 - Actual real 843,734,803 original PMTiles bytes verified in new workflow 43526911330 **SUCCESS**, only receipt ZIP artifact id 14085237703 (~2.9k) uploaded. NO enduring private backup made; original 34 + VN source artifacts run 43378133931 expire Nov 27 2026 around 06:25 UTC. Manual backup guidance `PRIVATE_ORIGINAL_BACKUP.md`.
 - Android CI initial 43526690969 FAILED because test glob included Shapely-dependent test_pipeline. Narrowed patterns to two independent unittest modules in 8d6f17462. New Android 43527115725 pending at checkpoint. No approved distribution, routing, or legal borders.
+
+
+## 2026-11-14 06:33 ICT two final green workflows
+- Original ZIP/source validation 43526911330 SUCCESS, 35/35 source files 843734803 bytes exact size, SHA, PMTiles magic; metadata-only 2872-byte receipt, not original archive backup.
+- Android code+emulator regression 43527115725 SUCCESS both jobs following isolated Python test patterns, including UI offline geometry, SAF SHA fixture and OSM Hanoi attribution.
+- Source 34+national GitHub original artifacts expire 2026-11-27 ~06:25 UTC; owner-approved PRIVATE durable backup still outstanding. `PRIVATE_ORIGINAL_BACKUP.md` and CLI enable offline verification after manual download. No download/distribution approved.

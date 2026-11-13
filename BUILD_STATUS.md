@@ -184,3 +184,9 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 ## 2026-11-14 06:29 ICT full original archive recheck
 - Private preservation QA [43526911330](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43526911330) **SUCCESS** on all 35 original files; 843734803 bytes SHA/PMTiles magic verified, receipt-only 2872-byte artifact 14085237703.
 - Android 43526690969 **FAIL** due CI unittest glob unexpectedly loading tools/vietnam34/test_pipeline.py which requires optional Shapely; seven preservation tests passed. Android CI narrowed patterns in commit 8d6f17462; rerun 43527115725 **PENDING**. Pre-existing Android 43471067313 fully SUCCESS.
+
+
+## 2026-11-14 06:33 ICT both workflows green
+- 43526911330 private original artifact source verifier **SUCCESS** 35/35 exact SHA+size+header over 843734803 bytes; evidence only 2872-byte metadata ZIP.
+- 43527115725 Android debug **SUCCESS** and emulator smoke **SUCCESS**; script test discovery no longer imports Shapely pipeline. Earlier duplicate failed runs 43526690969/43526911079 from optional dependency misselection now resolved.
+- 43454411678 34 provinces + 43454411510 national 556MB real offline preview remain SUCCESS, previously verified. No public downloads.

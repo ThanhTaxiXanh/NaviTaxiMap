@@ -179,3 +179,10 @@
 - [ ] **Before 2026-11-27 06:25 UTC**, save BOTH original artifacts (14015875271, 14015113186) to an owner-approved PRIVATE durable destination, verify the copies with script. Do NOT upload to Releases/CDN/repo/third-party public service; ask owner for private storage approval if needed.
 - [ ] Confirm Android CI 43527115725 after isolating from optional Shapely pipeline tests.
 - [ ] Long-term ODbL rights/attribution, durable reviewed HTTPS hosting and manifest, network opt-in UI, Xiaomi physical QA and navigation-ready routing remain unapproved.
+
+
+## 2026-11-14 06:33 ICT latest verified checklist
+- [x] Verify full actual source 35/35 in workflow 43526911330: 843734803 streamed original PMTiles bytes, SHA and PMTiles v3, metadata-only 2872-byte receipt.
+- [x] Close Android Python test glob failure: workflow 43527115725 full build/JUnit and emulator SUCCESS after 8d6f17462; no added dependency or relaxed tests.
+- [ ] PRIORITY: before 2026-11-27 06:25 UTC, download/save BOTH 34-region and 556MB national original artifact ZIPs in **owner-approved private persistent storage** and run local verification against saved copies. CI receipt is not a backup. Do not publish externally without consent and ODbL legal review.
+- [ ] Review ODbL redistribution, sustainable HTTPS server, immutable manifest, consent-based downloads, Xiaomi device and routing/legality as separate gates. Keep distributionApproved=false and source registry empty.

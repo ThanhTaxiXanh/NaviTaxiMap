@@ -63,3 +63,8 @@ Các tệp Geofabrik OSM Shortbread 1.0 là dữ liệu thử nghiệm xem offli
 Không suy ra dữ liệu địa giới Việt Nam, bản đồ dẫn đường hoặc quyền phân phối.
 Mọi hosting, mở tải trong ứng dụng, sao lưu lên cloud hay phát hành cần
 quyết định của chủ dự án và đánh giá ODbL/nguồn dữ liệu trước.
+
+
+## Kết quả sau kiểm thử nguồn và Android
+- Full-original verification `43526911330`: SUCCESS, 35/35 file, 843.734.803 byte, biên bản metadata-only ID 14085237703.
+- Android workflow `43527115725`: SUCCESS hai jobs, gồm 7 bài kiểm thử verifier và test bản đồ/SHA SAF/emulator. **Hai ZIP chứa PMTiles vẫn chưa được bảo quản tại nơi lưu trữ riêng tư lâu dài** bằng công cụ này. Giữ nguyên hành động tải hai ZIP gốc thủ công trước 27/11/2026.

@@ -162,3 +162,9 @@
 - Real source artifact recheck 43526911330 **SUCCESS** 35 archives, 843,734,803 bytes streamed with SHA & PMTiles v3 headers, evidence artifact 14085237703 only metadata (<3k ZIP), no data republished.
 - Added manual local ZIP/folder verification tool and seven Python tests, independent of Shapely. Android CI first run 43526690969 failed due accidental Shapely-dependent test discovery, corrected by 8d6f17462. New 43527115725 still in progress.
 - No durable backup of original PMTiles and no source hosting approval. Original source artifacts expire Nov 27 2026 UTC; user must approve private storage destination to retain bytes.
+
+
+## 2026-11-14 06:33 ICT completed preservation QA and Android regression
+- **43526911330 SUCCESS**: verify 35 original files full SHA, exact 843734803 bytes, PMTiles v3; upload metadata-only tiny receipt, zero new data hosting.
+- **43527115725 SUCCESS**: Android Gradle/JUnit and emulator offline PMTiles vector UI / SAF SHA / real OSM Hanoi road visual/attribution proof.
+- Outstanding human-controlled task: owner-approved private storage for both original archive ZIPs before Nov27 expiry. Receipt alone does not preserve bytes; no ODbL distribution approval.
