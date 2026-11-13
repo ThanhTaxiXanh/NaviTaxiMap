@@ -1,0 +1,310 @@
+{
+  "source": "https://baochinhphu.vn/bang-danh-muc-va-ma-so-cua-34-tinh-thanh-moi-3321-don-vi-hanh-chinh-cap-xa-moi-102250704153652947.htm",
+  "effective": "2025-07-01",
+  "authority": "Decision 19/2025/QD-TTg",
+  "province_count": 34,
+  "provinces": [
+    {
+      "code": "01",
+      "name": "Hà Nội",
+      "slug": "ha-noi",
+      "components": [
+        "Hà Nội"
+      ]
+    },
+    {
+      "code": "04",
+      "name": "Cao Bằng",
+      "slug": "cao-bang",
+      "components": [
+        "Cao Bằng"
+      ]
+    },
+    {
+      "code": "08",
+      "name": "Tuyên Quang",
+      "slug": "tuyen-quang",
+      "components": [
+        "Tuyên Quang",
+        "Hà Giang"
+      ]
+    },
+    {
+      "code": "11",
+      "name": "Điện Biên",
+      "slug": "dien-bien",
+      "components": [
+        "Điện Biên"
+      ]
+    },
+    {
+      "code": "12",
+      "name": "Lai Châu",
+      "slug": "lai-chau",
+      "components": [
+        "Lai Châu"
+      ]
+    },
+    {
+      "code": "14",
+      "name": "Sơn La",
+      "slug": "son-la",
+      "components": [
+        "Sơn La"
+      ]
+    },
+    {
+      "code": "15",
+      "name": "Lào Cai",
+      "slug": "lao-cai",
+      "components": [
+        "Lào Cai",
+        "Yên Bái"
+      ]
+    },
+    {
+      "code": "19",
+      "name": "Thái Nguyên",
+      "slug": "thai-nguyen",
+      "components": [
+        "Thái Nguyên",
+        "Bắc Kạn"
+      ]
+    },
+    {
+      "code": "20",
+      "name": "Lạng Sơn",
+      "slug": "lang-son",
+      "components": [
+        "Lạng Sơn"
+      ]
+    },
+    {
+      "code": "22",
+      "name": "Quảng Ninh",
+      "slug": "quang-ninh",
+      "components": [
+        "Quảng Ninh"
+      ]
+    },
+    {
+      "code": "24",
+      "name": "Bắc Ninh",
+      "slug": "bac-ninh",
+      "components": [
+        "Bắc Ninh",
+        "Bắc Giang"
+      ]
+    },
+    {
+      "code": "25",
+      "name": "Phú Thọ",
+      "slug": "phu-tho",
+      "components": [
+        "Phú Thọ",
+        "Hòa Bình",
+        "Vĩnh Phúc"
+      ]
+    },
+    {
+      "code": "31",
+      "name": "Hải Phòng",
+      "slug": "hai-phong",
+      "components": [
+        "Hải Phòng",
+        "Hải Dương"
+      ]
+    },
+    {
+      "code": "33",
+      "name": "Hưng Yên",
+      "slug": "hung-yen",
+      "components": [
+        "Hưng Yên",
+        "Thái Bình"
+      ]
+    },
+    {
+      "code": "37",
+      "name": "Ninh Bình",
+      "slug": "ninh-binh",
+      "components": [
+        "Ninh Bình",
+        "Hà Nam",
+        "Nam Định"
+      ]
+    },
+    {
+      "code": "38",
+      "name": "Thanh Hóa",
+      "slug": "thanh-hoa",
+      "components": [
+        "Thanh Hóa"
+      ]
+    },
+    {
+      "code": "40",
+      "name": "Nghệ An",
+      "slug": "nghe-an",
+      "components": [
+        "Nghệ An"
+      ]
+    },
+    {
+      "code": "42",
+      "name": "Hà Tĩnh",
+      "slug": "ha-tinh",
+      "components": [
+        "Hà Tĩnh"
+      ]
+    },
+    {
+      "code": "44",
+      "name": "Quảng Trị",
+      "slug": "quang-tri",
+      "components": [
+        "Quảng Trị",
+        "Quảng Bình"
+      ]
+    },
+    {
+      "code": "46",
+      "name": "Huế",
+      "slug": "hue",
+      "components": [
+        "Huế",
+        "Thừa Thiên Huế"
+      ]
+    },
+    {
+      "code": "48",
+      "name": "Đà Nẵng",
+      "slug": "da-nang",
+      "components": [
+        "Đà Nẵng",
+        "Quảng Nam"
+      ]
+    },
+    {
+      "code": "51",
+      "name": "Quảng Ngãi",
+      "slug": "quang-ngai",
+      "components": [
+        "Quảng Ngãi",
+        "Kon Tum"
+      ]
+    },
+    {
+      "code": "52",
+      "name": "Gia Lai",
+      "slug": "gia-lai",
+      "components": [
+        "Gia Lai",
+        "Bình Định"
+      ]
+    },
+    {
+      "code": "56",
+      "name": "Khánh Hòa",
+      "slug": "khanh-hoa",
+      "components": [
+        "Khánh Hòa",
+        "Ninh Thuận"
+      ]
+    },
+    {
+      "code": "66",
+      "name": "Đắk Lắk",
+      "slug": "dak-lak",
+      "components": [
+        "Đắk Lắk",
+        "Phú Yên"
+      ]
+    },
+    {
+      "code": "68",
+      "name": "Lâm Đồng",
+      "slug": "lam-dong",
+      "components": [
+        "Lâm Đồng",
+        "Đắk Nông",
+        "Bình Thuận"
+      ]
+    },
+    {
+      "code": "75",
+      "name": "Đồng Nai",
+      "slug": "dong-nai",
+      "components": [
+        "Đồng Nai",
+        "Bình Phước"
+      ]
+    },
+    {
+      "code": "79",
+      "name": "Hồ Chí Minh",
+      "slug": "ho-chi-minh",
+      "components": [
+        "Hồ Chí Minh",
+        "Bình Dương",
+        "Bà Rịa - Vũng Tàu"
+      ]
+    },
+    {
+      "code": "80",
+      "name": "Tây Ninh",
+      "slug": "tay-ninh",
+      "components": [
+        "Tây Ninh",
+        "Long An"
+      ]
+    },
+    {
+      "code": "82",
+      "name": "Đồng Tháp",
+      "slug": "dong-thap",
+      "components": [
+        "Đồng Tháp",
+        "Tiền Giang"
+      ]
+    },
+    {
+      "code": "86",
+      "name": "Vĩnh Long",
+      "slug": "vinh-long",
+      "components": [
+        "Vĩnh Long",
+        "Bến Tre",
+        "Trà Vinh"
+      ]
+    },
+    {
+      "code": "91",
+      "name": "An Giang",
+      "slug": "an-giang",
+      "components": [
+        "An Giang",
+        "Kiên Giang"
+      ]
+    },
+    {
+      "code": "92",
+      "name": "Cần Thơ",
+      "slug": "can-tho",
+      "components": [
+        "Cần Thơ",
+        "Hậu Giang",
+        "Sóc Trăng"
+      ]
+    },
+    {
+      "code": "96",
+      "name": "Cà Mau",
+      "slug": "ca-mau",
+      "components": [
+        "Cà Mau",
+        "Bạc Liêu"
+      ]
+    }
+  ]
+}

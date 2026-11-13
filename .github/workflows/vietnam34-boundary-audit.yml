@@ -1,0 +1,57 @@
+name: One-time Vietnam OSM admin4 boundary and source audit (NO map release)
+
+on:
+  push:
+    branches:
+      - 'develop/**'
+    paths:
+      - '.github/workflows/vietnam34-boundary-audit.yml'
+permissions:
+  contents: read
+jobs:
+  source-and-boundary-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install OSM boundary geometry extractor
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq osmium-tool
+      - name: Fetch ONE Geofabrik Vietnam OSM PBF snapshot, bounded
+        run: |
+          mkdir -p /tmp/navitaxi-vn34
+          curl --fail --location --retry 2 --connect-timeout 25 --max-time 650 \
+            https://download.geofabrik.de/asia/vietnam-latest.osm.pbf \
+            -o /tmp/navitaxi-vn34/vietnam.osm.pbf
+          python3 - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          p=Path("/tmp/navitaxi-vn34/vietnam.osm.pbf")
+          assert 200_000_000 < p.stat().st_size < 430_000_000, "Unexpected PBF size"
+          sha=hashlib.sha256(p.read_bytes()).hexdigest()
+          Path("vietnam34-boundary-audit").mkdir(exist_ok=True)
+          Path("vietnam34-boundary-audit/pbf-source.json").write_text(
+            json.dumps({"source":"https://download.geofabrik.de/asia/vietnam-latest.osm.pbf",
+                        "bytes":p.stat().st_size,"sha256":sha,
+                        "attribution":"© OpenStreetMap contributors",
+                        "license":"ODbL 1.0",
+                        "status":"BOUNDARY AUDIT ONLY; NO APPROVED PROVINCE GEOMETRY"},
+                        indent=2))
+          print("PBF snapshot bytes",p.stat().st_size,"SHA256",sha)
+          PY
+      - name: Extract OSM admin4 relations WITH referenced geometry
+        run: |
+          osmium tags-filter /tmp/navitaxi-vn34/vietnam.osm.pbf \
+            r/admin_level=4 -o /tmp/navitaxi-vn34/admin4.osm.pbf
+          osmium export /tmp/navitaxi-vn34/admin4.osm.pbf \
+            --geometry-types=polygon --attributes=id -f geojsonseq \
+            -o /tmp/navitaxi-vn34/admin4.geojsonseq
+          python3 tools/vietnam34/audit_osm_boundaries.py \
+            /tmp/navitaxi-vn34/admin4.geojsonseq vietnam34-boundary-audit
+      - name: Preserve OSM admin4 audit result and source fingerprints
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Vietnam34-OSM-boundary-source-audit-UNREVIEWED
+          path: vietnam34-boundary-audit/
+          if-no-files-found: warn
+          retention-days: 14
