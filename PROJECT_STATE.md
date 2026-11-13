@@ -47,3 +47,10 @@ Real OSM pilot source snapshot: workflow https://github.com/ThanhTaxiXanh/NaviTa
 - Android now includes SHA-pinned 35-pack manually imported preview catalog plus local Shortbread 1.0 style (streets/land/water/buildings). Existing tiny Hanoi road-only pilot preserved. Files are not bundled into APK.
 - New Android CI 43385141310 and real Bac Ninh SAF import / airplane-mode pixel CI 43385141410 are PENDING, not PASS at time of checkpoint.
 - OSM Shortbread packs and derived technical admin polygons are NOT road-routing, legal boundaries or approved distribution. No long-lived trusted 35-pack download URL, resume, labels, routing, traffic, Xiaomi tests or release.
+
+
+## Real Bắc Ninh Shortbread Android renderer VERIFIED (2026-11-13, limited scope)
+- GitHub Actions run 43385141410 (commit 4a55a873) SUCCESS: full Gradle debug build/JVM tests, SHA-pinned province artifact retrieval, native Android DocumentsUI import into app-private storage, airplane-mode MapLibre Shortbread 1.0 style and road-pixel screenshot checks.
+- Imported **24-bac-ninh.pmtiles**, exactly **11,049,420 bytes**, sha256 6edc513adf8b8ad467982e818dc3450fcbbb14076ca2bf4bac352f1b9ca9ee7f; 266,196 Shortbread road-color pixels measured in screenshot central viewport.
+- Screenshot and XML/log evidence: run 43385141410, artifact 14017389861, expiring 2026-11-27.
+- Only **one** of 35 regional archives is proven rendered by Android; all 35 SHA entries are pinned/compared to tool SHA256SUMS in unit tests. Nationwide render, other 33 provinces, label glyphs, network updates and Xiaomi remain unverified.

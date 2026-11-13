@@ -133,3 +133,9 @@ Cần chú ý: OpenFreeMap chỉ là online prototype. Không cào hàng loạt 
 - Commit 4a55a873 thêm danh mục 35 SHA ghim, style offline Shortbread 1.0 không font/sprite/địa giới, UI xem sau nhập SAF, bộ test Kotlin/Python và QA emulator Bắc Ninh bằng PMTiles thật. Mẫu Hà Nội cũ được giữ.
 - CI feature mới 43385141310 (Android) và 43385141410 (Bắc Ninh offline pixel) chưa có kết quả PASS tại checkpoint. Phải kiểm lại trạng thái và sửa nếu thất bại.
 - Chưa có kho HTTPS bền vững, tải 35 gói từ app, Range resume, phê duyệt giấy phép, dẫn đường, ranh giới pháp lý hay thử Xiaomi. Không sửa main, PR, merge, release.
+
+
+## Bổ sung bằng chứng thực: Shortbread Bắc Ninh 13/11/2026
+- **BẮC NINH OFFLINE ANDROID VERIFIED**, CI https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43385141410 SUCCESS; artifact chứng cứ https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43385141410/artifacts/14017389861.
+- Tệp gốc 24-bac-ninh.pmtiles: 11.049.420 byte, SHA-256 6edc513adf8b8ad467982e818dc3450fcbbb14076ca2bf4bac352f1b9ca9ee7f. Qua DocumentsUI SAF, kiểm lại byte/SHA và render trong airplane mode; screenshot có 266.196 pixel màu đường Shortbread. Có ghi công OSM/ODbL và KHÔNG dẫn đường.
+- Đây là **1/35 gói đã kiểm pixel trên Android**, không phải 35/35. Danh mục SHA 35 gói đã tích hợp nhưng chưa có luồng tải 35 HTTPS; style không font/sprite, không có lớp địa giới pháp lý. Android hồi quy tổng thể 43385141310 còn chờ ở thời điểm bổ sung.

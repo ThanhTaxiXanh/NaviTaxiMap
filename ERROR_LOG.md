@@ -44,3 +44,8 @@
 ## 2026-11-13 unresolved Shortbread risks
 - The new real Bac Ninh emulator screenshot evidence is not yet available; static style validation does not prove visual compatibility.
 - GitHub Actions artifact data expires on 2026-11-27. In-app downloads blocked without durable approved distribution hosting. SHA matching is not ODbL/legal-border/navigation approval.
+
+
+## 2026-11-13 Shortbread test result
+- Resolved for limited real Bắc Ninh preview: static style compatibility uncertainty; CI 43385141410 verified genuine road pixels with internet disabled, correct SHA and OpenStreetMap attribution.
+- Still OPEN: 34 other Android archives not pixel-tested; ODbL distribution/sovereignty review, durable download host and resume, offline labels, Xiaomi hardware.

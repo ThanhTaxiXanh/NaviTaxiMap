@@ -9,3 +9,7 @@ Android user flow: import an original PMTiles archive with Data menu -> import f
 CI: Android debug workflow runs Kotlin unit tests and Python static schema/catalog tests. Dedicated android-shortbread-35-smoke workflow retrieves the previously generated 34-province artifact, checks actual Bắc Ninh PMTiles SHA-256, drives Android DocumentsUI SAF import and on-device SHA readback, switches to airplane mode, renders map and checks screenshot road-color pixel count, attribution and no-navigation warning. Only report PASS after CI 43385141310 and 43385141410 conclude successfully with evidence.
 
 Unfinished: durable approved storage/download URLs, exact size-pinned resumable download, legality/ODbL audit, physical Xiaomi, nationwide coverage pixel tests, POI labels and routing. Artifacts expire 2026-11-27. Main/PR/merge/release remain prohibited without owner's approval.
+
+
+## Verified limited milestone
+Run 43385141410 completed SUCCESS. Artifact: https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43385141410/artifacts/14017389861. The real 24-bac-ninh.pmtiles has exactly 11,049,420 bytes and sha256 6edc513adf8b8ad467982e818dc3450fcbbb14076ca2bf4bac352f1b9ca9ee7f. Android SAF imported it, offline style drew 266,196 road-color pixels, OSM attribution and no-navigation warning were exposed while airplane mode was enabled. This proves one regional renderer, not 35/35 maps or routing readiness.

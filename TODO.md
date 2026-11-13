@@ -42,3 +42,9 @@
 - [ ] Inspect 43385141310 Android and 43385141410 real Bac Ninh in-airplane-mode screenshot pixel CI; fix any failures before claiming DONE.
 - [ ] Confirm 35-pack byte-accurate sizes from generated manifest and establish legal, durable, immutable distribution endpoints before enabling downloads.
 - [ ] Test all remaining regional archives, local glyphs/labels, boundary safeguards, ODbL rights and physical Xiaomi.
+
+
+## 2026-11-13 verified milestone update
+- [x] Render ONE real regional Shortbread 1.0 PMTiles (Bắc Ninh) in Android emulator airplane mode with SHA/SAF/pixel/license evidence, CI 43385141410 PASS (266,196 pixels).
+- [ ] Wait for standard Android regression CI 43385141310 to complete and record actual result.
+- [ ] Extend actual Android pixel QA to other 33 provincial archives and national 556MB archive, optimize storage and memory before marking 35/35 rendered.

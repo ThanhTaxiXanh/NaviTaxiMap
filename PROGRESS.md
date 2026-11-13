@@ -59,3 +59,8 @@
 - Commit 4a55a873: 35-entry SHA-pinned manually imported catalog, offline-only MapLibre Shortbread style, Android menu, separate real Bac Ninh emulator workflow, and Kotlin/Python tests.
 - Old Hanoi real-road preview retained. CI 43385141310 (Android) and 43385141410 (Shortbread) pending; do not mark DONE.
 - Open: stable licensed hosting, integrity-pinned sizes for in-app downloading, Range resume, local fonts/labels, ODbL audit and physical Xiaomi QA.
+
+
+## 2026-11-13 real Android Shortbread QA verification
+- Run 43385141410 all jobs SUCCESS with one real Bắc Ninh 11,049,420 byte PMTiles. DocumentsUI imported exact file/hash; offline renderer displayed 266,196 blue road-color pixels in airplane-mode screenshot. ODbL attribution and KHÔNG dẫn đường warning asserted.
+- Evidence artifact 14017389861. Existing full Android regression run 43385141310 was still in progress at this checkpoint.

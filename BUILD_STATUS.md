@@ -72,3 +72,10 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 - Existing Android CI 43379440694 SUCCESS; Geofabrik real 35-pack generation 43378133931 SUCCESS; independent checksum 43379440781 SUCCESS.
 - New feature commit 4a55a873, Android run 43385141310 and real Shortbread emulator run 43385141410: IN PROGRESS at checkpoint. Do NOT report successful new map rendering without pixel evidence.
 - No main edits, PR, merge, production APK signing or release.
+
+
+## Actual Shortbread Android proof
+- Dedicated real-pack emulator run https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43385141410: SUCCESS on feature commit 4a55a873.
+- SHA verified for 24-bac-ninh.pmtiles (11,049,420 bytes, SHA 6edc513adf8b8ad467982e818dc3450fcbbb14076ca2bf4bac352f1b9ca9ee7f).
+- Android DocumentsUI actual import and on-device bytes SHA PASS; airplane-mode style callback/visible attribution/warning and 266,196 road-color screenshot pixels PASS.
+- Evidence: https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43385141410/artifacts/14017389861. Standard Android full regression 43385141310 still pending on this update.
