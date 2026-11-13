@@ -53,6 +53,35 @@ class OriginalArchivePreservationTest(unittest.TestCase):
         self.assertEqual(34, sum(r["code"] != "VN" for r in ledger))
         self.assertEqual(1, sum(r["code"] == "VN" for r in ledger))
 
+    def test_metadata_pin_and_android_catalog_must_match(self):
+        """The SHA manifest and ledger must agree with pinned Android code."""
+        import shutil
+        repo_root = Path(__file__).resolve().parents[2]
+        mirrored = self.root / "tools" / "vietnam34"
+        mirrored.mkdir(parents=True)
+        for name in ("PACK_BYTES_VERIFIED.tsv", "SHA256SUMS.txt"):
+            shutil.copyfile(
+                repo_root / "tools" / "vietnam34" / name, mirrored / name
+            )
+        catalog = self.root / "app/src/main/java/vn/navitaximap/data"
+        catalog.mkdir(parents=True)
+        shutil.copyfile(
+            repo_root / "app/src/main/java/vn/navitaximap/data/Vietnam35Catalog.kt",
+            catalog / "Vietnam35Catalog.kt",
+        )
+        self.assertEqual(35, len(pinned_ledger(mirrored)))
+        # Change one hash in BOTH text manifests: their mutual equality is
+        # insufficient. The independent Android catalog must reject the drift.
+        ledger = mirrored / "PACK_BYTES_VERIFIED.tsv"
+        sums = mirrored / "SHA256SUMS.txt"
+        original = "6edc513adf8b8ad467982e818dc3450fcbbb14076ca2bf4bac352f1b9ca9ee7f"
+        replacement = "0" * 64
+        self.assertNotEqual(original, replacement)
+        ledger.write_text(ledger.read_text().replace(original, replacement))
+        sums.write_text(sums.read_text().replace(original, replacement))
+        with self.assertRaisesRegex(ValueError, "Android catalog differs"):
+            pinned_ledger(mirrored)
+
     def test_nested_original_zip_streams_and_metadata_only_receipt(self):
         archive = self.write_zip("province.zip", {
             "artifact/source/24-bac-ninh.pmtiles":

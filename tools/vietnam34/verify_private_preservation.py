@@ -68,6 +68,31 @@ def pinned_ledger(folder=ROOT):
         actual_sums[m.group(2)] = m.group(1)
     require(actual_sums == {n: row["sha256"] for n, row in by_name.items()},
             "SHA256SUMS differs from authoritative byte ledger")
+
+    # Third independent repository pin: the actual Android catalog. Two
+    # human-editable text manifests must not silently agree on a wrong hash.
+    android_catalog = folder.parent.parent / (
+        "app/src/main/java/vn/navitaximap/data/Vietnam35Catalog.kt"
+    )
+    content = android_catalog.read_text(encoding="utf-8")
+    specs = re.findall(
+        r'VietnamRegionSpec\("([0-9]{2}|VN)", "([^"]+)", "([^"]+)", '
+        r'"([0-9a-f]{64})", ([0-9]+), 14, ([0-9]+)L\)',
+        content,
+    )
+    require(len(specs) == 35, "Android package catalog must contain 35 pinned specs")
+    by_android = {
+        file: (code, sha, int(size)) for code, _, file, sha, _, size in specs
+    }
+    require(len(by_android) == 35, "Duplicate Android package filename")
+    require(by_android == {
+        row["file"]: (row["code"], row["sha256"], int(row["size_bytes"]))
+        for row in rows
+    }, "Android catalog differs from original private archive pins")
+    require("const val distributionApproved = false" in content,
+            "Distribution approval must remain disabled for unreviewed archives")
+    require("const val navigationApproved = false" in content,
+            "Navigation approval must remain disabled for unreviewed archives")
     return rows
 
 def checked_stream(stream, *, size, sha256):
