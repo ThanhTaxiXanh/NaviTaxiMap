@@ -113,3 +113,7 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 - 43391332272 34-shard coverage overall FAIL: 01/04/08 each individually proved via SHA, SAF, airplane-mode screenshot; 11 blocked by Pixel Launcher ANR; shell loop terminated due adb reading stdin.
 - 43392189567 all four coverage emulator jobs FAIL at shell parse error line 65 caused by corrupted template string during fix; no region tests. Corrected e015ebf2 plus `bash -n` gate.
 - 43393047973 build/JUnit/static-syntax SUCCESS; 4 emulator jobs RUNNING. Count only province-specific PASS evidence, not total before final logs.
+
+## 2026-11-13 15:40 CI exact outcomes
+- 43393047973 overall **FAIL**, 34/34 original provincial archives checked, 28 PASS screenshot+SAF+SHA, six 0-road-pixel images: codes 31/46/48/56/91/96. All are NOT navigation approved.
+- 43395054211 34-province regression **PENDING** after adding grounded preview cameras ad7a8dde; related runs 43395054123 (Android debug), 43395054234 (Bắc Ninh), 43395054268 (Hà Nội + HCM) PENDING. No claim of all-green while still executing.

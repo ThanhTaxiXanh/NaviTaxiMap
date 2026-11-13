@@ -65,3 +65,7 @@
 ## 2026-11-13 four-shard Android visual QA
 - New true 34/34 province *test harness* `ci/shortbread-coverage-{shard,one}.sh` and workflow `android-shortbread-coverage.yml`, reusing original SHA-pinned provinces, mandatory SAF/airplane-mode/pixel checks. Not a production feature or approved data distribution.
 - Province-specific early verified images: Cao Bằng and Tuyên Quang now join Bắc Ninh/Hà Nội/TP.HCM, totaling 5/35; full province workflow still unproven. Test-only fixes for stdin swallowing (781644d) and corrupted shell replacement/eager syntax lint (e015ebf2).
+
+## 2026-11-13 improved real provincial visual previews
+- Four-shard 34 original archive QA 43393047973 checked all 34 provinces; 28 PASS screenshot, six blank at geographic archive midpoint. Distinct SHA data verified independently, source unchanged.
+- Visual-only product fix ad7a8dde sets known populated viewing anchors for Hai Phong, Hue, Da Nang, Khanh Hoa (Nha Trang), An Giang (Rach Gia), Ca Mau, based on city coordinates from UNGEGN/GeoNames/UNT; no changes to jurisdiction/navigation. Strict offline real-geometry QA rerun launched.

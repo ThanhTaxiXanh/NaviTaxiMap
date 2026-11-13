@@ -93,3 +93,7 @@
 ## 2026-11-13 15:27 coverage attempt accountability
 - Additional **04 Cao Bằng** (20,026 pixels) and **08 Tuyên Quang** (32,639) passed genuine Android SAF+SHA+airplane-mode screenshots in logs of partial run 43391332272. Distinct preview evidence now **5/35**, not 34/35. 11 Điện Biên initially blocked by emulator Launcher ANR.
 - 43391332272 FAILED (stdin consumed by adb); 43392189567 FAILED before any province due shell syntax mistake; fixed e015ebf2 with `bash -n` compile gate and file descriptor separation. New 43393047973 compile PASS, four provincial jobs underway. No false claims of green overall runs.
+
+## 2026-11-13 15:40 28/34 real provincial visual PASS; retest 6 initial viewpoints
+- Completed 34-province QA 43393047973: 28 province-level SHA+SAF+offline screenshot PASS; 6 failed pixel=0 due to unverified initial view. This yields 28/35 total large archives visually proven (national still untested).
+- ad7a8dde changed visual initial camera for those six using sourced urban points, not PMTiles or checksum content; 43395054211 launched to verify strict 34/34 again. Keep legal approval false and route disabled.

@@ -84,3 +84,9 @@
 - [x] Diagnose/fix TSV stdin-consumption and accidental bash script templating corruption; introduce static `bash -n` before costly emulators, e015ebf2.
 - [ ] Verify all 4 jobs of 43393047973, enumerate PASS/FAIL for each of 34 provinces; investigate legitimate sparse-region pixel failures without lowering thresholds or inventing roads.
 - [ ] Test national 556,229,998-byte archive separately, avoid Python buffering full file; no production or distribution permission.
+
+## 2026-11-13 15:40 next technical gates
+- [x] Test actual 34/34 distinct province archives on Android via four shards and log each result: 28 genuine pixel PASS, 6 zero-pixel views in 43393047973.
+- [x] Add grounded urban preview cameras for six failing regions, preserving SHA-pinned sources and strict pixel threshold; commit ad7a8dde.
+- [ ] Verify 43395054211 on four shards after camera fix. Require all provinces each >=500 pixels and end-of-shard pass=selected before asserting 34/34.
+- [ ] Distinct nationwide 556,229,998-byte OSM PMTiles: streaming full-file storage and pixel test on emulator, no huge Python in-memory buffering; test Xiaomi later.

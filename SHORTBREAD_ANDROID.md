@@ -44,3 +44,7 @@ Despite three independently proven full region PMTiles renders (CI 43387711796 a
 ## 2026-11-13 34-province full Android QA harness status
 - Four-shard shell/CI now compiled/linted and retesting in run 43393047973. Test loops require each of 34 exact source SHA/size, native SAF picker, stored original SHA, no-network screenshot >=500 road-color pixels, OSM credit and no-navigation UI; no silent skip of untested areas.
 - Original 43391332272 partial run provided additional concrete 04 Cao Bằng (20,026 pixels) and 08 Tuyên Quang (32,639 pixels); total unique Android visual proofs now at least 5/35. Harness stdin bug and one launcher ANR caused overall fail. A follow-up 43392189567 encountered malformed generated bash, resolved with e015ebf2 plus mandatory pre-emulator bash -n. Results of active run 43393047973 must be read before extending coverage numerator.
+
+## 2026-11-13 nationwide 34-province coverage attempt
+- Full original 34-province emulator 43393047973: 28/34 per-province SHA+SAF+airplane-mode >=500 road-pixel screenshot PASS. Six archive-header-centered viewpoints yielded 0 pixels, causing strict CI FAIL, even though files were selected and imported. Do not interpret a center mismatch as incomplete underlying OSM file without additional evidence.
+- `MainActivity.kt` visual-only camera fix ad7a8dde chooses referenced urban centers for six regions, maintaining original zoom 12.3, PMTiles SHA and navigation-disabled ODbL status. Repeat CI 43395054211 pending; no success claim yet.
