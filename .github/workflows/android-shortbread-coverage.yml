@@ -27,6 +27,12 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
+      - name: Static shell and Python syntax gate before emulator
+        run: |
+          bash -n ci/shortbread-coverage-one.sh
+          bash -n ci/shortbread-coverage-shard.sh
+          bash -n ci/push-emulator-download.sh
+          python3 -m py_compile ci/saf-picker-smoke.py
       - name: Build debug and run JVM checks
         run: |
           sdkmanager "platforms;android-35" "build-tools;35.0.0"
