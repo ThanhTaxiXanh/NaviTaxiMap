@@ -15,17 +15,23 @@ class Vietnam35CatalogTest {
         assertEquals(35, entries.size)
         assertEquals(35, checks.size)
         assertEquals(checks.keys, entries.map { it.fileName }.toSet())
-        entries.forEach { assertEquals(checks[it.fileName], it.sha256) }
+        entries.forEach {
+            assertEquals(checks[it.fileName], it.sha256)
+            assertTrue(it.sizeBytes > 127L)
+        }
+        assertEquals(556_229_998L, entries.first { it.code == "VN" }.sizeBytes)
+        assertEquals(287_504_805L, entries.filter { it.code != "VN" }.sumOf { it.sizeBytes })
         assertFalse(Vietnam35Catalog.navigationApproved)
         assertFalse(Vietnam35Catalog.distributionApproved)
     }
 
     @Test fun mustMatchExactNameHashAndZoom() {
         val entry = Vietnam35Catalog.packages.first { it.code == "24" }
-        val good = LocalPackStore.Pack("id", entry.fileName, 1L, entry.sha256,
+        val good = LocalPackStore.Pack("id", entry.fileName, entry.sizeBytes, entry.sha256,
             entry.minZoom, entry.maxZoom, false)
         assertTrue(entry.matches(good))
         assertFalse(entry.matches(good.copy(name = "fake.pmtiles")))
+        assertFalse(entry.matches(good.copy(sizeBytes = entry.sizeBytes - 1)))
         assertFalse(entry.matches(good.copy(sha256 = "0".repeat(64))))
         assertFalse(entry.matches(good.copy(minZoom = 0)))
     }

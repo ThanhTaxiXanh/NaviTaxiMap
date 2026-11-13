@@ -125,11 +125,15 @@ class LocalPackStore(
     fun importPack(
         source: InputStream,
         suggestedName: String,
-        expectedSha256: String? = null
+        expectedSha256: String? = null,
+        expectedSizeBytes: Long? = null
     ): Pack {
         recoverInterruptedImports()
         if (expectedSha256 != null) {
             require(OfflinePackVerifier.isValidSha256(expectedSha256)) { "Invalid expected SHA-256" }
+        }
+        if (expectedSizeBytes != null) {
+            require(expectedSizeBytes in 127L..maxBytes) { "Invalid expected PMTiles size" }
         }
 
         val id = UUID.randomUUID().toString()
@@ -150,6 +154,11 @@ class LocalPackStore(
                         if (n < 0) break
                         if (n == 0) continue
                         require(count <= maxBytes - n) { "Offline pack exceeds the size limit" }
+                        if (expectedSizeBytes != null) {
+                            require(count <= expectedSizeBytes - n) {
+                                "Gói PMTiles vượt quá kích thước đã ghim"
+                            }
+                        }
                         checkStorageFor(n)
                         count += n
                         digest.update(buffer, 0, n)
@@ -157,6 +166,9 @@ class LocalPackStore(
                     }
                     output.fd.sync()
                 }
+            }
+            require(expectedSizeBytes == null || count == expectedSizeBytes) {
+                "Gói PMTiles không khớp kích thước đã ghim"
             }
             val hash = digest.digest().joinToString("") { "%02x".format(it) }
             if (expectedSha256 != null) {

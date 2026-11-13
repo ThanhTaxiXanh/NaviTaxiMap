@@ -1,5 +1,6 @@
 """Check that Android offline style conforms to v1.0 and catalog pins the 35 SHA lines."""
 import json
+import csv
 from pathlib import Path
 import re
 import unittest
@@ -20,9 +21,17 @@ class OfflineShortbreadTest(unittest.TestCase):
         self.assertNotIn("http", STYLE.read_text())
     def test_all_hashes_match_and_no_download_approval(self):
         content = CAT.read_text()
-        entries = re.findall(r'VietnamRegionSpec\("([0-9]{2}|VN)", "([^"]+)", "([^"]+)", "([a-f0-9]{64})", ([0-9]+), 14\)', content)
+        entries = re.findall(r'VietnamRegionSpec\("([0-9]{2}|VN)", "([^"]+)", "([^"]+)", "([a-f0-9]{64})", ([0-9]+), 14, ([0-9]+)L\)', content)
         self.assertEqual(35, len(entries))
         sums = {file: h for h,file in (row.split() for row in (ROOT / "tools/vietnam34/SHA256SUMS.txt").read_text().splitlines() if row.strip())}
-        self.assertEqual(sums, {file:sha for _,_,file,sha,_ in entries})
+        self.assertEqual(sums, {file:sha for _,_,file,sha,_,_ in entries})
+        with (ROOT / "tools/vietnam34/PACK_BYTES_VERIFIED.tsv").open() as stream:
+            ledger = list(csv.DictReader(stream, delimiter="\t"))
+        self.assertEqual(35, len(ledger))
+        self.assertEqual({row["file"]: (row["sha256"], int(row["size_bytes"]))
+                          for row in ledger},
+                         {file: (sha, int(size)) for _,_,file,sha,_,size in entries})
+        self.assertEqual(sum(int(row["size_bytes"]) for row in ledger if row["code"] != "VN"), 287_504_805)
+        self.assertEqual(sum(int(row["size_bytes"]) for row in ledger if row["code"] == "VN"), 556_229_998)
         self.assertIn("const val navigationApproved = false", content)
         self.assertIn("const val distributionApproved = false", content)

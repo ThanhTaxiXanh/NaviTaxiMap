@@ -1,0 +1,73 @@
+name: Android two more real Shortbread provinces offline QA
+on:
+  push:
+    branches: ['develop/phase0-android-maplibre']
+    paths:
+      - 'app/src/main/java/vn/navitaximap/MainActivity.kt'
+      - 'app/src/main/java/vn/navitaximap/data/Vietnam35Catalog.kt'
+      - 'app/src/main/java/vn/navitaximap/data/LocalPackStore.kt'
+      - 'ci/shortbread-multi-region.sh'
+      - '.github/workflows/android-shortbread-multi-region.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  verify-hanoi-hcm-real-packs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v4
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Compile and run JVM tests
+        run: |
+          sdkmanager "platforms;android-35" "build-tools;35.0.0"
+          gradle --no-daemon --stacktrace :app:testDebugUnitTest :app:assembleDebug
+      - name: Retrieve original independently SHA-audited province data
+        uses: actions/download-artifact@v4
+        with:
+          name: NaviTaxiMap-34-Provinces-OSM-UNREVIEWED
+          run-id: 43378133931
+          github-token: ${{ github.token }}
+          path: original-packs
+      - name: Confirm exact input archive hashes/sizes
+        run: |
+          HANOI="$(find original-packs -type f -name '01-ha-noi.pmtiles' -print -quit)"
+          HCM="$(find original-packs -type f -name '79-ho-chi-minh.pmtiles' -print -quit)"
+          test -s "$HANOI"; test -s "$HCM"
+          echo "ad6f2a78d2d7ca3d5763028965cc914195e61ec40ec4ad0b46db5d766c484139  $HANOI" | sha256sum -c -
+          echo "8a8634f1414f9953ca1fe30ce9e52cb5c8e897e3211a4637392f30094b6c214d  $HCM" | sha256sum -c -
+          echo "$HANOI" > /tmp/navitaxi-hanoi-path
+          echo "$HCM" > /tmp/navitaxi-hcm-path
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Real multi-region SAF and offline pixel screenshot assertions
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          profile: pixel_7
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+          disable-animations: true
+          script: bash ci/shortbread-multi-region.sh app/build/outputs/apk/debug/app-debug.apk "$(cat /tmp/navitaxi-hanoi-path)" "$(cat /tmp/navitaxi-hcm-path)"
+      - name: Preserve emulator screenshot/SAF evidence (not a release)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: NaviTaxiMap-Shortbread-MultiRegion-emulator-evidence
+          path: multi-region-evidence
+          retention-days: 14
+          if-no-files-found: warn

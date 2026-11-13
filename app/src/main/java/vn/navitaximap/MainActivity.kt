@@ -248,21 +248,48 @@ class MainActivity : Activity(), LocationListener {
         }
     }
 
+    private fun getDocumentSize(uri: Uri): Long? = try {
+        contentResolver.query(uri, arrayOf(OpenableColumns.SIZE), null, null, null)
+            ?.use { cursor ->
+                if (cursor.moveToFirst() && !cursor.isNull(0)) {
+                    cursor.getLong(0).takeIf { it >= 0L }
+                } else null
+            }
+    } catch (_: Exception) {
+        null // Some SAF providers do not expose sizes; streaming still checks exact bytes.
+    }
+
     private fun importUserFile(uri: Uri) {
         statusText.text = "Đang nhập PMTiles và tính SHA-256..."
         packExecutor.execute {
             val result = runCatching {
                 val name = getDocumentName(uri)
+                val region = Vietnam35Catalog.packages.firstOrNull { it.fileName == name }
+                if (region != null) {
+                    val declared = getDocumentSize(uri)
+                    require(declared == null || declared == region.sizeBytes) {
+                        "Dung lượng tài liệu không khớp gói Shortbread đã ghim"
+                    }
+                    val free = filesDir.usableSpace
+                    require(free >= region.sizeBytes + 8L * 1024 * 1024) {
+                        "Không đủ dung lượng trống để nhập gói Shortbread: " + region.label
+                    }
+                }
                 val input = contentResolver.openInputStream(uri)
                     ?: error("Cannot open selected document")
-                packStore.importPack(input, name)
+                packStore.importPack(input, name, region?.sha256, region?.sizeBytes)
             }
             runOnUiThread {
                 if (isDestroyed) return@runOnUiThread
                 result.onSuccess { pack ->
-                    statusText.text = "Đã nhập gói: ${pack.name}"
+                    val region = Vietnam35Catalog.packages.firstOrNull { it.matches(pack) }
+                    statusText.text = if (region != null) {
+                        "Đã nhận diện ${region.label}, SHA-256 và kích thước hợp lệ"
+                    } else "Đã nhập gói: ${pack.name}"
                     explain("Đã lưu PMTiles",
-                        "Đã lưu ${pack.name} • ${pack.sizeBytes / 1024} KiB • zoom ${pack.minZoom}-${pack.maxZoom}. SHA-256: ${pack.sha256}. Tệp chưa được xác minh nguồn/pháp lý; chưa kích hoạt để dẫn đường.")
+                        "Đã lưu ${pack.name} • ${pack.sizeBytes / 1024} KiB • zoom ${pack.minZoom}-${pack.maxZoom}. SHA-256: ${pack.sha256}." +
+                        if (region != null) " Danh mục Shortbread xác nhận byte/hash, nhưng KHÔNG duyệt dẫn đường, pháp lý hoặc phát hành."
+                        else " Tệp chưa được xác minh nguồn/pháp lý; chưa kích hoạt để dẫn đường.")
                 }.onFailure { error ->
                     statusText.text = "Không thể nhập PMTiles."
                     explain("Nhập không thành công", error.message ?: "File không hợp lệ.")
@@ -597,7 +624,8 @@ class MainActivity : Activity(), LocationListener {
                 if (isDestroyed) return@runOnUiThread
                 val entries = Vietnam35Catalog.packages
                 val labels = entries.map { region ->
-                    region.code + " · " + region.label +
+                    region.code + " · " + region.label + " · " +
+                        String.format(Locale.US, "%.1f MiB", region.sizeBytes / 1048576.0) +
                         if (imported.any { region.matches(it) }) " · đã nhập" else " · chưa nhập"
                 }.toTypedArray()
                 AlertDialog.Builder(this)
@@ -623,14 +651,17 @@ class MainActivity : Activity(), LocationListener {
     /** Debug-only real archive test; never silently install/download a 35-pack. */
     private fun showDebugShortbreadPreview() {
         packExecutor.execute {
-            val region = Vietnam35Catalog.packages.first { it.code == "24" }
-            val selected = packStore.listPacks().firstOrNull { region.matches(it) }
+            val code = intent.getStringExtra(EXTRA_SHORTBREAD_REGION) ?: "24"
+            val region = Vietnam35Catalog.packages.firstOrNull { it.code == code }
+            val selected = region?.let { spec ->
+                packStore.listPacks().firstOrNull { spec.matches(it) }
+            }
             runOnUiThread {
                 if (isDestroyed) return@runOnUiThread
                 if (selected == null) {
-                    statusText.text = "SHORTBREAD_TEST_MISSING: chưa nhập Bắc Ninh"
-                    Log.e("NaviTaxiMapShortbread", "SHORTBREAD_TEST_MISSING")
-                } else showVerifiedShortbread(region, selected)
+                    statusText.text = "SHORTBREAD_TEST_MISSING: " + code
+                    Log.e("NaviTaxiMapShortbread", "SHORTBREAD_TEST_MISSING code=" + code)
+                } else showVerifiedShortbread(region!!, selected)
             }
         }
     }
@@ -664,8 +695,12 @@ class MainActivity : Activity(), LocationListener {
                         offlineButton.text = "Quay về bản đồ online"
                         statusText.text = "Shortbread 1.0 · " + region.label +
                             " · © OpenStreetMap contributors (ODbL) · KHÔNG dẫn đường"
-                        val center = if (region.code == "24") LatLng(21.273, 106.196)
-                            else LatLng(header.centerLat, header.centerLon)
+                        val center = when (region.code) {
+                            "24" -> LatLng(21.273, 106.196)
+                            "01" -> LatLng(21.0285, 105.8542)
+                            "79" -> LatLng(10.7769, 106.7009)
+                            else -> LatLng(header.centerLat, header.centerLon)
+                        }
                         liveMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(
                             center, if (region.code == "VN") 5.5 else 12.3
                         ))
@@ -817,6 +852,7 @@ class MainActivity : Activity(), LocationListener {
         private const val EXTRA_OFFLINE_DEMO = "vn.navitaximap.OFFLINE_DEMO"
         private const val EXTRA_OSM_ROADS_PILOT = "vn.navitaximap.REAL_OSM_PILOT"
         private const val EXTRA_SHORTBREAD_PREVIEW = "vn.navitaximap.SHORTBREAD_PREVIEW"
+        private const val EXTRA_SHORTBREAD_REGION = "vn.navitaximap.SHORTBREAD_REGION"
         private const val STREET_STYLE_LIGHT = "https://tiles.openfreemap.org/styles/liberty"
         private const val STREET_STYLE_DARK = "https://tiles.openfreemap.org/styles/dark"
     }
