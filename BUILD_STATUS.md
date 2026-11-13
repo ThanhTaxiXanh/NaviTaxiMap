@@ -98,3 +98,8 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 - 43387711798 (two real regions): SUCCESS, Hà Nội 157,112 and TP.HCM 183,085 road-color pixels; correct size/hash/SAF.
 - 43387711858 Android debug: compile/JVM tests SUCCESS, standard emulator FAILED during old 54KB Hanoi screenshot (pixel 0; strict check retained). Existing other stages up through synthetic PMTiles and import/recovery PASS.
 - Commit 59c2192 adds bounded screenshot retries (without weakening assertions) for existing Hanoi pilot; CI 43388632601 triggered; PENDING.
+
+
+## Latest 2026-11-13 status
+- 43388632601: build/JVM SUCCESS but emulator-smoke FAILURE (synthetic PMTiles 0 colored pixels on one screenshot). Total result FAILURE, not PASS.
+- Commit fddd00b5 adjusts test synchronization only (no lowered pixel thresholds) and triggered 43389395898, currently pending. Separate genuine Shortbread jobs 43387711796 and 43387711798 remained full SUCCESS.

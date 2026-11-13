@@ -74,3 +74,9 @@ Real OSM pilot source snapshot: workflow https://github.com/ThanhTaxiXanh/NaviTa
 - Source fix commit a3e53366: re-check /sdcard/Download readiness and pushed exact byte count; real pack CI 43387711796 **SUCCESS** for Bắc Ninh again (266,196 pixels) and 43387711798 **SUCCESS** for Hà Nội (157,112) and HCM (183,085) in airplane mode.
 - Standard Android run 43387711858 **PARTIAL**: APK build and JVM/static tests SUCCESS; emulator smoke completed with FAILURE at legacy tiny Hanoi pilot screenshot (0 real-road pixels on its single 15s screenshot), after synthetic/offline, HTTPS, SAF, simulated crash recovery all PASS. Unchanged old Hanoi style; cannot call full regression green.
 - Screenshot test hardening candidate 59c2192 retries actual on-device screenshot and requires the same strict nonzero road-pixel assertion; Android CI 43388632601 PENDING. The prior 3/35 real regional Shortbread visual PASS evidence remains valid and separate from this legacy smoke failure.
+
+
+## Follow-up full regression, 2026-11-13: visual CI still under verification
+- Retest run 43388632601: Android build/JVM PASS; emulator FAILED at SYNTHETIC PMTiles screenshot on first fixed-time capture (0 vector-color pixels). This precedes the old Hanoi road-pilot screenshot check and does NOT invalidate separate 3/35 genuine Shortbread regional SUCCESS workflows.
+- CI-only fix commit fddd00b5e848d0a0442f55c010947b565d197e62 adds bounded screenshot polling to synthetic offline mode, preserving its strict original 150-pixel threshold; real Hanoi road-only already got strict 500-pixel screenshot polling in 59c2192.
+- New Android regression run 43389395898 is PENDING; do not mark the full workflow PASS until all emulator steps conclude successfully. No renderer source changes or skip of checks.

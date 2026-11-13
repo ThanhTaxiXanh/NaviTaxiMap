@@ -32,3 +32,7 @@ Not a demonstration of 35 region files rendered on device; 35 pins/catalog teste
 ## CI retest and legacy renderer status
 Real-region workflows with robust emulator storage helper are green: 43387711796 (Bắc Ninh 266,196 pixels) and 43387711798 (Hanoi 157,112, HCM 183,085). All were offline and SHA-verified, 3/35 Android real region proofs.
 Unrelated full Android smoke 43387711858 failed at legacy 54KB Hanoi screenshot (0 road pixels on one early sample) after compile/JUnit, synthetic tile tests, HTTPS and SAF/recovery steps succeeded. A strict bounded retry was added in 59c2192; full Android retest 43388632601 pending, not green. Do not infer loss or success from earlier code without new emulator evidence.
+
+
+## Pending overall Android regression
+Despite three independently proven full region PMTiles renders (CI 43387711796 and 43387711798), general Android emulator regression 43388632601 failed on a single early synthetic local PMTiles screenshot showing zero target road-color pixels. Earlier 43387711858 failed on a single early old Hanoi pilot screenshot. Both checks now use bounded pixel retry without weakening assertions (59c2192, fddd00b5); new full run 43389395898 PENDING. Do not collapse these results into a claim that all CI is green.

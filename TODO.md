@@ -68,3 +68,8 @@
 - [x] Recheck new Android single- and multi-region Shortbread real pixel workflows after emulator-storage retry: 43387711796 and 43387711798 SUCCESS; 3/35 region visuals verified.
 - [ ] Recheck Android full smoke 43388632601 after 59c2192 wait/retry screenshot amendment. Prior 43387711858 failed at single-frame Hanoi small pilot screenshot, not marked PASS.
 - [ ] If strict retry still fails, inspect MapLibre lifecycle/source/loading diagnostics; preserve known-good 54KB Hanoi mode and screenshot evidence before further feature work.
+
+
+## Full Android emulator strict evidence next
+- [ ] Inspect result and logs for 43389395898 (fddd00b5), with bounded retry screenshots for both synthetic and real Hanoi pilots. Do not mark PASS before both genuine vector pixel assertions pass.
+- [ ] If still red, inspect local PMTiles lifecycle and MapLibre thread/source status, retain screenshot and log artifacts for diagnostic reproduction.

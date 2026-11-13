@@ -162,3 +162,10 @@ Cần chú ý: OpenFreeMap chỉ là online prototype. Không cào hàng loạt 
 - Commit a3e53366 sửa race `adb push` ngay sau emulator boot, được chứng minh bằng 2 CI SUCCESS: [Bắc Ninh 43387711796](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43387711796) (266.196 pixel) và [Hà Nội + TP.HCM 43387711798](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43387711798) (157.112 + 183.085 pixel). Đủ **3/35** gói bản đồ lớn kiểm pixel Android; không phải 35/35.
 - CI full Android 43387711858 build/JVM PASS nhưng emulator FAIL vì ảnh mẫu Hà Nội 54KB đếm 0 pixel (dù trước đó đã có mốc 58.015 pixel PASS). KHÔNG ghi full CI PASS. Commit 59c2192 thêm chờ/chụp lại có giới hạn, giữ nguyên ngưỡng pixel; CI mới 43388632601 đang chạy.
 - Chưa có kho tải hợp pháp bền vững, resumable transfer, nation PMTiles 556MB kiểm emulator, 32 gói khác, Xiaomi, routing hoặc địa giới pháp lý. Giữ main/PR/merge/release không thay đổi.
+
+
+## CHECKPOINT MỚI 13/11/2026: CI hồi quy pixel chưa đóng
+- Các CI Shortbread lớn 43387711796 (Bắc Ninh) và 43387711798 (Hà Nội + Hồ Chí Minh) vẫn SUCCESS với 266.196 / 157.112 / 183.085 pixel đường, bảo toàn 3/35 gói đã chứng minh.
+- Android tổng thể 43387711858 FAIL ảnh mẫu Hà Nội 54KB 0 pixel; thử lại 43388632601 FAIL sớm ở ảnh PMTiles tổng hợp 0 pixel. Không khẳng định Android full CI xanh.
+- Các commit 59c2192 (real Hanoi) và fddd00b5 (synthetic) sửa đồng bộ CI: chờ thêm/chụp lại nhiều lần, giữ nguyên ngưỡng pixel, không bỏ kiểm thử. Đang chờ run 43389395898. Nếu tiếp tục chat mới phải kiểm run này và sửa/khảo sát renderer nếu còn lỗi.
+- Không sửa main/PR/merge/release; không có 35 gói tải trong APK hay dữ liệu dẫn đường.

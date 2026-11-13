@@ -80,3 +80,8 @@
 ## Latest 2026-11-13 CI update
 - Real northern/southern Shortbread: 43387711796 Bắc Ninh and 43387711798 Hà Nội + HCM both SUCCESS after robust emulator Download copy helper. Original 3/35 region proof intact.
 - Full Android emulator old Hanoi-only pilot regression run 43387711858 FAILED at screenshot 0 road pixels, though its build, HTTPS, synthetic, SAF/recovery checks PASS. Candidate 59c2192 adds bounded screenshot retries, still rejects absent geometry. Rerun 43388632601 PENDING.
+
+
+## Android regression flake follow-up
+- 43388632601 build/JVM SUCCESS, emulator FAILED with 0 synthetic offline vector pixels on single screenshot. Earlier 43387711858 failed with 0 real Hanoi pilot pixels.
+- fddd00b5 adds bounded asynchronous MapLibre screenshot polling for synthetic test as well as existing real road sample polling. 43389395898 launched, result not yet verified. Existing 3/35 real Shortbread regional PASS unaffected.

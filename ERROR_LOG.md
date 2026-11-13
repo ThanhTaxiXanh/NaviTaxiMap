@@ -66,3 +66,9 @@
 - Emulator /sdcard/Download not writable on cold boot from 43387058086: retested and resolved for observed jobs 43387711796 and 43387711798 with helper a3e53366; correct 11MB/17MB/18MB bytes pushed, imported and rendered.
 - New separate failure: 43387711858 standard Android emulator old real Hanoi 54KB road-only screenshot returned 0 target pixels after 15-second wait. Build passed, pinned HTTPS pilot, synthetic PMTiles, SAF import, interrupted recovery all passed. Baseline previous version returned 58,015 pixels; retain failure as unresolved until rerun.
 - Commit 59c2192 adds bounded screenshot polling after map load, does not remove test or reduce 500-pixel threshold. Retest 43388632601 PENDING; inspect log/PNG if still 0.
+
+
+## 2026-11-13 Android screenshot timing issue, still OPEN
+- Run 43387711858: real Hanoi 54KB screenshot checker returned 0 pixels on one capture. Run 43388632601: synthetic PMTiles checker returned 0 pixels on one capture, though all earlier import and HTTPS tests passed. MapLibre draw timing under GitHub virtualized emulator is suspect but not yet proven root cause.
+- 59c2192 added strict pixel retry for real Hanoi and fddd00b5 added same for synthetic, without reducing minimum thresholds or skipping geometry verification. Run 43389395898 PENDING.
+- Dedicated real Shortbread region 43387711796 / 43387711798 remains SUCCESS, with 3/35 legitimate Android visual evidence.
