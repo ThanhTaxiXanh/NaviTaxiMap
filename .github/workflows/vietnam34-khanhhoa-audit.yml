@@ -1,0 +1,51 @@
+name: One-time OSM Khánh Hòa relation full-geometry recovery audit
+
+on:
+  push:
+    branches: ['develop/**']
+    paths: ['.github/workflows/vietnam34-khanhhoa-audit.yml']
+permissions:
+  contents: read
+jobs:
+  khanh-hoa-osm-full-relation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install osmium-tool
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq osmium-tool
+      - name: Fetch only the single known Khánh Hòa OSM relation with its members
+        run: |
+          mkdir -p khanhhoa-audit
+          curl --fail --location --retry 2 --connect-timeout 20 --max-time 180 \
+            --user-agent 'NaviTaxiMap-osm-admin4-provenance/0.1 (+https://github.com/ThanhTaxiXanh/NaviTaxiMap)' \
+            --max-filesize 70000000 \
+            'https://api.openstreetmap.org/api/0.6/relation/1887959/full' \
+            -o khanhhoa-audit/khanhhoa-full.osm
+          sha256sum khanhhoa-audit/khanhhoa-full.osm | tee khanhhoa-audit/source-sha256.txt
+          wc -c khanhhoa-audit/khanhhoa-full.osm
+          osmium export khanhhoa-audit/khanhhoa-full.osm --geometry-types=polygon \
+            --attributes=id -f geojson -o khanhhoa-audit/kh-unreviewed.geojson
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          raw=json.loads(Path('khanhhoa-audit/kh-unreviewed.geojson').read_text())
+          target=[f for f in raw['features'] if
+                  (f.get('properties') or {}).get('admin_level') == '4' and
+                  'Khánh' in (f.get('properties') or {}).get('name','')]
+          print('KHANH_HOA_RELATION_SOURCE features',len(raw['features']),'target',len(target))
+          for f in target:
+            print('KHANH_HOA_FEATURE_ID',f.get('properties',{}).get('@id'),
+                  f.get('properties',{}).get('name'),
+                  f.get('geometry',{}).get('type'))
+          assert len(target)==1,'Full OSM relation does not yield one usable boundary'
+          Path('khanhhoa-audit/kh-only.geojson').write_text(json.dumps(
+            {'type':'FeatureCollection','features':target},ensure_ascii=False,separators=(',',':')))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Khánh-Hòa-OSM-full-relation-source-UNREVIEWED
+          path: khanhhoa-audit/
+          if-no-files-found: warn
+          retention-days: 14
