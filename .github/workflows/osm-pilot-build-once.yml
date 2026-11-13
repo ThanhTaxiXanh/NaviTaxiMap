@@ -1,0 +1,70 @@
+name: Convert pinned small Hanoi OSM source to PMTiles (one-time experiment)
+
+on:
+  push:
+    branches:
+      - 'develop/**'
+    paths:
+      - '.github/workflows/osm-pilot-build-once.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  build-hanoi-road-pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Recover source snapshot from verified prior run
+        uses: actions/download-artifact@v4
+        with:
+          name: Hanoi-OSM-pilot-source-UNREVIEWED
+          run-id: 43369521518
+          github-token: ${{ github.token }}
+          path: osm-pilot-source
+      - name: Validate frozen snapshot and generate local PMTiles
+        run: |
+          python3 - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          parent = Path("osm-pilot-source")
+          manifest = json.loads((parent / "source-manifest.json").read_text())
+          roads = json.loads((parent / "roads.json").read_text())
+          actual = hashlib.sha256((parent / "osm-raw.xml").read_bytes()).hexdigest()
+          assert actual == manifest["source_xml_sha256"] == roads["source_xml_sha256"]
+          assert roads["source"] == manifest["source"] and roads["bbox"] == manifest["bbox"]
+          assert manifest["road_count"] >= 20 and manifest["node_count"] >= 100
+          assert roads["attribution"] == "© OpenStreetMap contributors"
+          print("Pinned OSM XML and derived road-source SHA256 match:", actual)
+          PY
+          python3 -m unittest discover -s tools/osm_hanoi_pilot/tests -v
+          python3 tools/osm_hanoi_pilot/build_pmtiles.py \
+            --input osm-pilot-source/roads.json \
+            --output osm-pilot-build/hanoi_real_roads.pmtiles \
+            --manifest osm-pilot-build/generated-manifest.json
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64, gzip, hashlib, json
+          src = Path("osm-pilot-source/roads.json").read_bytes()
+          binary = Path("osm-pilot-build/hanoi_real_roads.pmtiles").read_bytes()
+          manifest = json.loads(Path("osm-pilot-build/generated-manifest.json").read_text())
+          assert manifest["pmtiles_sha256"] == hashlib.sha256(binary).hexdigest()
+          assert manifest["pmtiles_bytes"] == len(binary)
+          compressed = gzip.compress(src, mtime=0)
+          Path("osm-pilot-build/roads.json.gz").write_bytes(compressed)
+          assert len(binary) < 400000 and len(compressed) < 60000
+          print("PILOT_BUILD_READY tiles", manifest["tile_count"], "roads", manifest["source_road_count"],
+                "pmtiles_bytes", len(binary), "sha256", manifest["pmtiles_sha256"])
+          print("NAVITAXI_ASSET_PM_B64=" + base64.b64encode(binary).decode())
+          print("NAVITAXI_ASSET_ROADS_GZ_B64=" + base64.b64encode(compressed).decode())
+          print("NAVITAXI_MANIFEST_JSON_B64=" + base64.b64encode(Path("osm-pilot-build/generated-manifest.json").read_bytes()).decode())
+          PY
+      - name: Preserve small, unapproved road-preview files as evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: Hanoi-real-OSM-road-preview-UNREVIEWED
+          path: osm-pilot-build/
+          if-no-files-found: error
+          retention-days: 14
