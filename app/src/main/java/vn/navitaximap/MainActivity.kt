@@ -3,6 +3,13 @@ package vn.navitaximap
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Intent
+import android.content.pm.ApplicationInfo
+import android.net.Uri
+import android.provider.OpenableColumns
+import android.util.Base64
+import android.util.Base64InputStream
+import android.util.Log
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Typeface
@@ -25,6 +32,8 @@ import org.maplibre.android.maps.MapView
 import org.maplibre.android.maps.Style
 import java.util.Locale
 import vn.navitaximap.data.DemoOfflinePack
+import vn.navitaximap.data.LocalPackStore
+import java.util.concurrent.Executors
 import org.maplibre.android.style.sources.VectorSource
 import org.maplibre.android.style.layers.LineLayer
 import org.maplibre.android.style.layers.PropertyFactory.lineColor
@@ -48,6 +57,8 @@ class MainActivity : Activity(), LocationListener {
     private var trackingRequested = false
     private var darkChrome = false
     private var locationStarted = false
+    private val packExecutor = Executors.newSingleThreadExecutor()
+    private val packStore by lazy { LocalPackStore(java.io.File(filesDir, "offline-packs")) }
 
     private val locationManager by lazy {
         getSystemService(LOCATION_SERVICE) as LocationManager
@@ -64,6 +75,10 @@ class MainActivity : Activity(), LocationListener {
         root.addView(mapView, FrameLayout.LayoutParams(-1, -1))
         buildChrome(root)
         setContentView(root)
+        if ((applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0 &&
+            intent.getBooleanExtra(EXTRA_DEBUG_IMPORT_FIXTURE, false)) {
+            importDebugFixtureForSmokeTest()
+        }
 
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync { map ->
@@ -131,9 +146,7 @@ class MainActivity : Activity(), LocationListener {
         locateButton = actionButton("◎ Vị trí")
         locateButton.setOnClickListener { explainLocationPrivacy() }
         val dataButton = actionButton("Dữ liệu bản đồ")
-        dataButton.setOnClickListener {
-            explain("Trạng thái dữ liệu", "Bản đồ đường phố trực tuyến do OpenFreeMap cung cấp (OpenStreetMap), chưa có SLA. PMTiles, tìm đường, giao thông, dữ liệu 34 tỉnh/thành và hồ sơ biển đảo chưa được tích hợp hoặc phê duyệt. Không dùng màn hình thử nghiệm để điều hướng khi lái xe.")
-        }
+        dataButton.setOnClickListener { showDataMenu() }
         val bottomActions = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             setPadding(0, dp(10), 0, 0)
@@ -156,6 +169,136 @@ class MainActivity : Activity(), LocationListener {
         root.addView(bottomBar, FrameLayout.LayoutParams(-1, -2, Gravity.BOTTOM).apply {
             setMargins(dp(12), 0, dp(12), dp(14))
         })
+    }
+
+    /**
+     * ACTION_OPEN_DOCUMENT exposes only the document selected by the user.
+     * It needs no broad storage permission. Imported packs are quarantined
+     * from navigation and cannot be displayed without reviewed map styles.
+     */
+    private fun showDataMenu() {
+        AlertDialog.Builder(this)
+            .setTitle("Quản lý dữ liệu offline")
+            .setItems(arrayOf(
+                "Nhập tệp PMTiles từ thiết bị",
+                "Các gói đã nhập",
+                "Nguồn và giới hạn sử dụng"
+            )) { _, item ->
+                when (item) {
+                    0 -> {
+                        val pick = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                            addCategory(Intent.CATEGORY_OPENABLE)
+                            type = "*/*"
+                        }
+                        startActivityForResult(pick, REQUEST_PM_TILES)
+                    }
+                    1 -> showLocalPacks()
+                    else -> explain("Thông tin dữ liệu",
+                        "Nguồn online: OpenFreeMap/OpenStreetMap. Gói PMTiles người dùng chọn sẽ chỉ được lưu trong ứng dụng, kiểm tra cấu trúc và SHA-256, chưa xác minh giấy phép hay tính chính xác địa lý. Chưa có giao diện vẽ gói tự nhập vì cần style/layer được duyệt. Gói tổng hợp dùng để thử bộ đọc, không dùng dẫn đường.")
+                }
+            }.show()
+    }
+
+    @Deprecated("Uses Activity result until Activity Result API is introduced")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode != REQUEST_PM_TILES || resultCode != RESULT_OK) return
+        val uri = data?.data ?: return
+        importUserFile(uri)
+    }
+
+    private fun getDocumentName(uri: Uri): String {
+        return try {
+            contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME),
+                null, null, null)?.use { cursor ->
+                if (cursor.moveToFirst()) cursor.getString(0) else null
+            } ?: "imported.pmtiles"
+        } catch (_: Exception) {
+            "imported.pmtiles"
+        }
+    }
+
+    private fun importUserFile(uri: Uri) {
+        statusText.text = "Đang nhập PMTiles và tính SHA-256..."
+        packExecutor.execute {
+            val result = runCatching {
+                val name = getDocumentName(uri)
+                val input = contentResolver.openInputStream(uri)
+                    ?: error("Cannot open selected document")
+                packStore.importPack(input, name)
+            }
+            runOnUiThread {
+                if (isDestroyed) return@runOnUiThread
+                result.onSuccess { pack ->
+                    statusText.text = "Đã nhập gói: ${pack.name}"
+                    explain("Đã lưu PMTiles",
+                        "Đã lưu ${pack.name} • ${pack.sizeBytes / 1024} KiB • zoom ${pack.minZoom}-${pack.maxZoom}. SHA-256: ${pack.sha256}. Tệp chưa được xác minh nguồn/pháp lý; chưa kích hoạt để dẫn đường.")
+                }.onFailure { error ->
+                    statusText.text = "Không thể nhập PMTiles."
+                    explain("Nhập không thành công", error.message ?: "File không hợp lệ.")
+                }
+            }
+        }
+    }
+
+    private fun showLocalPacks() {
+        packExecutor.execute {
+            val packs = packStore.listPacks()
+            runOnUiThread {
+                if (isDestroyed) return@runOnUiThread
+                if (packs.isEmpty()) {
+                    explain("Các gói offline", "Chưa có PMTiles nào được nhập.")
+                    return@runOnUiThread
+                }
+                val labels = packs.map { "${it.name} • ${it.sizeBytes / 1024} KiB" }.toTypedArray()
+                AlertDialog.Builder(this)
+                    .setTitle("PMTiles đã nhập (chưa duyệt)")
+                    .setItems(labels) { _, index -> showPackOptions(packs[index]) }
+                    .setNegativeButton("Đóng", null).show()
+            }
+        }
+    }
+
+    private fun showPackOptions(pack: LocalPackStore.Pack) {
+        AlertDialog.Builder(this).setTitle(pack.name)
+            .setMessage("SHA-256: ${pack.sha256}\nZoom: ${pack.minZoom}-${pack.maxZoom}\nNguồn: chưa xác minh. Chưa dùng để dẫn đường.")
+            .setPositiveButton("Kiểm tra lại") { _, _ ->
+                statusText.text = "Đang xác minh gói..."
+                packExecutor.execute {
+                    val good = packStore.verifyPack(pack.id)
+                    runOnUiThread {
+                        if (!isDestroyed) {
+                            statusText.text = if (good) "SHA-256 của gói trùng bản nhập" else "Gói bị lỗi hoặc đã thay đổi"
+                        }
+                    }
+                }
+            }
+            .setNeutralButton("Xóa gói") { _, _ ->
+                AlertDialog.Builder(this).setTitle("Xóa gói PMTiles?")
+                    .setMessage("Xóa tệp đã nhập trong ứng dụng. Tệp gốc bạn đã chọn không bị xóa.")
+                    .setPositiveButton("Xóa") { _, _ ->
+                        packExecutor.execute {
+                            val removed = packStore.deletePack(pack.id)
+                            runOnUiThread {
+                                if (!isDestroyed) statusText.text =
+                                    if (removed) "Đã xóa gói offline" else "Không thể xóa toàn bộ gói"
+                            }
+                        }
+                    }
+                    .setNegativeButton("Hủy", null).show()
+            }
+            .setNegativeButton("Đóng", null).show()
+    }
+
+    private fun importDebugFixtureForSmokeTest() {
+        packExecutor.execute {
+            runCatching {
+                val input = Base64InputStream(assets.open("offline_demo.pmtiles.b64"), Base64.DEFAULT)
+                val installed = packStore.importPack(input, "Mẫu PMTiles nội bộ")
+                check(packStore.verifyPack(installed.id))
+                Log.i("NaviTaxiMapImport", "DEBUG_IMPORT_PASS bytes=${installed.sizeBytes}")
+            }.onFailure { Log.e("NaviTaxiMapImport", "DEBUG_IMPORT_FAIL", it) }
+        }
     }
 
     private fun showOnline(map: MapLibreMap) {
@@ -321,7 +464,12 @@ class MainActivity : Activity(), LocationListener {
     override fun onPause() { stopLocation(); mapView.onPause(); super.onPause() }
     override fun onStop() { mapView.onStop(); super.onStop() }
     override fun onLowMemory() { super.onLowMemory(); mapView.onLowMemory() }
-    override fun onDestroy() { stopLocation(); mapView.onDestroy(); super.onDestroy() }
+    override fun onDestroy() {
+        stopLocation()
+        packExecutor.shutdownNow()
+        mapView.onDestroy()
+        super.onDestroy()
+    }
     override fun onSaveInstanceState(outState: Bundle) {
         mapView.onSaveInstanceState(outState)
         super.onSaveInstanceState(outState)
@@ -329,6 +477,8 @@ class MainActivity : Activity(), LocationListener {
 
     companion object {
         private const val LOCATION_REQUEST = 101
+        private const val REQUEST_PM_TILES = 102
+        private const val EXTRA_DEBUG_IMPORT_FIXTURE = "vn.navitaximap.DEBUG_IMPORT_FIXTURE"
         private const val EXTRA_OFFLINE_DEMO = "vn.navitaximap.OFFLINE_DEMO"
         private const val STREET_STYLE_LIGHT = "https://tiles.openfreemap.org/styles/liberty"
         private const val STREET_STYLE_DARK = "https://tiles.openfreemap.org/styles/dark"
