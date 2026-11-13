@@ -27,6 +27,40 @@ if grep -q "FATAL EXCEPTION" smoke-evidence/runtime-errors.txt; then
 fi
 echo "Smoke PASS: installed, launched, survived 12 seconds and captured screenshot."
 
+# REAL HTTPS downloader smoke while online: a manually pinned immutable GitHub
+# raw file, not remote tile scraping or a mutable manifest. Debug-only intent.
+adb shell am force-stop vn.navitaximap
+adb logcat -c
+adb shell am start -W -n vn.navitaximap/.MainActivity \
+  --ez vn.navitaximap.DEBUG_PINNED_CATALOG_FETCH true | tee smoke-evidence/pinned-download-launch.txt
+CATALOG_NAME="hanoi-roads-visual-v1-ff932662ba47.pmtiles"
+for _try in $(seq 1 25); do
+  if adb shell run-as vn.navitaximap test -f "files/catalog-packs/$CATALOG_NAME"; then
+    break
+  fi
+  sleep 2
+done
+adb logcat -d -s NaviTaxiMapCatalog:I NaviTaxiMapCatalog:E > smoke-evidence/pinned-download-logcat.txt || true
+if ! adb shell run-as vn.navitaximap test -f "files/catalog-packs/$CATALOG_NAME"; then
+  echo "Pinned HTTPS catalog download did not install a file" >&2
+  cat smoke-evidence/pinned-download-logcat.txt >&2
+  exit 1
+fi
+adb exec-out run-as vn.navitaximap cat "files/catalog-packs/$CATALOG_NAME" > smoke-evidence/pinned-downloaded.pmtiles
+adb exec-out run-as vn.navitaximap cat "files/catalog-packs/hanoi-roads-visual.properties" > smoke-evidence/pinned-downloaded.properties
+python3 - <<'PY'
+from pathlib import Path
+import hashlib
+binary = Path("smoke-evidence/pinned-downloaded.pmtiles").read_bytes()
+props = Path("smoke-evidence/pinned-downloaded.properties").read_text()
+assert binary == Path("app/src/main/assets/hanoi_real_roads.pmtiles").read_bytes()
+assert hashlib.sha256(binary).hexdigest() == "ff932662ba476e570debd19d8323e2c9fed11dfa98322dfd39a4023ed3e0cf9d"
+assert "origin=PINNED_HTTPS" in props, f"Not downloaded through the HTTPS path: {props}"
+assert "navigationApproved=false" in props
+assert "sourceApproval=UNREVIEWED_VISUAL_PREVIEW" in props
+print("Pinned HTTPS catalog fetch PASS: 53956 bytes from immutable URL, SHA-256 pinned, NOT navigation-approved")
+PY
+
 # Second launch: verify the app's synthetic PMTiles reader without online map tiles.
 adb shell am force-stop vn.navitaximap
 adb shell cmd connectivity airplane-mode enable | tee smoke-evidence/airplane-mode.txt
@@ -182,7 +216,7 @@ assert binary == expected
 assert len(binary) == 53956
 assert hashlib.sha256(binary).hexdigest() == sha
 for item in ["id=hanoi-roads-visual", "version=1", "sha256=" + sha,
-             "origin=BUNDLED", "size=53956",
+             "origin=PINNED_HTTPS", "size=53956",
              "sourceApproval=UNREVIEWED_VISUAL_PREVIEW",
              "navigationApproved=false",
              "license=ODbL-1.0",

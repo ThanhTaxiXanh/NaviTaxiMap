@@ -85,9 +85,13 @@ class MainActivity : Activity(), LocationListener {
             }
             report.onFailure { Log.e("NaviTaxiMapRecovery", "Unable to recover incomplete packs", it) }
         }
-        if ((applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0 &&
-            intent.getBooleanExtra(EXTRA_DEBUG_IMPORT_FIXTURE, false)) {
-            importDebugFixtureForSmokeTest()
+        if ((applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
+            if (intent.getBooleanExtra(EXTRA_DEBUG_IMPORT_FIXTURE, false)) {
+                importDebugFixtureForSmokeTest()
+            }
+            if (intent.getBooleanExtra(EXTRA_DEBUG_PINNED_FETCH, false)) {
+                downloadDebugPinnedPilotForSmokeTest()
+            }
         }
 
         mapView.onCreate(savedInstanceState)
@@ -401,9 +405,9 @@ class MainActivity : Activity(), LocationListener {
                 if (isDestroyed) return@runOnUiThread
                 progress.dismiss()
                 result.onSuccess { pack ->
-                    statusText.text = "Gói Hà Nội v${pack.version} • SHA-256 hợp lệ • chỉ để xem".replace("${pack.version}", pack.version.toString())
-                    explain("Đã tải và xác minh gói",
-                        "Đã cài ${pack.sizeBytes} byte từ nguồn ghim, SHA-256 khớp. Không dùng để dẫn đường.".replace("${pack.sizeBytes}", pack.sizeBytes.toString()))
+                    statusText.text = "Gói Hà Nội v${pack.version} • SHA-256 hợp lệ • chỉ để xem"
+                    explain("Đã xác minh gói bản đồ",
+                        "Có ${pack.sizeBytes} byte từ nguồn ${pack.origin}; đã kiểm tra SHA-256. Nếu gói đã cài trước đó thì không tải lại. Không dùng để dẫn đường.")
                 }.onFailure { error ->
                     statusText.text = if (cancelled.get()) "Đã hủy tải gói." else "Không thể tải / xác minh PMTiles."
                     explain("Chưa cài gói từ mạng", error.message ?: "Lỗi kết nối hoặc checksum.")
@@ -461,6 +465,21 @@ class MainActivity : Activity(), LocationListener {
                     .setNegativeButton("Hủy", null).show()
             }
             .setNegativeButton("Đóng", null).show()
+    }
+
+
+    /** CI-only: real HTTPS code path, never silently fetched in release builds. */
+    private fun downloadDebugPinnedPilotForSmokeTest() {
+        packExecutor.execute {
+            runCatching {
+                val fetched = HanoiRoadPilot.download(this)
+                check(HanoiRoadPilot.installed(this) != null)
+                Log.i("NaviTaxiMapCatalog",
+                    "DEBUG_PINNED_FETCH_PASS bytes=${fetched.sizeBytes} origin=${fetched.origin}")
+            }.onFailure { error ->
+                Log.e("NaviTaxiMapCatalog", "DEBUG_PINNED_FETCH_FAIL", error)
+            }
+        }
     }
 
     private fun importDebugFixtureForSmokeTest() {
@@ -695,6 +714,7 @@ class MainActivity : Activity(), LocationListener {
         private const val LOCATION_REQUEST = 101
         private const val REQUEST_PM_TILES = 102
         private const val EXTRA_DEBUG_IMPORT_FIXTURE = "vn.navitaximap.DEBUG_IMPORT_FIXTURE"
+        private const val EXTRA_DEBUG_PINNED_FETCH = "vn.navitaximap.DEBUG_PINNED_CATALOG_FETCH"
         private const val EXTRA_OFFLINE_DEMO = "vn.navitaximap.OFFLINE_DEMO"
         private const val EXTRA_OSM_ROADS_PILOT = "vn.navitaximap.REAL_OSM_PILOT"
         private const val STREET_STYLE_LIGHT = "https://tiles.openfreemap.org/styles/liberty"
