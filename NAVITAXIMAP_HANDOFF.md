@@ -139,3 +139,11 @@ Cần chú ý: OpenFreeMap chỉ là online prototype. Không cào hàng loạt 
 - **BẮC NINH OFFLINE ANDROID VERIFIED**, CI https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43385141410 SUCCESS; artifact chứng cứ https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43385141410/artifacts/14017389861.
 - Tệp gốc 24-bac-ninh.pmtiles: 11.049.420 byte, SHA-256 6edc513adf8b8ad467982e818dc3450fcbbb14076ca2bf4bac352f1b9ca9ee7f. Qua DocumentsUI SAF, kiểm lại byte/SHA và render trong airplane mode; screenshot có 266.196 pixel màu đường Shortbread. Có ghi công OSM/ODbL và KHÔNG dẫn đường.
 - Đây là **1/35 gói đã kiểm pixel trên Android**, không phải 35/35. Danh mục SHA 35 gói đã tích hợp nhưng chưa có luồng tải 35 HTTPS; style không font/sprite, không có lớp địa giới pháp lý. Android hồi quy tổng thể 43385141310 còn chờ ở thời điểm bổ sung.
+
+
+## CHECKPOINT HOÀN TẤT KIỂM THỬ 13/11/2026
+- HEAD code tính năng 4a55a8734dff9f75b451cdb29414414c92a64104; các commit sau là cập nhật tài liệu [skip ci]. Toàn bộ 2 workflow của commit tính năng đã SUCCESS.
+- Android thường: https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43385141310 PASS (biên dịch, JUnit, Python, emulator; mẫu Hà Nội vẫn 58.015 pixel).
+- Bắc Ninh thật: https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43385141410 PASS (SAF, SHA-256, airplane mode, Shortbread 1.0 offline 266.196 pixel); ảnh/log trong artifact 14017389861.
+- Danh mục 35 tên/SHA trong Android đã được kiểm thử trùng tools/vietnam34/SHA256SUMS.txt; CHỈ BẮC NINH là gói Shortbread mới đã kiểm ảnh Android. KHÔNG được gọi 35/35 APK đã hiển thị, KHÔNG có tải trực tiếp 35 gói hay dẫn đường. Main SHA vẫn phải kiểm mỗi phiên, không push main/PR/merge/release.
+- Việc tiếp theo: sao lưu artifact trước 27/11/2026, thiết kế hosting miễn phí bền vững/được phép, exact size + verified download/Range resume; kiểm các gói khác và Xiaomi, ODbL và ranh giới theo nguồn pháp lý.

@@ -64,3 +64,8 @@
 ## 2026-11-13 real Android Shortbread QA verification
 - Run 43385141410 all jobs SUCCESS with one real Bắc Ninh 11,049,420 byte PMTiles. DocumentsUI imported exact file/hash; offline renderer displayed 266,196 blue road-color pixels in airplane-mode screenshot. ODbL attribution and KHÔNG dẫn đường warning asserted.
 - Evidence artifact 14017389861. Existing full Android regression run 43385141310 was still in progress at this checkpoint.
+
+
+## Concluded CI checkpoint
+- Run 43385141310: both Android build/unit-tests and standard emulator smoke jobs SUCCESS, old Hanoi pilot regression 58,015 road pixels.
+- Run 43385141410: real Bắc Ninh importer and Shortbread offline pixels SUCCESS (266,196 pixels). Next: durable distribution, resume, other 34-pack on-device verification and Xiaomi.

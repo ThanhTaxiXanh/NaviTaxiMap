@@ -49,3 +49,8 @@
 ## 2026-11-13 Shortbread test result
 - Resolved for limited real Bắc Ninh preview: static style compatibility uncertainty; CI 43385141410 verified genuine road pixels with internet disabled, correct SHA and OpenStreetMap attribution.
 - Still OPEN: 34 other Android archives not pixel-tested; ODbL distribution/sovereignty review, durable download host and resume, offline labels, Xiaomi hardware.
+
+
+## Resolved QA scope, 2026-11-13
+- Both new CI 43385141310 and 43385141410 succeeded. No observed regression in existing Android smoke tests; old real Hanoi pilot still 58,015 rendered local-road pixels.
+- Remaining unverified items are not errors marked resolved: 34 other on-device PMTiles, physical Xiaomi, 35-pack long-term HTTPS hosting, resumable downloads, label fonts, ODbL/legal-boundary release audit.

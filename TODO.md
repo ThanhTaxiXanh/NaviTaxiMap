@@ -48,3 +48,9 @@
 - [x] Render ONE real regional Shortbread 1.0 PMTiles (Bắc Ninh) in Android emulator airplane mode with SHA/SAF/pixel/license evidence, CI 43385141410 PASS (266,196 pixels).
 - [ ] Wait for standard Android regression CI 43385141310 to complete and record actual result.
 - [ ] Extend actual Android pixel QA to other 33 provincial archives and national 556MB archive, optimize storage and memory before marking 35/35 rendered.
+
+
+## 2026-11-13 full regression result
+- [x] Confirm both CI jobs from new feature commit: 43385141310 Android debug + emulator SUCCESS, 43385141410 real Bắc Ninh Shortbread SUCCESS.
+- [ ] Android verification 35/35 PMTiles files (only 1/35 new regional render proven); national large archive memory/storage testing pending.
+- [ ] Add approved long-term 35-pack download distribution with exact byte lengths, Range resume, metadata/signature policy and cancellation.

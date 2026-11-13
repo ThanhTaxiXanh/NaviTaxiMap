@@ -79,3 +79,9 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 - SHA verified for 24-bac-ninh.pmtiles (11,049,420 bytes, SHA 6edc513adf8b8ad467982e818dc3450fcbbb14076ca2bf4bac352f1b9ca9ee7f).
 - Android DocumentsUI actual import and on-device bytes SHA PASS; airplane-mode style callback/visible attribution/warning and 266,196 road-color screenshot pixels PASS.
 - Evidence: https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43385141410/artifacts/14017389861. Standard Android full regression 43385141310 still pending on this update.
+
+
+## Both development-branch CI workflows SUCCESS
+- Android debug run https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43385141310: SUCCESS (build, JUnit, Python, emulator).
+- Real Bắc Ninh Shortbread run https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43385141410: SUCCESS (SHA, real SAF import, airplane mode, pixel screenshot).
+- These test source commit 4a55a873. Later documentation-only commits use [skip ci]; do not misstate them as separate tested Android binaries.

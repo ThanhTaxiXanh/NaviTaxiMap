@@ -54,3 +54,9 @@ Real OSM pilot source snapshot: workflow https://github.com/ThanhTaxiXanh/NaviTa
 - Imported **24-bac-ninh.pmtiles**, exactly **11,049,420 bytes**, sha256 6edc513adf8b8ad467982e818dc3450fcbbb14076ca2bf4bac352f1b9ca9ee7f; 266,196 Shortbread road-color pixels measured in screenshot central viewport.
 - Screenshot and XML/log evidence: run 43385141410, artifact 14017389861, expiring 2026-11-27.
 - Only **one** of 35 regional archives is proven rendered by Android; all 35 SHA entries are pinned/compared to tool SHA256SUMS in unit tests. Nationwide render, other 33 provinces, label glyphs, network updates and Xiaomi remain unverified.
+
+
+## Final test checkpoint 2026-11-13: ALL new jobs PASS
+- Full Android regression run 43385141310 concluded SUCCESS. New Kotlin unit tests + Python style/catalog checks passed; Android emulator tested existing HTTPS Hanoi catalog, synthetic map, SAF and Hanoi real-road regression. Legacy Hanoi screenshot still showed 58,015 road-colored pixels.
+- New real province Shortbread workflow 43385141410 concluded SUCCESS: original Bắc Ninh PMTiles, 11,049,420 bytes, SHA 6edc513adf8b8ad467982e818dc3450fcbbb14076ca2bf4bac352f1b9ca9ee7f; imported via DocumentsUI and rendered 266,196 road-color pixels offline. All CI results are for feature SHA 4a55a873.
+- Interpretation: Shortbread offline renderer VERIFIED for Bắc Ninh; 35 entries hash-pinned and catalog tests PASS; 35/35 on-device rendering NOT verified, 35-pack direct HTTPS download NOT implemented.

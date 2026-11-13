@@ -13,3 +13,10 @@ Unfinished: durable approved storage/download URLs, exact size-pinned resumable 
 
 ## Verified limited milestone
 Run 43385141410 completed SUCCESS. Artifact: https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43385141410/artifacts/14017389861. The real 24-bac-ninh.pmtiles has exactly 11,049,420 bytes and sha256 6edc513adf8b8ad467982e818dc3450fcbbb14076ca2bf4bac352f1b9ca9ee7f. Android SAF imported it, offline style drew 266,196 road-color pixels, OSM attribution and no-navigation warning were exposed while airplane mode was enabled. This proves one regional renderer, not 35/35 maps or routing readiness.
+
+
+## Build and regression completion
+Source feature commit: 4a55a8734dff9f75b451cdb29414414c92a64104.
+Standard Android CI 43385141310: all jobs SUCCESS, existing Hanoi real-road sample regression preserved (58,015 screenshot colored pixels).
+Dedicated Bắc Ninh Shortbread Android CI 43385141410: all jobs SUCCESS, 11,049,420-byte SHA-pinned real archive via SAF DocumentsUI, airplane-mode 266,196 street pixels, OpenStreetMap ODbL attribution and no-navigation warning. Evidence expires 2026-11-27: https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43385141410/artifacts/14017389861.
+Not a demonstration of 35 region files rendered on device; 35 pins/catalog tested, visual rendering verified for 1 only.
