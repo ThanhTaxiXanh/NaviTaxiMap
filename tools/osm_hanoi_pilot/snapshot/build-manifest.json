@@ -1,0 +1,136 @@
+{
+  "attribution": "© OpenStreetMap contributors",
+  "bbox": [
+    105.849,
+    21.031,
+    105.858,
+    21.037
+  ],
+  "kind": "small REAL OSM road-preview, NOT a navigable map",
+  "layer_names": [
+    "road_local",
+    "road_major",
+    "road_pedestrian"
+  ],
+  "license": "Open Database License 1.0 (ODbL)",
+  "osm_source_xml_sha256": "db180ccb4a19e287888af400513dff2104d4c692b32d060a8416f1b6c08c7697",
+  "pmtiles_bytes": 53956,
+  "pmtiles_sha256": "ff932662ba476e570debd19d8323e2c9fed11dfa98322dfd39a4023ed3e0cf9d",
+  "snapshot_at_utc": "2026-11-13T05:04:02.718491+00:00",
+  "source": "https://api.openstreetmap.org/api/0.6/map?bbox=105.849,21.031,105.858,21.037",
+  "source_node_count": 17828,
+  "source_review": "UNREVIEWED for navigation and administrative/legal data",
+  "source_road_count": 354,
+  "tile_count": 21,
+  "tiles": [
+    {
+      "x": 13009,
+      "y": 7212,
+      "z": 14
+    },
+    {
+      "x": 26019,
+      "y": 14425,
+      "z": 15
+    },
+    {
+      "x": 26018,
+      "y": 14425,
+      "z": 15
+    },
+    {
+      "x": 26018,
+      "y": 14424,
+      "z": 15
+    },
+    {
+      "x": 26019,
+      "y": 14424,
+      "z": 15
+    },
+    {
+      "x": 52038,
+      "y": 28850,
+      "z": 16
+    },
+    {
+      "x": 52037,
+      "y": 28850,
+      "z": 16
+    },
+    {
+      "x": 52037,
+      "y": 28849,
+      "z": 16
+    },
+    {
+      "x": 52038,
+      "y": 28849,
+      "z": 16
+    },
+    {
+      "x": 104077,
+      "y": 57700,
+      "z": 17
+    },
+    {
+      "x": 104076,
+      "y": 57700,
+      "z": 17
+    },
+    {
+      "x": 104074,
+      "y": 57700,
+      "z": 17
+    },
+    {
+      "x": 104075,
+      "y": 57700,
+      "z": 17
+    },
+    {
+      "x": 104075,
+      "y": 57699,
+      "z": 17
+    },
+    {
+      "x": 104075,
+      "y": 57698,
+      "z": 17
+    },
+    {
+      "x": 104074,
+      "y": 57698,
+      "z": 17
+    },
+    {
+      "x": 104074,
+      "y": 57699,
+      "z": 17
+    },
+    {
+      "x": 104076,
+      "y": 57698,
+      "z": 17
+    },
+    {
+      "x": 104076,
+      "y": 57699,
+      "z": 17
+    },
+    {
+      "x": 104077,
+      "y": 57699,
+      "z": 17
+    },
+    {
+      "x": 104077,
+      "y": 57698,
+      "z": 17
+    }
+  ],
+  "zoom_range": [
+    14,
+    17
+  ]
+}
