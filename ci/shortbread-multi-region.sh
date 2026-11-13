@@ -17,6 +17,12 @@ for record in "01 01-ha-noi.pmtiles $HANOI" "79 79-ho-chi-minh.pmtiles $HCM"; do
     test "$(stat -c %s "$FILE")" = "$SIZE"
     echo "$SHA  $FILE" | sha256sum -c -
     bash ci/push-emulator-download.sh "$FILE" "$NAME" | tee "$OUT/push.txt"
+    # A successful adb push/length check is not sufficient: confirm the exact
+    # SHA of bytes visible through Android emulated shared storage before SAF.
+    DEVICE_SHA="$(adb shell sha256sum "/sdcard/Download/$NAME" | awk '{print $1}' | tr -d '\r')"
+    test "$DEVICE_SHA" = "$SHA"
+    echo "ANDROID_DOWNLOAD_SHA256_OK $NAME $DEVICE_SHA" | tee "$OUT/device-sha.txt"
+    sleep 4
     adb shell am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d "file:///sdcard/Download/$NAME" > "$OUT/media-scan.txt" || true
     adb shell am force-stop vn.navitaximap || true
     adb shell am start -W -n vn.navitaximap/.MainActivity | tee "$OUT/import-launch.txt"
