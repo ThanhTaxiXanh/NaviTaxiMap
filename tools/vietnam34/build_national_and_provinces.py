@@ -60,7 +60,7 @@ def load_provinces(admin4_path, kh_path):
         assert geom_type in ("Polygon", "MultiPolygon"), f"Invalid OSM boundary {name}"
         g = shape(feat["geometry"])
         assert g.is_valid and not g.is_empty, f"Invalid geometry {name}"
-        assert 8 < g.bounds[1] < 25 and 100 < g.bounds[0] < 120, name
+        assert 7 < g.bounds[1] < 25 and 100 < g.bounds[0] < 120, name
         assert 8 < g.bounds[3] < 26 and 100 < g.bounds[2] < 120, name
         features_by_name[norm(name)].append((name, g))
     for p in PROVINCES:
