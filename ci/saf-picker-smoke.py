@@ -29,7 +29,11 @@ def adb(*args, binary=False, check=True):
 
 def snapshot(stage):
     # UIAutomator writes a hierarchy accessible through adb pull even without root.
-    remote = "/sdcard/navitaxi-picker.xml"
+    # uiautomator XML is test instrumentation, NOT a user document.
+    # /sdcard appears in Android DocumentsUI Recents; writing the hierarchy
+    # there can reorder file rows mid-tap and import navitaxi-picker.xml instead
+    # of the actual PMTiles. /data/local/tmp is shell-owned and not indexed.
+    remote = "/data/local/tmp/navitaxi-picker.xml"
     last = None
     for _ in range(3):
         try:
@@ -92,6 +96,9 @@ def installed_archives():
     return {f for f in result.splitlines() if UUID_FILE.fullmatch(f)}
 
 def open_picker():
+    # Remove legacy instrumentation XML left by older CI versions. The picker
+    # will no longer see our internal hierarchy as a selectable document.
+    adb("shell", "rm", "-f", "/sdcard/navitaxi-picker.xml", check=False)
     select_text("app", ["Dữ liệu bản đồ"])
     select_text("menu", ["Nhập tệp PMTiles từ thiết bị"])
     screenshot("picker-start")

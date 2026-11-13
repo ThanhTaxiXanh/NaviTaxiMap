@@ -264,6 +264,9 @@ class MainActivity : Activity(), LocationListener {
         packExecutor.execute {
             val result = runCatching {
                 val name = getDocumentName(uri)
+                require(name.endsWith(".pmtiles", ignoreCase = true)) {
+                    "Chỉ có thể nhập tệp .pmtiles, không phải tài liệu khác"
+                }
                 val region = Vietnam35Catalog.packages.firstOrNull { it.fileName == name }
                 if (region != null) {
                     val declared = getDocumentSize(uri)
@@ -290,7 +293,8 @@ class MainActivity : Activity(), LocationListener {
                     val validMagic = got == 8 && magic.contentEquals(
                         byteArrayOf(80, 77, 84, 105, 108, 101, 115, 3))
                     Log.i("NaviTaxiMapSAF", "SAF_SELECTED_STREAM " +
-                        "name=" + name + " pinned=" + (region?.code ?: "none") +
+                        "pinned=" + (region?.code ?: "none") +
+                        " correctExtension=" + name.endsWith(".pmtiles", true) +
                         " headerBytes=" + got + " isPmtilesV3=" + validMagic)
                     buffered
                 } else input
