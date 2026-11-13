@@ -1,0 +1,27 @@
+name: One-time small Hanoi OSM source snapshot (development only)
+
+on:
+  push:
+    branches:
+      - 'develop/**'
+    paths:
+      - '.github/workflows/osm-pilot-once.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  fetch-small-osm-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Obtain exactly one small OpenStreetMap XML bbox snapshot
+        run: python3 tools/osm_hanoi_pilot/fetch_snapshot.py
+      - name: Archive source with independent SHA-256 and ODbL provenance
+        uses: actions/upload-artifact@v4
+        with:
+          name: Hanoi-OSM-pilot-source-UNREVIEWED
+          path: osm-pilot-snapshot/
+          if-no-files-found: error
+          retention-days: 14
