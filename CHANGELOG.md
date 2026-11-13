@@ -61,3 +61,7 @@
 ## 2026-11-13 emulator stability follow-ups
 - CI storage readiness retry a3e53366 verified with two real Shortbread workflows all green, preserving 3/35 proven region visuals.
 - Standard Android debug 43387711858 exposed a one-frame regression in the old tiny Hanoi renderer (0 colored pixels); no production change, strict screenshot wait/retry CI fix 59c2192 and rerun pending.
+
+## 2026-11-13 four-shard Android visual QA
+- New true 34/34 province *test harness* `ci/shortbread-coverage-{shard,one}.sh` and workflow `android-shortbread-coverage.yml`, reusing original SHA-pinned provinces, mandatory SAF/airplane-mode/pixel checks. Not a production feature or approved data distribution.
+- Province-specific early verified images: Cao Bằng and Tuyên Quang now join Bắc Ninh/Hà Nội/TP.HCM, totaling 5/35; full province workflow still unproven. Test-only fixes for stdin swallowing (781644d) and corrupted shell replacement/eager syntax lint (e015ebf2).

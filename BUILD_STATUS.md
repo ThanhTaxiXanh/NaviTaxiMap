@@ -107,3 +107,9 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 ## 2026-11-13 CI checkpoint
 - Run 43389395898 **ALL SUCCESS**, including both jobs, resolves two previous flaky MapLibre screenshot failures without weakening pixel checks; synthetic 39,985 and original small Hanoi roads 58,015 pixels.
 - Run 43391332272: initial build/JUnit SUCCESS; four independent emulator shards assigned 34/34 original provincial PMTiles, not yet complete. Other CI on new SHA includes 43391332249 normal Android and 43391332168 Bắc Ninh; still pending at writing.
+
+## 2026-11-13 15:27 CI trail
+- 43391332249 standard Android all SUCCESS; 43391332168 genuine Bắc Ninh all SUCCESS.
+- 43391332272 34-shard coverage overall FAIL: 01/04/08 each individually proved via SHA, SAF, airplane-mode screenshot; 11 blocked by Pixel Launcher ANR; shell loop terminated due adb reading stdin.
+- 43392189567 all four coverage emulator jobs FAIL at shell parse error line 65 caused by corrupted template string during fix; no region tests. Corrected e015ebf2 plus `bash -n` gate.
+- 43393047973 build/JUnit/static-syntax SUCCESS; 4 emulator jobs RUNNING. Count only province-specific PASS evidence, not total before final logs.

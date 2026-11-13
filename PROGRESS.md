@@ -89,3 +89,7 @@
 ## 2026-11-13 15:10 verified Android regression / full province coverage in progress
 - **PASS:** run 43389395898 full debug Android + emulator; synthetic 39,985 colored pixels, real OSM tiny Hanoi 58,015 pixels, other regression UI/import checks PASS.
 - 32ff2139 adds four-shard original 34-province Android true-source SHA/SAF/airplane-mode pixel test; run 43391332272 compile PASS, awaiting all 34 per-province results, do not count any unverified regions yet.
+
+## 2026-11-13 15:27 coverage attempt accountability
+- Additional **04 Cao Bằng** (20,026 pixels) and **08 Tuyên Quang** (32,639) passed genuine Android SAF+SHA+airplane-mode screenshots in logs of partial run 43391332272. Distinct preview evidence now **5/35**, not 34/35. 11 Điện Biên initially blocked by emulator Launcher ANR.
+- 43391332272 FAILED (stdin consumed by adb); 43392189567 FAILED before any province due shell syntax mistake; fixed e015ebf2 with `bash -n` compile gate and file descriptor separation. New 43393047973 compile PASS, four provincial jobs underway. No false claims of green overall runs.

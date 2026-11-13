@@ -78,3 +78,9 @@
 - [x] Validate final screenshot retry fix via all-success Android run 43389395898, including synthetic PMTiles and real tiny OSM Hanoi pixels.
 - [ ] Read complete results for four-shard 34-province run 43391332272; prove each with original SHA, SAF and offline screenshot. Update coverage numerator only from successful individual gói, not from workflow startup.
 - [ ] After coverage, inspect 556,229,998-byte national PMTiles import on Android with bounded streaming verification and urban street view. National and physical Xiaomi not tested; no approved distribution host or navigation rights.
+
+## 2026-11-13 QA follow-up
+- [x] Verify 04 Cao Bằng and 08 Tuyên Quang individual real offline Android screenshots (20,026/32,639 pixels), increasing demonstrated unique Shortbread archive coverage to **5/35** with previous 01,24,79.
+- [x] Diagnose/fix TSV stdin-consumption and accidental bash script templating corruption; introduce static `bash -n` before costly emulators, e015ebf2.
+- [ ] Verify all 4 jobs of 43393047973, enumerate PASS/FAIL for each of 34 provinces; investigate legitimate sparse-region pixel failures without lowering thresholds or inventing roads.
+- [ ] Test national 556,229,998-byte archive separately, avoid Python buffering full file; no production or distribution permission.

@@ -76,3 +76,8 @@
 ## 2026-11-13 screenshot timing fix CLOSED with evidence
 - CI 43389395898 **SUCCESS**, Android build + emulator including previously failing synthetic and tiny Hanoi screenshots. 39,985 synthetic and 58,015 real Hanoi road-color pixels. Both strict assertions preserved; errors from 43387711858 and 43388632601 were intermittent CI timing conditions under this test configuration; not proof of app deterministic bugs.
 - New test effort run 43391332272: original 34 provincial files assigned to four emulator shards, outcomes pending and must be inspected individually, especially remote centers in sparsely mapped areas.
+
+## 2026-11-13 34-shard harness failures, corrective actions
+- **43391332272 overall FAILURE:** four-shard bash `while read < ledger` used stdin, and inherited `adb` subprocesses consumed ledger rows. Each processed only one province; 04 and 08 nevertheless proved live valid road screenshots, 11 failed because Pixel Launcher was not responding before picker, not a pack checksum error.
+- **43392189567 overall FAILURE before province loop:** previous script-edit string replacement containing shell `$'\\t'` was treated as JS replacement special `$'` and spliced out rest of file; `bash` line 65 syntax error. Fix commit e015ebf2 reconstituted script, verified literal source and added syntax gate to workflow compile job. **43393047973 four live jobs pending** at this checkpoint.
+- Keep earlier successful full Android CI 43389395898 and 43391332249, shortbread Bắc Ninh 43391332168; separate them from new test-only harness failures. No testing exceptions or threshold reductions.
