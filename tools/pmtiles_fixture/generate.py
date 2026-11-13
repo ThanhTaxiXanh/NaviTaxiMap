@@ -69,16 +69,16 @@ def vector_tile():
 
 def create():
     tile = vector_tile()
-    # One root directory entry: n=1, TileID=0, run=1, length, offset+1=1.
-    directory = gzip.compress(
-        varint(1) + varint(0) + varint(1) + varint(len(tile)) + varint(1),
-        mtime=0,
-    )
+    # Five tile entries: z0 and all four z1 tiles. Directory is uncompressed.
+    directory = (varint(5) + b''.join(varint(i) for i in (0, 1, 1, 1, 1))
+                 + b''.join(varint(1) for _ in range(5))
+                 + b''.join(varint(len(tile)) for _ in range(5))
+                 + varint(1) + b''.join(varint(0) for _ in range(4)))
     metadata = json.dumps({
         'name': 'NaviTaxiMap SYNTHETIC offline renderer test',
         'format': 'pbf',
         'type': 'overlay',
-        'vector_layers': [{'id': 'synthetic', 'fields': {}, 'minzoom': 0, 'maxzoom': 0}],
+        'vector_layers': [{'id': 'synthetic', 'fields': {}, 'minzoom': 0, 'maxzoom': 1}],
         'attribution': 'Synthetic test fixture, NOT real streets or navigation',
     }, separators=(',', ':'), sort_keys=True).encode('utf-8')
     header = bytearray(127)
@@ -89,14 +89,14 @@ def create():
     tile_off = leaf_off
     segments = [
         root_off, len(directory), meta_off, len(metadata),
-        leaf_off, 0, tile_off, len(tile), 1, 1, 1
+        leaf_off, 0, tile_off, len(tile) * 5, 5, 5, 5
     ]
     struct.pack_into('<11Q', header, 8, *segments)
-    header[96:102] = bytes([1, 2, 1, 1, 0, 0])  # gzip dir / uncompressed MVT
+    header[96:102] = bytes([1, 1, 1, 1, 0, 1])  # gzip dir / uncompressed MVT
     struct.pack_into('<4i', header, 102, -1800000000, -850000000, 1800000000, 850000000)
     header[118] = 0
     struct.pack_into('<2i', header, 119, 0, 0)
-    return bytes(header) + directory + metadata + tile
+    return bytes(header) + directory + metadata + tile * 5
 
 
 if __name__ == '__main__':

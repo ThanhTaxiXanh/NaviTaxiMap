@@ -12,7 +12,7 @@ import java.security.MessageDigest
  */
 object DemoOfflinePack {
     private const val ASSET = "offline_demo.pmtiles.b64"
-    private const val HASH = "16fc20efb488c208d5e7c2c89daf0adf13a2790bb558234d9544a14038c86f3b"
+    private const val HASH = "860e0383397b64eac881932bacf625bbb740db23abba4e008ac846967e7c1407"
 
     fun install(context: Context): File {
         val target = File(context.filesDir, "offline_demo.pmtiles")

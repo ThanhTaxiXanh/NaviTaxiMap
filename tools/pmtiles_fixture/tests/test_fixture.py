@@ -13,7 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from generate import create, vector_tile
 
 FIXTURE = ROOT / 'app/src/main/assets/offline_demo.pmtiles.b64'
-EXPECTED_SHA = '16fc20efb488c208d5e7c2c89daf0adf13a2790bb558234d9544a14038c86f3b'
+EXPECTED_SHA = '860e0383397b64eac881932bacf625bbb740db23abba4e008ac846967e7c1407'
 
 
 def varints(data):
@@ -42,19 +42,19 @@ class TestPMTilesFixture(unittest.TestCase):
     def test_header_and_section_bounds(self):
         header = self.data[:127]
         self.assertEqual(header[:8], b'PMTiles\x03')
-        self.assertEqual(header[96:102], bytes([1, 2, 1, 1, 0, 0]))
+        self.assertEqual(header[96:102], bytes([1, 1, 1, 1, 0, 1]))
         vals = struct.unpack_from('<11Q', header, 8)
         root_off, root_len, meta_off, meta_len, leaf_off, leaf_len, tile_off, tile_len, addressed, entries, contents = vals
         self.assertEqual(root_off, 127)
         self.assertLess(root_off + root_len, 16_384)
-        self.assertEqual((addressed, entries, contents), (1, 1, 1))
+        self.assertEqual((addressed, entries, contents), (5, 5, 5))
         self.assertEqual(leaf_len, 0)
         self.assertEqual(leaf_off, tile_off)
         self.assertEqual(tile_off + tile_len, len(self.data))
         self.assertEqual(meta_off, root_off + root_len)
         self.assertEqual(tile_off, meta_off + meta_len)
-        self.assertEqual(list(varints(gzip.decompress(self.data[root_off:meta_off]))), [1, 0, 1, tile_len, 1])
-        self.assertEqual(self.data[tile_off:tile_off + tile_len], vector_tile())
+        self.assertEqual(list(varints(self.data[root_off:meta_off])), [5, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, tile_len // 5, tile_len // 5, tile_len // 5, tile_len // 5, tile_len // 5, 1, 0, 0, 0, 0])
+        self.assertEqual(self.data[tile_off:tile_off + tile_len], vector_tile() * 5)
         metadata = json.loads(self.data[meta_off:tile_off])
         self.assertEqual(metadata['vector_layers'][0]['id'], 'synthetic')
 

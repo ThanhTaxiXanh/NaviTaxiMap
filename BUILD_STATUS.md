@@ -17,3 +17,5 @@ MapLibre: org.maplibre.gl:android-sdk-opengl:13.5.4.
 - Must verify actual MVT vector geometry is visible in screenshot, not only that app launches.
 - Xiaomi/Termux device installation and GNSS behavior remain untested.
 - Not a release and not a usable navigation APK.
+
+- CI 43358323365: Gradle + fixture tests PASS, emulator started offline in airplane mode but screenshot has blank map. NOT VERIFIED. Started repair with z0+z1 tiles and screenshot pixel assertion.

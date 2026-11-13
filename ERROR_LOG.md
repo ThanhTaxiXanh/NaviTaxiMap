@@ -9,3 +9,5 @@ Open:
 - Xiaomi/Termux device is not connected.
 - No offline city/province packs, routing graphs or approved sovereignty layers.
 - Online OpenFreeMap dependency does not satisfy independent offline map operations.
+
+- 2026-11-13 PMTiles: screenshot of offline-demo in run 43358323365 has blank vector layer even though app process/UI is alive. Investigating source tile addressing and capture native logs; user-visible status must remain IN PROGRESS until geometry renders.

@@ -40,6 +40,8 @@ adb pull /sdcard/navitaximap-offline.png smoke-evidence/offline-screenshot.png
 adb shell uiautomator dump /sdcard/navitaxi-window.xml > /dev/null
 adb pull /sdcard/navitaxi-window.xml smoke-evidence/offline-window.xml
 adb logcat -d -s AndroidRuntime:E > smoke-evidence/offline-runtime-errors.txt || true
+adb logcat -d -v brief > smoke-evidence/offline-full-logcat.txt || true
+python3 ci/check-offline-screenshot.py smoke-evidence/offline-screenshot.png
 
 if ! grep -q 'PMTiles offline' smoke-evidence/offline-window.xml; then
     echo "Offline demo status was not exposed in UI" >&2

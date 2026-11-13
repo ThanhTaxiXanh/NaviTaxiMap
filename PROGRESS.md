@@ -8,3 +8,5 @@
 - Added CI build + Python fixture tests + emulator airplane mode smoke and image/log capture.
 - No claim of live navigation, offline provinces, traffic or Hoàng Sa/Trường Sa map data.
 - Offline runtime and test image are PENDING verification on GitHub.
+
+- After offline emulator run 43358323365 showed blank geometry, expanded fixture to five tiles (z0 and four z1), removed directory gzip for isolation, and added PNG pixel check plus complete logcat capture. Validation pending latest CI.
