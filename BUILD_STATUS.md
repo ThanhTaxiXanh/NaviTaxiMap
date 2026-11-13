@@ -165,3 +165,8 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 ## 2026-11-13 Range staging QA and emulator regression details
 - 43458014933: build/JUnit SUCCESS, standard Android emulator FAILURE at UIAutomator offline status check. Artifact 14055795953 contains 40,721 synthetic road pixels and screenshot/status under Android system `Pixel Launcher isn't responding` modal; XML contained only launcher dialog. Pixel check PASSED, UI text assertion failed appropriately.
 - Code 3b141de CI-only bounded system overlay handling + bash -n check; new 43459478560 PENDING. Does not relax offline pixel or UI status acceptance; source Kotlin Range unchanged.
+
+
+## 2026-11-13 23:58 build checkpoint
+- 43459478560 Android-debug + emulator two jobs **SUCCESS** at code 3b141de, strict PMTiles screenshot/status and real OSM pilot passed.
+- 43468092472 following a0a0be16 origin-approval hardening + 6 JUnit range tests **PENDING** at writing; not yet declared green. Catalog download gate still disabled and source list empty.

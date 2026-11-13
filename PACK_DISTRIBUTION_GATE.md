@@ -39,3 +39,9 @@
 `PinnedHttpsRangeTransferTest.kt` dùng `FakeRange` không gọi Internet để kiểm: resume sau body bị đứt, header Range chính xác, SHA đúng, từ chối HTTP/host lạ/URL mã hoá/query/fragment, từ chối redirect/200/416, sai Content-Range hoặc body bị thay và chặn download mặc định vì catalog chưa được phê duyệt.
 
 Chạy bằng `gradle --no-daemon :app:testDebugUnitTest :app:assembleDebug` trong CI; xem run của commit feature để xác nhận kết quả thực tế. Khi phê duyệt về sau, phải bổ sung thử end-to-end với host được chấp thuận, không dùng test giả làm bằng chứng phân phối hoạt động.
+
+
+## Cập nhật bảo vệ quyền cấp nguồn (13/11/2026 23:58 ICT)
+- **Đã đóng nguy cơ duyệt tên máy chủ bằng tham số:** Bản đầu của `ApprovedCatalogPackDownloader.fetchApproved(code,url,reviewedHost)` cho phép caller tự cung cấp chuỗi `reviewedHost`. Commit **a0a0be16** chuyển thành `fetchApproved(code)`. Danh sách nguồn đã được xem xét được lưu duy nhất ở `ReviewedShortbreadSources.byCode`; hiện cố ý `emptyMap()`, không có máy chủ nào được cấp quyền. Muốn bật sau này cần tối thiểu **hai thay đổi được duyệt độc lập**: nguồn pin trong mã và cờ `Vietnam35Catalog.distributionApproved` (hiện false).
+- `PinnedHttpsRangeTransfer.stage` là primitive nội bộ để kiểm thử, vẫn yêu cầu exact HTTPS host, Range=206, SHA và dung lượng; không được gọi trực tiếp từ giao diện hoặc entrypoint ngoài `ApprovedCatalogPackDownloader`.
+- Kiểm thử độc lập bổ sung: file partial đủ byte sai SHA, resume với prefix đã hỏng, phản hồi gzip, thiếu dung lượng phải fail-closed, không có network thật. Android CI sau sửa `43468092472` chưa hoàn tất tại checkpoint.

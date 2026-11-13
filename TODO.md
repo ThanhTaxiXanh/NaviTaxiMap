@@ -147,3 +147,11 @@
 - [x] Add bounded Launcher-only overlay recovery to standard `ci/smoke-emulator.sh`, maintaining strict UI and pixel assertions, commit 3b141de.
 - [ ] Validate complete 43459478560 Android CI (build/JUnit and emulator) before marking new Range staging feature all-green.
 - [ ] Keep `distributionApproved=false` until HTTPS origin, ODbL redistribution permission and durable manifest are explicitly approved. Local test transfer is not a user download.
+
+
+## 2026-11-13 23:58 next gates
+- [x] Check terminal 43459478560 SUCCESS both jobs, underlying Android emulator and pixel verification, eliminating previous pending CI ambiguity.
+- [x] Prevent future URL/host injection via reviewed-host argument in catalog download API; empty compile-time reviewed source registry and distribution flag false, a0a0be16.
+- [x] Expand mocked Range failure tests to corrupt partial, corrupt resume prefix, low space and gzip body, preserving no-network guarantees.
+- [ ] Read final 43468092472 Android compile+JUnit+emulator verdict; if FAIL inspect compiler/assertion logs and fix. No user-triggered downloader or permanent source host has been approved.
+- [ ] Independent legal ODbL/attribution review and reviewed HTTPS provider with immutable manifest, physical Xiaomi QA, resumable UI with consent, and routing-specific data constraints remain open.

@@ -141,3 +141,8 @@
 ## 2026-11-13 23:08 CI QA fidelity
 - New Range client compile/JUnit passed 43458014933, emulator failed because system Launcher ANR masked otherwise correct synthetic offline PMTiles status and 40,721 colored road pixels. Inspected real screenshot and XML, not guesswork.
 - 3b141de retries only system ANR overlay and demands final app UI status; ci/smoke-emulator.sh syntax gate. Run 43459478560 pending. No download host/approval enabled.
+
+
+## 2026-11-13 23:58 origin pinning and verified offline regression
+- CI 43459478560 both Android build/JUnit and emulator SUCCESS: offline demo colored geometry + exposed UI state + OSM Hanoi road pixels. Earlier failure 43458014933 was system Pixel Launcher overlay.
+- Downloader hardening a0a0be16: reviewed host is no longer a free caller argument of `ApprovedCatalogPackDownloader`, only compiled `ReviewedShortbreadSources.byCode` (empty), plus distribution approval remains false. Added integrity/space/encoding JUnit tests. CI 43468092472 in progress.

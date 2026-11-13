@@ -85,3 +85,8 @@
 ## 2026-11-13 approval-gated offline pack download scaffolding
 - Implemented internal `PinnedHttpsRangeTransfer` with strict HTTPS reviewed hostname, RFC 7233-style bytes range response checking, app-private partial resume, SHA256 final validation and download-abort cleanup. Wrapper `ApprovedCatalogPackDownloader` maintains false catalog redistribution gate and imports only through existing atomic LocalPackStore.
 - Added JUnit tests with simulated 206 partial responses, hash mismatches, incorrect host/path, redirects, non-HTTPS and distribution blocked. Added `PACK_DISTRIBUTION_GATE.md`. No hosted pack URL, background job, user-triggered downloads or shipping features yet.
+
+
+## 2026-11-13 source-approval gate hardening
+- Source registry `ReviewedShortbreadSources.byCode` is statically empty; `ApprovedCatalogPackDownloader.fetchApproved(code)` no longer accepts arbitrary URL/hostname caller input, preventing accidental future bypass on distribution approval. Catalog `distributionApproved=false` unchanged.
+- Added three negative/edge JUnit tests for complete corrupted partial SHA, contaminated resume prefix, insufficient free disk space and compressed HTTPS range response. Previous Android CI run 43459478560 now all green; feature CI 43468092472 pending.

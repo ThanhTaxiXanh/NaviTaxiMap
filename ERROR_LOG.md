@@ -123,3 +123,8 @@
 ## 2026-11-13 Android Launcher ANR covered offline proof despite correct rendering
 - Reproduced run 43458014933: `ci/check-offline-screenshot.py` found 40,721 colored pixels, but `offline-window.xml` had only `Pixel Launcher isn't responding`, `Close app`, `Wait`; artifact screenshot directly showed NaviTaxiMap offline demo status behind modal. Emulator OS launcher overlay, NOT PMTiles missing or Kotlin transfer error.
 - Fix 3b141de strictly detects specific system ANR overlay before any automated recovery; at most 3 bounded tries, re-verifies status and retains screenshot pixel, pid and fatal-exception guards. No unconditional skip, no weakened pixel or mock map. New CI 43459478560 pending.
+
+
+## 2026-11-13 Pixel Launcher regression closed, downloader now two-gate protected
+- CI 43459478560 SUCCESS both Gradle and emulator. `OFFLINE_DEMO_STATUS_READY` + `REAL_OSM_PIXELS_READY` in logs, confirming prior missing UI 43458014933 was system launcher modal masking a valid rendered map, not corruption.
+- Downloader code formerly accepted a caller-provided `reviewedHost` argument, a future-policy bypass risk if distribution approval were enabled. Fixed a0a0be16: only static compiled `ReviewedShortbreadSources.byCode` permitted, currently empty and catalog redistribution flag still false. New mocked negative JUnit tests added; 43468092472 awaiting verdict.

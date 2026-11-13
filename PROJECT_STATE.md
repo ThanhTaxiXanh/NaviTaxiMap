@@ -145,3 +145,8 @@ Real OSM pilot source snapshot: workflow https://github.com/ThanhTaxiXanh/NaviTa
 - Feature 389d71bf internal HTTPS Range continuation, strict reviewed host and SHA pinned, default blocked by `distributionApproved=false`; JUnit and Android compile run 43458014933 SUCCESS.
 - Emulator phase 43458014933 FAILED at synthetic offline UI status due actual Pixel Launcher ANR overlay. Artifact 14055795953 inspected: 40,721 genuine colored PMTiles pixels, visible app status behind overlay, UIAutomator XML only system dialog. This is not evidence of a failed renderer or download.
 - CI-only fix 3b141de adds bounded overlay recovery while still enforcing UI status and vector pixel proof. Android CI 43459478560 RUNNING at checkpoint. Previous 35 real archive offline visual proof across 43454411510+43454411678 remains SUCCESS.
+
+
+## 2026-11-13 final Android full CI restored; safe downloader origin policy tightened
+- Standard Android debug + full emulator 43459478560 SUCCESS, strict offline PMTiles synthetic screenshot and UI status + Hanoi OSM pilot proofs. Launcher system overlay regression resolved in CI-only bounded retry.
+- Code a0a0be16 removes runtime caller-supplied URL and reviewedHost from catalog transfer interface, forces static empty `ReviewedShortbreadSources.byCode` *and* `Vietnam35Catalog.distributionApproved=false`. Adds three more JUnit scenarios: corrupt full partial, corrupt resume prefix, missing free space/gzip response. Now 6 Range JUnit cases. Approval and actual host still absent; no network activated. Android CI 43468092472 PENDING at checkpoint.
