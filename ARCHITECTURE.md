@@ -22,3 +22,14 @@ Tách biệt dữ liệu địa lý, tên nhãn, diễn giải chủ quyền, v�
 
 ## Kiểm thử
 GitHub Actions trên nhánh develop: kiểm thử đơn vị + biên dịch debug + upload artifact. Chưa có thiết bị Android điều khiển từ xa để kiểm thử cài đặt, tương tác, GPU hay GNSS.
+
+## Verified PMTiles integration, 2026-11-13
+The Android SDK 13.5.4 supports `pmtiles://file://` directly. NaviTaxiMap
+packs a deterministic Base64-encoded fixture, checks its decoded SHA-256 and
+atomically writes the archive to app-private storage before adding a
+`VectorSource` with `LineLayer` on the style callback.
+
+Run 43359838414 verified MVT geometry is actually visible on an Android 34
+emulator in airplane mode (not merely an app launch). This is a synthetic
+5-tile z0/z1 fixture, not a map package. The native reader is separate
+from a future package downloader, catalog, checksum manifest and routing data.

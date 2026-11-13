@@ -1,12 +1,13 @@
 # CHANGELOG
-## 2026-11-13 – Phase 3 synthetic PMTiles proof-of-concept
-- Added small deterministic PMTiles v3 archive (MVT line features, synthetic).
-- Integrated MapLibre native pmtiles://file:// source with app-private asset extraction and SHA-256.
-- Added offline demonstration toggle, test intent and emulator airplane-mode smoke checks.
-- Added reproducible standard-library Python generator and 3 integrity tests.
-- Status IN PROGRESS until emulator confirms actual offline lines rendered.
+## 2026-11-13 – Phase 3 PMTiles read/render proof
+- Local synthetic PMTiles v3 archive with five MVT tiles, reproducible Python generator.
+- Native MapLibre PMTiles file reader using private storage + SHA-256 validation.
+- UI toggle online map / offline synthetic diagnostic.
+- Added emulator airplane-mode cold-launch test, screenshot regression assertion and saved logcat.
+- Fixed blank first offline render, confirmed visible synthetic grid at CI 43359838414.
+- Documentation updated, no release or main merge.
 
-## Earlier today
-- Bootstrapped Android MapLibre/Kotlin app and GitHub Actions.
-- Fixed setup-android and Kotlin metadata CI failures.
-- Verified live OpenFreeMap/OSM street map launched on emulator.
+## Earlier in the day
+- Bootstrapped Android app, CI, offline package verifier and source policy tests.
+- Fixed Android SDK / Kotlin compatibility.
+- Verified OpenFreeMap/OSM street map in Android emulator.

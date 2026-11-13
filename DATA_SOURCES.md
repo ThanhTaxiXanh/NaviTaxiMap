@@ -1,12 +1,16 @@
-# Danh mục nguồn dữ liệu
-| Nguồn | Vai trò | Tình trạng | Điều kiện |
-|---|---|---|---|
-| MapLibre Native | Android renderer | Dependency đã khai báo, chưa xác nhận APK | Giấy phép BSD-2-Clause, xác minh theo artifact |
-| demotiles.maplibre.org | Map style demo online | Chỉ dùng phát triển | Không dùng làm hạ tầng production |
-| OpenStreetMap | Nguồn dữ liệu bản đồ dự kiến | Chưa nhập vào gói offline | ODbL, attribution và đánh giá nghĩa vụ chia sẻ |
-| PMTiles | Định dạng offline ưu tiên | Chưa có reader hoặc gói | Kiểm tra checksum/phiên bản/giấy phép |
-| Dữ liệu 34 tỉnh/thành | Offline packs | Chưa duyệt dữ liệu | Danh mục có hiệu lực 01/07/2025 |
-| Hoàng Sa / Trường Sa / Biển Đông | Tư liệu và nhãn địa lý | Có bộ quy tắc kiểm chứng, chưa có lớp dữ liệu được duyệt | Chứng minh xuất xứ, metadata viewpoint, quyền phân phối, không tự suy diễn ranh giới |
-| Giao thông trực tiếp | Live traffic | BLOCKED | Chưa có nguồn hợp pháp, ổn định, miễn phí |
+# DATA_SOURCES
+Updated: 2026-11-13
 
-Không có dữ liệu chủ quyền chưa được kiểm chứng nào được đóng gói vào APK.
+| Source | Use | Verification and restrictions |
+|---|---|---|
+| MapLibre Native Android OpenGL ES 13.5.4 | Map renderer, native PMTiles file reader | GitHub build + emulator offline render verified |
+| OpenFreeMap Liberty/Dark styles | Online map for prototype | OpenFreeMap public service; no uptime SLA; terms [14 Oct 2026](https://openfreemap.org/tos/) |
+| OpenStreetMap | Road/background geography for online preview | OpenStreetMap ODbL, attribution required; no 34-province offline packages imported yet |
+| Synthetic fixture from `tools/pmtiles_fixture/generate.py` | Vector tile MVT z0/z1 integration test | Self-generated geometry, zero geospatial accuracy; 5 tile entries, SHA-256 verifier, PASS in airplane mode |
+| PMTiles data for Vietnam | Future offline basemap | NOT STARTED: source review, boundary segmentation, metadata and legal distribution |
+| Hoàng Sa / Trường Sa legal/geographic sources | Future archive / labels | BLOCKED until independently approved references, attribution, legal boundaries and redistribution |
+| Live traffic | Future optional data | BLOCKED: no authorized sustainable free provider |
+
+Online tile provider terms restrict offline downloads to **up to 3,000 tiles or 50 MB per download**, no more than **4 parallel requests**, with a unique app User-Agent.
+This prototype neither bulk-downloads tiles from OpenFreeMap nor stores online traffic.
+No fabricated speeds, legal maritime boundaries, or roads are used in the local fixture.

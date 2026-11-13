@@ -1,11 +1,12 @@
 # TODO
-- [ ] Verify offline synthetic PMTiles vector tile actually renders, without Internet (screenshot and logs).
-- [ ] Verify offline demo toggles back online, changes theme, handles rotation, corrupt packages and low storage.
-- [ ] Add explicit data-source/attribution details in UI; audit tile provider terms and third-party licenses.
-- [ ] Build actual offline regional PMTiles with approved OSM source and independent labels/attribution.
-- [ ] Create per-province manifest, size metadata, checksum, resume/pause, atomic updates and deletion.
-- [ ] Start safe GPS/compass tests on Xiaomi; real-device install via authorized ADB/Termux is BLOCKED.
-- [ ] Search/POI, street graph, routing Valhalla/OSRM, navigation voice and recalc.
-- [ ] Traffic source and last-updated data; speed signs with verified provenance.
-- [ ] Geographic archives and independent legal/label audit of Hoàng Sa and Trường Sa.
-- [ ] Performance metrics and final release procedures only after real-device QA.
+- [x] Test native PMTiles v3 file reader with deterministic MVT fixture on Android emulator in airplane mode.
+- [x] Verify actual offline geometry via screenshot and automated regression check.
+- [ ] Audit source data, attribution and approved fonts/sprites/local styles for real Vietnam map offline.
+- [ ] Create at least one real authorized PMTiles region; verify real roads and coordinates, no synthetic placeholders.
+- [ ] Offline pack manager: 34 provinces, download/pause/resume, version/hash, atomic updates, storage reporting.
+- [ ] GPS integration tests on Xiaomi: permission, accuracy, battery, speed; physical device QA BLOCKED.
+- [ ] Offline search/POI, route graph, Valhalla/OSRM route engine, TTS navigation, reroute.
+- [ ] Road intelligence and traffic with verified authoritative sources + update timestamps.
+- [ ] 3D with licensed geometry, benchmark FPS/ram, landscape/portrait.
+- [ ] Hoàng Sa/Trường Sa archive with provenance, independent expected-golden, legal layers clearly distinguished.
+- [ ] Full release build, user testing, legal review, only merge to main with explicit authorization.

@@ -1,21 +1,23 @@
 # BUILD_STATUS
+
 Branch: develop/phase0-android-maplibre
-Android: AGP 8.7.3 / Gradle 8.9 / JDK 17 / Kotlin 2.2.10 / compileSdk 35.
-MapLibre: org.maplibre.gl:android-sdk-opengl:13.5.4.
+Verified code commit: 24d83a802109bb368044cc793d00e2d13faf2f76
+CI: https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43359838414
 
-## Proven
-- CI 43351850610: SDK setup FAIL, fixed by setup-android@v4.
-- CI 43351946604: Kotlin metadata mismatch FAIL, fixed by Kotlin 2.2.10.
-- CI 43352195061: Gradle debug + Android tests PASS.
-- CI 43352713250: emulator installation and basic app launch PASS.
-- CI 43353698195: live street map style build and emulator launch PASS;
-  screenshot shows roads, water features and traffic network geometry.
-- Synthetic PMTiles generator tests 3/3 PASS locally using Python standard library.
+## Verified
+- AGP 8.7.3, Gradle 8.9, JDK 17, Kotlin 2.2.10, compileSdk 35.
+- MapLibre native OpenGL ES 13.5.4.
+- Android :app:testDebugUnitTest and :app:assembleDebug PASS.
+- Python PMTiles v3 tests: 3/3 PASS. Vietnam data approval logic: 4/4 PASS.
+- Android API 34 emulator: APK install Success; MainActivity COLD launch OK.
+- Emulator airplane mode enabled; offline-mode MainActivity COLD launch OK.
+- PMTiles source from app-private file rendered synthetic vector grid in screenshot.
+- Image inspection script confirms line-color pixels in central map viewport.
+- No AndroidRuntime FATAL EXCEPTION in saved log.
+- Binary APK ZIP integrity validated separately.
+- Offline renderer proof-of-concept: DONE, only for synthetic MVT fixture.
 
-## Pending
-- Latest offline PMTiles branch change: CI compile + emulator airplane-mode smoke pending.
-- Must verify actual MVT vector geometry is visible in screenshot, not only that app launches.
-- Xiaomi/Termux device installation and GNSS behavior remain untested.
-- Not a release and not a usable navigation APK.
-
-- CI 43358323365: Gradle + fixture tests PASS, emulator started offline in airplane mode but screenshot has blank map. NOT VERIFIED. Started repair with z0+z1 tiles and screenshot pixel assertion.
+## Still unverified or blocked
+- Real Xiaomi installation, GPS accuracy, speed/compass, memory, battery, landscape.
+- Real PMTiles province data, legal source licenses, size/updates/corruption recovery.
+- Production APK and navigation behavior: NOT STARTED.

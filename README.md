@@ -39,3 +39,11 @@ MapLibre's native `pmtiles://file://` handler. It only shows made-up schematic
 lines; **never use these lines for navigation**.
 CI tests the fixture and launches the app in Android emulator airplane mode.
 Use `tools/pmtiles_fixture` for source, SHA-256 and tests.
+
+## Bằng chứng mới nhất: PMTiles tổng hợp hoạt động khi không có mạng
+GitHub Actions [43359838414](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43359838414)
+đã build, kiểm thử, cài APK, bật chế độ máy bay và chụp màn hình.
+Kiểm tra pixel chứng minh đường MVT tổng hợp được hiển thị từ
+`pmtiles://file://` với gói 5 ô (z0, z1). Logcat không ghi nhận lỗi
+FATAL EXCEPTION. Đây **không** phải bản đồ đường thật hoặc gói offline
+34 tỉnh và **không thể dùng để dẫn đường**.

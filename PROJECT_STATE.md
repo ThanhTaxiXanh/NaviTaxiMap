@@ -1,27 +1,28 @@
 # PROJECT_STATE
-As of: 2026-11-13 (Asia/Bangkok)
-Repo: ThanhTaxiXanh/NaviTaxiMap
-Working branch: develop/phase0-android-maplibre
-Protected main: DO NOT merge, create PR, or push until explicitly authorized.
+Last verified: 2026-11-13, Asia/Bangkok
+Repository: ThanhTaxiXanh/NaviTaxiMap
+Branch: develop/phase0-android-maplibre
+main: protected by request; DO NOT push, merge, create PR or release without owner consent.
 
-## Phase status, based on real evidence
-- PHASE 0: IN PROGRESS (GitHub/CI verified; Xiaomi Termux/Shizuku environment not connected).
-- PHASE 1: IN PROGRESS (Kotlin app/MapView/UI built and launches Android emulator).
-- PHASE 2: IN PROGRESS (MapLibre + OpenFreeMap street style rendered on emulator, but no production basemap).
-- PHASE 3: IN PROGRESS (synthetic PMTiles v3 fixture + native file protocol integrated; emulator smoke and screenshot verification pending on latest source).
-- PHASE 4-18: NOT STARTED, except early data-policy validation tool.
-- Real-device QA: BLOCKED, no remote Android/ADB access.
-- Release APK: NOT STARTED.
+## Evidence and status
+- PHASE 0: IN PROGRESS. GitHub repo, permissions, Android CI checked; no access to Xiaomi Termux/Shizuku.
+- PHASE 1: IN PROGRESS. Kotlin Android shell with MapLibre, UI and on-demand location; emulator launched.
+- PHASE 2: IN PROGRESS. OpenFreeMap/OSM roads online visible in screenshot; needs production data review/attribution and error handling.
+- PHASE 3: IN PROGRESS. PMTiles v3 MVT native `pmtiles://file://` READ/RENDER PROOF VERIFIED on Android emulator (synthetic 5 tile pack, airplane mode).
+- PHASE 4–18: NOT STARTED except initial policy validation and prototype GPS source code.
+- Debug APK: available in GitHub run 43359838414; build, test, emulator smoke and screenshot assertion PASS.
+- Xiaomi physical test: BLOCKED until authorized device access.
 
-## Verified baseline
-- GitHub run 43353698195: PASS Kotlin build, unit tests, Android emulator install/launch.
-- Screenshot of that run: OSM street lines shown online in emulator.
-- Original ZIP unit tests: 4/4 PASS. Synthetic fixture validation: 3/3 PASS in local Python (must re-run on CI).
+## Runtime proof
+Run: https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43359838414
+Commit tested: 24d83a802109bb368044cc793d00e2d13faf2f76
+Offline synthetic package decoded SHA-256: 860e0383397b64eac881932bacf625bbb740db23abba4e008ac846967e7c1407
+Evidence: `NaviTaxiMap-emulator-evidence` artifact includes offline-screenshot.png,
+offline-full-logcat.txt, offline-window.xml, airplane-mode.txt, install/launch logs.
+Image visibly includes synthetic grid lines. Test code checks pixels inside map viewport.
+No FATAL EXCEPTION recorded in smoke test.
 
-## Not done
-Offline Vietnam PMTiles, POI, route graph, navigation, traffic, speed signs,
-34 provinces, 3D, approved geopolitical layers and production data licensing.
-
-## Next iteration
-Read CI log and offline screenshot. If native PMTiles fails, diagnose and fix until
-actual tile lines render with connectivity disabled. Keep all fixes on working branch.
+## Constraints
+Not a usable navigation app: no real offline road data, search/POI, routing graph,
+34 provinces, navigation TTS, traffic, speed signs, 3D or approved legal sea overlays.
+No production claim from a synthetic proof.

@@ -1,12 +1,14 @@
 # PROGRESS
-2026-11-13
-- Preserved main and continued develop/phase0-android-maplibre.
-- Verified latest online map baseline CI 43353698195 PASS with map screenshot.
-- Investigated official MapLibre Native Android PMTiles support (>=11.7.0), using pmtiles://file://.
-- Generated deterministic PMTiles v3 / MVT vector test fixture (560 bytes, SHA-256 recorded).
-- Added Android private-storage installation with SHA-256 integrity check, online/offline demo toggle and test launch intent.
-- Added CI build + Python fixture tests + emulator airplane mode smoke and image/log capture.
-- No claim of live navigation, offline provinces, traffic or Hoàng Sa/Trường Sa map data.
-- Offline runtime and test image are PENDING verification on GitHub.
 
-- After offline emulator run 43358323365 showed blank geometry, expanded fixture to five tiles (z0 and four z1), removed directory gzip for isolation, and added PNG pixel check plus complete logcat capture. Validation pending latest CI.
+2026-11-13 (working branch only)
+- Reviewed project master prompt, sovereignty-map ZIP and 9 design images.
+- Created independent working branch, preserved main.
+- Developed Android/Kotlin + MapLibre app with online street map and GPS on-demand.
+- Resolved Android SDK setup and Kotlin metadata CI compilation failures.
+- Completed first emulator online map render proof with OpenFreeMap style.
+- Implemented PMTiles v3 native local reader integration and SHA-256 guard.
+- First offline rendering attempt CI 43358323365: app launched but map vector lines NOT visible (identified from screenshot).
+- Fixed test fixture to include z0/z1 complete directory, five tiles, and uncompressed directory; added image pixel regression assertion and full logcat capture.
+- Latest CI 43359838414: build/tests/emulator PASS, offline grid lines visible with airplane mode.
+- Real-world offline Vietnam map packs and driving functions remain NOT STARTED.
+- Update these files and inspect latest CI before any further phase change.
