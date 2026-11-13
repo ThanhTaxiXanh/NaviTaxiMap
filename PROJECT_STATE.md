@@ -133,3 +133,9 @@ Real OSM pilot source snapshot: workflow https://github.com/ThanhTaxiXanh/NaviTa
 - Android debug + emulator 43454411956 SUCCESS, and genuine Bac Ninh 43454411692 SUCCESS, checking code 1ce22829 (move XML UIAutomator hierarchy to /data/local/tmp and reject non-PMTiles names).
 - Independent HN/HCM recheck 43454411531 failed at emulator Pixel Launcher ANR **before SAF** despite exact host/Android Downloads input SHA. One controlled system ANR-only retry added by 720efe42; lint gate in e05b1ed. Multi region rerun 43455374999 and its normal Android regression 43455375003 remain PENDING at checkpoint.
 - Four-shard 34-province QA 43454411678 compile/JVM tests passed; province emulators RUNNING. Previous all-success 34 original 43438780272 and nationally verified 35/35 distinct original archive evidence remain valid.
+
+
+## 2026-11-13: all prior CI green, dormant HTTPS Range client design
+- Verified previous unfinished runs: 43454411678 full 34 real provincial Shortbread emulator five jobs SUCCESS, 43454411510 national 556MB screenshot + streamed app-private SHA SUCCESS, 43454411692 Bac Ninh SUCCESS, 43455502132 Hanoi/HCM SUCCESS, 43455502057 full Android debug + emulator SUCCESS.
+- Introduced dormant `PinnedHttpsRangeTransfer.kt` with strict HTTPS hostname gate, exact 206 Range resume and pinned size+SHA, app-private partial staging, second LocalPackStore verification. `ApprovedCatalogPackDownloader` refuses all transfers while `Vietnam35Catalog.distributionApproved=false`. No hostname, URL or product download UI configured. Explicit design `PACK_DISTRIBUTION_GATE.md`.
+- Feature commit 389d71bf; Android CI 43458014933 PENDING at this note. Existing all-35 Android proofs do not grant routing/boundary/distribution approval.

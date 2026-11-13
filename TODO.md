@@ -132,3 +132,11 @@
 - [ ] Check 43454411678 four-shard 34 province recheck after moving XML to /data/local/tmp. Mark clean only from four jobs passing.
 - [ ] Check HN/HCM CI 43455374999 and Android CI 43455375003 after controlled launcher retry and syntax gate; do not mask non-system faults.
 - [ ] Continue infrastructure design for approved, durable HTTPS 35-pack distribution with resumable Range and pinned manifest; current Actions artifacts expire 2026-11-27, no approval or public URLs.
+
+
+## 2026-11-13 next development gate
+- [x] Verify previous 43454411678 5/5 success for 34/34 maps, national 43454411510, HN/HCM 43455502132, debug 43455502057 all-green.
+- [x] Add dormant HTTPS Range staging/resume prototype with HTTPS-only reviewed host and 206+SHA/size rules, fail-closed default distribution gate and mock JUnit. Feature 389d71bf; source-host and UI deliberately absent.
+- [ ] Inspect Android CI 43458014933 for compiler/JUnit errors and emulator, fix if needed before declaring new feature PASS.
+- [ ] Obtain explicit authorization for ODbL redistribution and actual permanent HTTPS origin, allowlisted host, manifest lifecycle and cache policy before enabling any downloader UI/network.
+- [ ] Reduce 2x temporary disk usage and test real network/physical Xiaomi separately, with no automatic background transfer prior to user opt-in.

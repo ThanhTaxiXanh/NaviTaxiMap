@@ -155,3 +155,8 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 - Android full 43454411956 SUCCESS both build and emulator; national 556MB QA 43454411510 SUCCESS (streamed SHA after real SAF, 157,112 road pixels); Bac Ninh 43454411692 SUCCESS.
 - HN/HCM 43454411531 FAIL because emulator Pixel Launcher ANR blocked app menu before SAF (source/downloaded SHA correct). New multi CI 43455374999 tests one ANR-only retry in commit 720efe42 and shell/Python lint in e05b1ed; result PENDING.
 - 34-region full coverage 43454411678 build SUCCESS, 4 shards IN PROGRESS. This does not revoke earlier all-green 43438780272 for 34/34.
+
+
+## 2026-11-13 release-safe range-stage feature QA
+- Prior run 43454411678 34/34 original provinces all SUCCESS; 43454411510 national 556MB SUCCESS; 43455502132 HN/HCM SUCCESS; 43455502057 Android build+emulator SUCCESS.
+- 389d71bf adds dormant HTTPS Range staging with JVM tests; 43458014933 Android debug compile/emulator in progress at note. No claim of operational downloads or approved hosting.

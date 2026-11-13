@@ -1,0 +1,41 @@
+# NaviTaxiMap: Gate phân phối và tải gói PMTiles qua HTTPS Range (chưa kích hoạt)
+
+## Trạng thái tại 13/11/2026
+
+- **Đã có bằng chứng Android offline 35/35 gói dữ liệu thật**: 34 gói cấp tỉnh/thành qua workflow 43454411678 (và 43438780272); một gói toàn Việt Nam 556.229.998 byte qua 43441211821 và 43454411510.
+- Bản đồ được dùng để *xem thử offline*, không có quyền duyệt định tuyến, ranh giới quốc gia/hành chính hoặc phân phối dữ liệu.
+- **Chưa có máy chủ lưu trữ bền vững, tên miền được thẩm định, HTTPS URL được duyệt hoặc xác nhận phân phối ODbL**. Các file GitHub Actions gốc chỉ là artifact ngắn hạn và không phải địa chỉ tải công khai trong sản phẩm. Artifact 43378133931 hết hạn khoảng 27/11/2026.
+- `Vietnam35Catalog.distributionApproved == false` được giữ nguyên; ứng dụng không gắn nút tải gói, không lên lịch tải hoặc tự mở kết nối mạng từ mã mới.
+
+## Lõi tạm thời (commit 389d71bf)
+
+`app/src/main/java/vn/navitaximap/data/PinnedHttpsRangeTransfer.kt` là mã nội bộ, chưa được sử dụng từ `MainActivity` hay khởi chạy tự động:
+
+1. `ApprovedCatalogPackDownloader` kiểm tra cờ phê duyệt phân phối **trước mọi request**. Với cấu hình hiện tại: chặn tải. Định danh gói được lấy từ catalog gồm tên chính xác, số byte và SHA-256 của dữ liệu Shortbread.
+2. `PinnedHttpsRangeTransfer` buộc `https://`, đúng hostname đã thẩm định, cổng HTTPS thông thường, tên file nguyên văn; chặn query, fragment, credentials, ký tự đường dẫn đã mã hóa, HTTP và redirect. Không có hostname/URL mặc định.
+3. Chỉ chấp nhận HTTP **206** với `Content-Range: bytes OFFSET-(SIZE-1)/SIZE` đúng offset và tổng byte ghim. Gửi `Accept-Encoding: identity`, chặn compressed response. Mỗi lần gọi chỉ thực hiện một request.
+4. Ghi tối đa 64 KiB mỗi khối vào `shortbread-<sha256>.partial` trong thư mục staging app-private. Lần gọi lại dùng `Range` nối tiếp. Có fsync, giới hạn kích thước và kiểm tra huỷ luồng. Lỗi mạng giữ tệp .partial để thử lại khi người dùng yêu cầu.
+5. Khi tải đủ mới băm SHA-256 toàn bộ tệp theo luồng. Sai checksum sẽ xoá file staging và **không** tạo indexed archive. Sau đó mới gọi `LocalPackStore.importPack` để kiểm SHA/kích thước và PMTiles v3 thêm lần nữa, commit metadata bằng atomic move. Không bỏ qua các kiểm tra hiện có.
+6. Để giữ an toàn cho bước chuyển vào app-private store, cần sẵn dung lượng cho phần còn phải tải **cộng với một bản sao hoàn chỉnh và 16 MiB dư**. Vì vậy gói toàn quốc 556 MB cần khoảng 1,13 GB trống nếu tải từ đầu. Đây là đánh đổi tạm thời, chưa tối ưu cho điện thoại dung lượng thấp.
+
+## Cần phê duyệt trước khi biến thành tính năng sử dụng
+
+- Xác minh quyền tái phân phối theo ODbL, lời ghi công nguồn, dữ liệu sai khác so với nguồn và trách nhiệm cập nhật.
+- Phê duyệt đích lưu trữ ổn định, danh sách hostname HTTPS, quyền sở hữu, an toàn TLS, chi phí và chính sách hết hạn/số phiên bản.
+- Xác nhận manifest có SHA-256 và kích thước của **35 tệp đang dùng**, nguồn phiên bản, khả năng phát hiện phiên bản cũ; không tải manifest/tệp không được tin cậy.
+- Thiết kế giao diện yêu cầu người dùng đồng ý từng gói, hiển thị dung lượng còn trống, tiến trình, huỷ/lặp lại, lỗi mạng và lựa chọn tiết kiệm dữ liệu di động.
+- Thử trên máy Xiaomi thực tế, thiết bị ít RAM/bộ nhớ, mạng mất đột ngột, Range server không hỗ trợ, 206 body không đầy đủ, SHA sai, lỗi giải nén hoặc provider.
+- Kiểm thêm cơ chế chống nhiều tiến trình ghi staging cùng lúc, quản lý file .partial cũ, riêng tư, chế độ proxy mạng và chứng chỉ nếu có yêu cầu.
+
+## Những điều cố ý chưa làm
+
+- Không gắn URL mẫu, URL giả hoặc URL artifact CI vào ứng dụng.
+- Không thay cờ `distributionApproved`; không bật route/traffic/voice-navigation.
+- Không tải gói qua HTTP, không tải nền khi người dùng chưa đồng ý, không chạy trên UI thread.
+- Không coi kết quả 35/35 bản đồ hiển thị là xác nhận pháp lý cho địa giới hoặc khả năng định tuyến.
+
+## Kiểm thử mã hiện tại
+
+`PinnedHttpsRangeTransferTest.kt` dùng `FakeRange` không gọi Internet để kiểm: resume sau body bị đứt, header Range chính xác, SHA đúng, từ chối HTTP/host lạ/URL mã hoá/query/fragment, từ chối redirect/200/416, sai Content-Range hoặc body bị thay và chặn download mặc định vì catalog chưa được phê duyệt.
+
+Chạy bằng `gradle --no-daemon :app:testDebugUnitTest :app:assembleDebug` trong CI; xem run của commit feature để xác nhận kết quả thực tế. Khi phê duyệt về sau, phải bổ sung thử end-to-end với host được chấp thuận, không dùng test giả làm bằng chứng phân phối hoạt động.

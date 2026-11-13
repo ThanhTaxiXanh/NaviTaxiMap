@@ -131,3 +131,8 @@
 - Real national PMTiles original 556,229,998-byte SHA and airplane-mode render 157,112 pixels, CI 43454411510 SUCCESS again without launcher retry; 35/35 independent genuine files have proven Android visual screenshots across CI.
 - Fixed injected UI XML recents pollution in 1ce22829, full Android CI 43454411956 + Bac Ninh CI 43454411692 both SUCCESS.
 - New multiregion CI 43454411531 FAILED at system Pixel Launcher ANR; single ANR-only retry 720efe42, lint gate e05b1ed, rerun CI 43455374999 pending. 34-shard 43454411678 also still running at checkpoint.
+
+
+## 2026-11-13 next slice: approval-gated resumable transfers
+- All unfinished actual region workflows from previous conversation now SUCCESS, including 34/34 one-workflow 43454411678 and 556MB national 43454411510.
+- Added Range staging engine (feature 389d71bf) + JUnit FakeRange scenarios for partial resume / wrong 206 / denied redirect / SHA mismatch / host/HTTPS authorization. Gate remains `distributionApproved=false`, no URLs, no Android UI or real network call. Build CI 43458014933 PENDING.

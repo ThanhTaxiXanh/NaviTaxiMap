@@ -80,3 +80,8 @@
 ## 2026-11-13 original 35 OSM Shortbread PMTiles Android emulator milestone
 - 34/34 original provincial maps verified in entire-success 43438780272; original 556,229,998-byte Vietnam-wide map additionally verified in independent-success 43441211821, using true Android DocumentsUI, streamed app-private full SHA-256 and airplane mode road screenshot (157,112 pixels). 35/35 unique archives screenshot-proofed, not a release.
 - Diagnosed extra run 43441211834 failure as test instrumentation XML accidentally imported from /sdcard/DocumentsUI instead of a region PMTiles. Fix 1ce22829 moved UIAutomator XML into shell-private tmp, app rejects non-.pmtiles URI names, added test, privacy hygiene for debug log. CI retest pending.
+
+
+## 2026-11-13 approval-gated offline pack download scaffolding
+- Implemented internal `PinnedHttpsRangeTransfer` with strict HTTPS reviewed hostname, RFC 7233-style bytes range response checking, app-private partial resume, SHA256 final validation and download-abort cleanup. Wrapper `ApprovedCatalogPackDownloader` maintains false catalog redistribution gate and imports only through existing atomic LocalPackStore.
+- Added JUnit tests with simulated 206 partial responses, hash mismatches, incorrect host/path, redirects, non-HTTPS and distribution blocked. Added `PACK_DISTRIBUTION_GATE.md`. No hosted pack URL, background job, user-triggered downloads or shipping features yet.
