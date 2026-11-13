@@ -24,6 +24,11 @@ import org.maplibre.android.maps.MapLibreMap
 import org.maplibre.android.maps.MapView
 import org.maplibre.android.maps.Style
 import java.util.Locale
+import vn.navitaximap.data.DemoOfflinePack
+import org.maplibre.android.style.sources.VectorSource
+import org.maplibre.android.style.layers.LineLayer
+import org.maplibre.android.style.layers.PropertyFactory.lineColor
+import org.maplibre.android.style.layers.PropertyFactory.lineWidth
 
 /**
  * Phase 1/2 proof of concept. No fake routes, traffic, speed limits or offline coverage.
@@ -38,6 +43,8 @@ class MainActivity : Activity(), LocationListener {
     private lateinit var bottomBar: LinearLayout
     private lateinit var themeButton: Button
     private lateinit var locateButton: Button
+    private lateinit var offlineButton: Button
+    private var offlineDemo = false
     private var trackingRequested = false
     private var darkChrome = false
     private var locationStarted = false
@@ -61,9 +68,10 @@ class MainActivity : Activity(), LocationListener {
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync { map ->
             liveMap = map
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(21.273, 106.196), 8.0))
-            map.setStyle(Style.Builder().fromUri(STREET_STYLE_LIGHT)) {
-                statusText.text = "OpenFreeMap / OpenStreetMap • trực tuyến • chưa có offline"
+            if (intent.getBooleanExtra(EXTRA_OFFLINE_DEMO, false)) {
+                showOfflineDemo(map)
+            } else {
+                showOnline(map)
             }
         }
     }
@@ -134,11 +142,61 @@ class MainActivity : Activity(), LocationListener {
         bottomActions.addView(dataButton, LinearLayout.LayoutParams(0, dp(46), 1f).apply {
             marginStart = dp(8)
         })
+        offlineButton = actionButton("PMTiles offline (mẫu)")
+        offlineButton.setOnClickListener {
+            liveMap?.let { map ->
+                if (offlineDemo) showOnline(map) else showOfflineDemo(map)
+            }
+        }
         bottomBar.addView(locationText)
         bottomBar.addView(bottomActions)
+        bottomBar.addView(offlineButton, LinearLayout.LayoutParams(-1, dp(46)).apply {
+            topMargin = dp(8)
+        })
         root.addView(bottomBar, FrameLayout.LayoutParams(-1, -2, Gravity.BOTTOM).apply {
             setMargins(dp(12), 0, dp(12), dp(14))
         })
+    }
+
+    private fun showOnline(map: MapLibreMap) {
+        offlineDemo = false
+        offlineButton.text = "PMTiles offline (mẫu)"
+        val url = if (darkChrome) STREET_STYLE_DARK else STREET_STYLE_LIGHT
+        map.setStyle(Style.Builder().fromUri(url)) {
+            statusText.text = "OpenFreeMap / OpenStreetMap • trực tuyến • không phải offline"
+        }
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(21.273, 106.196), 8.0))
+    }
+
+    /**
+     * Diagnostic mode only: one synthetic z0 MVT tile. Contains no real streets, routing
+     * graph or geographical names. Source URI is file-only with no remote style assets.
+     */
+    private fun showOfflineDemo(map: MapLibreMap) {
+        try {
+            val archive = DemoOfflinePack.install(this)
+            val styleJson = """{"version":8,"name":"NaviTaxiMap local PMTiles diagnostic",
+                "sources":{},"layers":[{"id":"offline-background","type":"background",
+                "paint":{"background-color":"#f0f7fa"}}]}"""
+            map.setStyle(Style.Builder().fromJson(styleJson)) { style ->
+                val source = VectorSource(
+                    "synthetic-pmtiles",
+                    "pmtiles://file://${archive.absolutePath}"
+                )
+                style.addSource(source)
+                val lines = LineLayer("synthetic-test-lines", "synthetic-pmtiles")
+                lines.setSourceLayer("synthetic")
+                lines.setProperties(lineColor(Color.rgb(11, 126, 147)), lineWidth(5f))
+                style.addLayer(lines)
+                offlineDemo = true
+                offlineButton.text = "Quay về bản đồ online"
+                statusText.text = "PMTiles offline MẪU • đường tổng hợp • không dùng dẫn đường"
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(0.0, 0.0), 1.0))
+            }
+        } catch (error: Exception) {
+            statusText.text = "Không thể mở gói PMTiles: ${error.message}"
+            explain("Lỗi dữ liệu offline", "Gói PMTiles thử nghiệm chưa được xác minh thành công.")
+        }
     }
 
     private fun explainLocationPrivacy() {
@@ -206,9 +264,11 @@ class MainActivity : Activity(), LocationListener {
             "GPS %.5f, %.5f • ±%.0f m%s",
             location.latitude, location.longitude, location.accuracy, speed
         )
-        liveMap?.animateCamera(CameraUpdateFactory.newLatLng(
-            LatLng(location.latitude, location.longitude)
-        ))
+        if (!offlineDemo) {
+            liveMap?.animateCamera(CameraUpdateFactory.newLatLng(
+                LatLng(location.latitude, location.longitude)
+            ))
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -227,6 +287,7 @@ class MainActivity : Activity(), LocationListener {
         statusText.setTextColor(fg)
         locationText.setTextColor(fg)
         themeButton.text = if (darkChrome) "Giao diện sáng" else "Giao diện tối"
+        if (offlineDemo) return
         val style = if (darkChrome) STREET_STYLE_DARK else STREET_STYLE_LIGHT
         liveMap?.setStyle(Style.Builder().fromUri(style)) {
             statusText.text = "OpenFreeMap / OpenStreetMap • trực tuyến • chưa có offline"
@@ -268,6 +329,7 @@ class MainActivity : Activity(), LocationListener {
 
     companion object {
         private const val LOCATION_REQUEST = 101
+        private const val EXTRA_OFFLINE_DEMO = "vn.navitaximap.OFFLINE_DEMO"
         private const val STREET_STYLE_LIGHT = "https://tiles.openfreemap.org/styles/liberty"
         private const val STREET_STYLE_DARK = "https://tiles.openfreemap.org/styles/dark"
     }
