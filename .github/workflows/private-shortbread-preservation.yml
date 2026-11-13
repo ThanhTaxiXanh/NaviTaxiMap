@@ -1,0 +1,63 @@
+name: Private original 35-pack preservation verification (receipt only)
+on:
+  push:
+    branches: ['develop/phase0-android-maplibre']
+    paths:
+      - 'tools/vietnam34/verify_private_preservation.py'
+      - 'tools/vietnam34/test_preservation_receipt.py'
+      - '.github/workflows/private-shortbread-preservation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  verify-local-source-artifacts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check metadata-only verifier tests (no actual upload)
+        run: python3 -m unittest discover -s tools/vietnam34 -p 'test_preservation_receipt.py' -v
+      - name: Download 34 original source PMTiles into temporary CI workspace
+        uses: actions/download-artifact@v4
+        with:
+          name: NaviTaxiMap-34-Provinces-OSM-UNREVIEWED
+          run-id: 43378133931
+          github-token: ${{ github.token }}
+          path: private-original-provinces
+      - name: Download original 556 MB whole-Vietnam PMTiles into temporary CI workspace
+        uses: actions/download-artifact@v4
+        with:
+          name: NaviTaxiMap-Vietnam-Whole-Country-OSM-UNREVIEWED
+          run-id: 43378133931
+          github-token: ${{ github.token }}
+          path: private-original-national
+      - name: Stream full SHA-256 and PMTiles v3 header of all 35 originals
+        run: |
+          python3 tools/vietnam34/verify_private_preservation.py \
+            --provinces private-original-provinces \
+            --national private-original-national \
+            --receipt private-source-receipt.json | tee private-preservation-result.txt
+          grep -q 'PRIVATE_PRESERVATION_VERIFY_PASS files=35 bytes=843734803' private-preservation-result.txt
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          doc = json.loads(Path('private-source-receipt.json').read_text())
+          assert doc['totalFiles'] == 35 and doc['totalBytes'] == 843734803
+          assert doc['distributionApproved'] is False
+          assert doc['localBackupCreatedByVerifier'] is False
+          assert Path('private-source-receipt.json').stat().st_size < 30000
+          print('RECEIPT_METADATA_ONLY_PASS original bytes remain ephemeral in CI runner')
+          PY
+      - name: Upload METADATA ONLY (never upload original PMTiles bytes)
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: NaviTaxiMap-35-original-local-receipt-NO-DATA
+          path: |
+            private-source-receipt.json
+            private-preservation-result.txt
+          retention-days: 14
+          if-no-files-found: error
