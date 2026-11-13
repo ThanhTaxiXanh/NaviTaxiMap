@@ -15,3 +15,13 @@
 
 ## Blocked
 Physical Xiaomi debugging and live GPS; actual Android system-picker interaction; real Vietnam regional tiles, download lifecycle and licensed styles; production signing and navigation QA.
+
+## Latest phase 4 crash-recovery QA (2026-11-13)
+- Commit tested: `f7515b29f4b9057eef3d82b1dbaacfdf0d1f5ff0`.
+- [GitHub Actions 43364225600](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43364225600): **ALL JOBS PASS**.
+- Gradle `:app:testDebugUnitTest`, `:app:assembleDebug`; PMTiles fixture Python 3/3; Vietnam approval policy Python 4/4.
+- Emulator API 34: online cold-start, synthetic offline tile screenshot/pixel check in airplane mode, PMTiles import and SHA-256 readback PASS.
+- Injected four app-private incomplete files (two staging, orphan PMTiles, orphan index), force-stopped app, relaunched it; recovery discarded incomplete files while keeping prior committed pair byte-identical. `imported-pack.pmtiles` and `recovered-pack.pmtiles` both SHA-256 `860e0383397b64eac881932bacf625bbb740db23abba4e008ac846967e7c1407`.
+- Debug APK 44,638,931 bytes, ZIP integrity PASS, SHA-256 `8b0a1aa4c849786809a3ec58b8089ebde2f54870c0997b05243d7423a3db4cf0`.
+- Evidence in workflow artifact `NaviTaxiMap-emulator-evidence`.
+- Not a production APK. Physical Xiaomi, real road PMTiles, full SAF picker and cross-process recovery remain unverified.

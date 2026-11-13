@@ -5,8 +5,9 @@
 - [x] Confirm byte-level importer emulator smoke after replacing logcat-only signal (CI 43362607683 PASS).
 - [ ] Automate real system picker interaction, file deletion, tampered file recovery and process interruption tests.
 - [ ] Add signed/approved pack manifests, attribution and independent provenance approval.
-- [ ] Add crash recovery and orphan staging cleanup, free-space checks, consistent metadata transaction.
-- [ ] Create authorized and licensed offline real-road PMTiles for a small Vietnam region.
+- [x] Add basic interruption recovery for private staging/orphan PMTiles/index and streamed free-space safety checks (CI 43364225600 PASS).
+- [ ] Hardening: multi-process locking, metadata/directory durability after sudden power failure, disk-full/injected I/O testing on physical Xiaomi and transactional update rollback.
+- [ ] Obtain an immutable, reviewed Vietnam OSM extract and create licensed real-road pilot PMTiles; see REAL_OSM_SOURCE_PLAN.md (source candidate researched, NO real data integrated).
 - [ ] Region catalog of 34 provinces, download/pause/resume/cancel/version/update/delete.
 - [ ] Integrate local fonts/sprites and reviewed MapLibre style to render real MVT layers.
 - [ ] Real Xiaomi GPS and UI performance/rotation/battery tests (BLOCKED).

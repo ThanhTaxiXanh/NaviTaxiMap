@@ -13,3 +13,8 @@ Updated: 2026-11-13
 | Real-time traffic | Future optional module | BLOCKED; no stable authorized no-cost source established |
 
 Do not use the public OpenFreeMap server for bulk scraping or unauthorized offline redistribution. Source licenses and style attribution must be reviewed before real packs are imported and displayed.
+
+## Pilot source candidate (researched, NOT downloaded)
+- **Geofabrik Vietnam**: https://download.geofabrik.de/asia/vietnam.html offers the OSM raw data PBF and publishes updates; Geofabrik states OSM-derived downloads use ODbL 1.0 and require attribution: https://www.geofabrik.de/data/download.html.
+- **tilemaker** can convert OSM PBF to PMTiles with explicit config/process scripts: https://github.com/systemed/tilemaker/blob/master/docs/RUNNING.md.
+- No downloaded real OSM snapshot, validated province boundary or reviewed style has been integrated. See `REAL_OSM_SOURCE_PLAN.md`.

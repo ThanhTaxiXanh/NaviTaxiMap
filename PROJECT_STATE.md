@@ -9,7 +9,7 @@ main: protected; do not push, merge, create PR or release until owner explicitly
 - Phase 1: IN PROGRESS; Kotlin Android shell and UI, build/emulator smoke proven.
 - Phase 2: IN PROGRESS; MapLibre + OpenFreeMap online roads rendered in emulator. Still not a production basemap.
 - Phase 3: IN PROGRESS; native PMTiles v3 offline reader/render **proof verified only for synthetic MVT data** (CI 43359838414).
-- Phase 4: IN PROGRESS; LocalPackStore, PmtilesHeader and Android SAF import UI written, unit tested, APK assembled. The emulator test observed actual archive + metadata files; byte-level archive/index regression was verified in CI 43362607683 (PASS). System file-picker interaction and real map packs remain pending.
+- Phase 4: IN PROGRESS; LocalPackStore, PmtilesHeader and Android SAF import UI written, unit tested, APK assembled. The emulator test observed actual archive + metadata files; byte-level archive/index regression verified in CI 43362607683 and interruption-recovery emulator regression verified in CI 43364225600, both PASS. System file-picker interaction and real map packs remain pending.
 - Phase 5-18: NOT STARTED, apart from preparatory data-policy validators and simple location code.
 
 ## Current code / workflow
@@ -17,7 +17,7 @@ main: protected; do not push, merge, create PR or release until owner explicitly
 - Pack import: `data/LocalPackStore.kt`, `data/PmtilesHeader.kt`.
 - Unit tests: `app/src/test/java/vn/navitaximap/data/`.
 - Emulator CI script: `ci/smoke-emulator.sh`.
-- Latest CI with byte-level smoke: https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43362607683
+- Latest verified CI: https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43364225600 (commit f7515b29f4b9057eef3d82b1dbaacfdf0d1f5ff0, all jobs PASS).
 
 ## Not demonstrated
 No real licensed Vietnamese province packs, PMTiles download manager, route graph, POI/search, navigation, traffic, speed signs, terrain/3D or approved legal maritime overlays.

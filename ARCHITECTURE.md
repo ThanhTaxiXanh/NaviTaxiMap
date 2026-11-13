@@ -34,3 +34,9 @@ App modules currently live in `app`; the future module boundaries below are arch
 - CI 43359838414: offline synthetic MVT geometry rendered in airplane mode.
 - Phase 4 import JUnit and Android APK assemble PASSED on GitHub; full current emulator QA pending.
 - Physical Xiaomi debug unavailable due to absent device connection.
+
+## Phase 4 crash-recovery layer (CI 43364225600 verified)
+- `LocalPackStore.recoverInterruptedImports()` runs on startup and before streamed import on its single app executor; cleans only matching private UUID-generated partial files and unpaired archives/indexes.
+- A package is visible only when index/PMTiles pair is present with matching recorded file length. `verifyPack` re-hashes SHA-256 on demand.
+- Streamed free-space preflight preserves default 8 MiB reserve. Current in-process `@Synchronized` methods are not a multi-process lock, and directory fsync and production atomic updates are not implemented.
+- Emulator QA injected four interrupted-import files, force-stopped and restarted app, confirmed cleanup and unchanged valid PMTiles SHA-256.

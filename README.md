@@ -39,3 +39,6 @@ Nine images provided by the project owner are design references, not screenshots
 
 ## Phase 4 verified smoke
 Run 43362607683 confirms that Android can import a synthetic PMTiles archive into app-private storage with airplane mode enabled, re-read its bytes and check SHA-256 without changing its unverified source status. Full interactive system picker and real provincial data remain untested.
+
+## Phase 4 reliability validation
+Latest [CI 43364225600](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43364225600): Android build/unit/emulator tests all PASS, including simulated interrupted-import recovery in airplane mode. Local package recovery and free-space checks are **prototype** features, not proof of fault tolerance under real hardware power loss. Open OSM road-data source/PMTiles pilot requirements are recorded in [REAL_OSM_SOURCE_PLAN.md](REAL_OSM_SOURCE_PLAN.md).

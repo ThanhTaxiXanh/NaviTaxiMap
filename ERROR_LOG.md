@@ -15,3 +15,8 @@
 - Need recovery for orphaned data between two atomic renames, resume/pause downloads, storage-pressure handling.
 - Xiaomi device is not connected, no physical QA.
 - No approved regional basemap, POI, offline routing, verified traffic/speed/legal boundary data.
+
+## Phase 4 reliability QA
+- No new CI blocker: 43364225600 all jobs PASS including synthetic import and simulated interrupted-import cleanup.
+- Risk still open: fsync of parent directory and cross-process locking not implemented. Tests simulate file leftovers and normal app restart, not abrupt hardware power loss.
+- Real OSM geographic/attribution validation and Xiaomi physical device QA still blocked.
