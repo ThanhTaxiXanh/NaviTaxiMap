@@ -27,7 +27,7 @@ import java.util.Locale
 
 /**
  * Phase 1/2 proof of concept. No fake routes, traffic, speed limits or offline coverage.
- * The public demo style is for development only; production data needs a vetted provider.
+ * Online street styles are provisional; independent offline map packs are not ready.
  */
 class MainActivity : Activity(), LocationListener {
     private lateinit var mapView: MapView
@@ -62,8 +62,8 @@ class MainActivity : Activity(), LocationListener {
         mapView.getMapAsync { map ->
             liveMap = map
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(21.273, 106.196), 8.0))
-            map.setStyle(Style.Builder().fromUri(DEMO_STYLE)) {
-                statusText.text = "Bản đồ thử nghiệm trực tuyến • chưa có gói offline"
+            map.setStyle(Style.Builder().fromUri(STREET_STYLE_LIGHT)) {
+                statusText.text = "OpenFreeMap / OpenStreetMap • trực tuyến • chưa có offline"
             }
         }
     }
@@ -121,10 +121,10 @@ class MainActivity : Activity(), LocationListener {
             setTextColor(Color.rgb(25, 49, 59))
         }
         locateButton = actionButton("◎ Vị trí")
-        locateButton.setOnClickListener { requestLocationOnDemand() }
+        locateButton.setOnClickListener { explainLocationPrivacy() }
         val dataButton = actionButton("Dữ liệu bản đồ")
         dataButton.setOnClickListener {
-            explain("Trạng thái dữ liệu", "Bản đồ MapLibre đang dùng nguồn demo khi có Internet. PMTiles, tìm đường, giao thông, dữ liệu 34 tỉnh/thành và hồ sơ biển đảo chưa được tích hợp hoặc phê duyệt. Không dùng màn hình thử nghiệm để điều hướng khi lái xe.")
+            explain("Trạng thái dữ liệu", "Bản đồ đường phố trực tuyến do OpenFreeMap cung cấp (OpenStreetMap), chưa có SLA. PMTiles, tìm đường, giao thông, dữ liệu 34 tỉnh/thành và hồ sơ biển đảo chưa được tích hợp hoặc phê duyệt. Không dùng màn hình thử nghiệm để điều hướng khi lái xe.")
         }
         val bottomActions = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
@@ -139,6 +139,15 @@ class MainActivity : Activity(), LocationListener {
         root.addView(bottomBar, FrameLayout.LayoutParams(-1, -2, Gravity.BOTTOM).apply {
             setMargins(dp(12), 0, dp(12), dp(14))
         })
+    }
+
+    private fun explainLocationPrivacy() {
+        AlertDialog.Builder(this)
+            .setTitle("Quyền vị trí và bản đồ trực tuyến")
+            .setMessage("Khi bạn chọn Vị trí, ứng dụng sẽ dùng GPS đưa bản đồ đến khu vực của bạn. Nhà cung cấp bản đồ trực tuyến có thể nhận yêu cầu ô bản đồ của vùng này. Ứng dụng không có máy chủ vị trí riêng. Bạn đồng ý tiếp tục?")
+            .setPositiveButton("Đồng ý") { _, _ -> requestLocationOnDemand() }
+            .setNegativeButton("Hủy", null)
+            .show()
     }
 
     private fun requestLocationOnDemand() {
@@ -218,7 +227,10 @@ class MainActivity : Activity(), LocationListener {
         statusText.setTextColor(fg)
         locationText.setTextColor(fg)
         themeButton.text = if (darkChrome) "Giao diện sáng" else "Giao diện tối"
-        // Map theme switching will be enabled after approved light/dark styles exist.
+        val style = if (darkChrome) STREET_STYLE_DARK else STREET_STYLE_LIGHT
+        liveMap?.setStyle(Style.Builder().fromUri(style)) {
+            statusText.text = "OpenFreeMap / OpenStreetMap • trực tuyến • chưa có offline"
+        }
     }
 
     private fun actionButton(label: String): Button = Button(this).apply {
@@ -256,6 +268,7 @@ class MainActivity : Activity(), LocationListener {
 
     companion object {
         private const val LOCATION_REQUEST = 101
-        private const val DEMO_STYLE = "https://demotiles.maplibre.org/style.json"
+        private const val STREET_STYLE_LIGHT = "https://tiles.openfreemap.org/styles/liberty"
+        private const val STREET_STYLE_DARK = "https://tiles.openfreemap.org/styles/dark"
     }
 }
