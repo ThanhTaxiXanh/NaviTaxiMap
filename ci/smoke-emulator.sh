@@ -56,3 +56,26 @@ if grep -q 'FATAL EXCEPTION' smoke-evidence/offline-runtime-errors.txt; then
     exit 1
 fi
 echo "Offline smoke PASS: started in airplane mode, UI status verified, screenshot saved."
+
+# Phase 4 import smoke: test the same streaming store used by Android's document picker.
+# Controlled DEBUG-only fixture intent avoids requiring interactive system-file-picker automation.
+adb shell am force-stop vn.navitaximap
+adb logcat -c
+adb shell am start -W -n vn.navitaximap/.MainActivity --ez vn.navitaximap.DEBUG_IMPORT_FIXTURE true | tee smoke-evidence/import-launch.txt
+sleep 8
+adb logcat -d -s NaviTaxiMapImport:I NaviTaxiMapImport:E > smoke-evidence/import-logcat.txt
+adb shell run-as vn.navitaximap ls files/offline-packs | tee smoke-evidence/imported-pack-files.txt
+if ! grep -q 'DEBUG_IMPORT_PASS' smoke-evidence/import-logcat.txt; then
+  echo "Phase 4 streaming PMTiles import/verify did not complete" >&2
+  cat smoke-evidence/import-logcat.txt >&2
+  exit 1
+fi
+if ! grep -q '\.pmtiles' smoke-evidence/imported-pack-files.txt; then
+  echo "No imported app-private .pmtiles archive found" >&2
+  exit 1
+fi
+if ! grep -q '\.properties' smoke-evidence/imported-pack-files.txt; then
+  echo "No imported metadata index found" >&2
+  exit 1
+fi
+echo "Offline pack import PASS: stream stored, indexed and SHA-256 re-verified while airplane mode was enabled."
