@@ -78,3 +78,9 @@
 - [Shortbread vector schema 1.0](https://shortbread-tiles.org/schema/1.0/).
 - [Bản ghi audit ranh giới 33 vùng từ Geofabrik](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43376868151).
 - [Bổ sung quan hệ Khánh Hòa](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43377276622).
+
+
+## Dung lượng byte đã xác minh và kiểm Android (bổ sung 13/11/2026)
+- Tệp `tools/vietnam34/PACK_BYTES_VERIFIED.tsv` ghi **đủ 35 mã, tên tệp, chính xác số byte, số ô và SHA-256** từ từng dòng `INDEPENDENT_SHA256_OK` của GitHub Actions [43379440781](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43379440781). Tổng 34 gói 287.504.805 byte; gói toàn quốc 556.229.998 byte. Đây là kích thước tệp PMTiles, không phải ZIP artifact.
+- Danh mục Android `Vietnam35Catalog.kt` đã pin cả kích thước, SHA và zoom; Android vẫn nhập thủ công qua SAF, chưa có URL phân phối bền vững.
+- Đã kiểm pixel Android offline **3/35**: Bắc Ninh 24 (CI 43385141410), Hà Nội 01 và TP.HCM 79 (CI 43387058322). Chưa chứng minh cả 35 tệp chạy trên Android, cũng không được coi là dữ liệu dẫn đường hay biên giới chính thức.

@@ -20,3 +20,10 @@ Source feature commit: 4a55a8734dff9f75b451cdb29414414c92a64104.
 Standard Android CI 43385141310: all jobs SUCCESS, existing Hanoi real-road sample regression preserved (58,015 screenshot colored pixels).
 Dedicated Bắc Ninh Shortbread Android CI 43385141410: all jobs SUCCESS, 11,049,420-byte SHA-pinned real archive via SAF DocumentsUI, airplane-mode 266,196 street pixels, OpenStreetMap ODbL attribution and no-navigation warning. Evidence expires 2026-11-27: https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43385141410/artifacts/14017389861.
 Not a demonstration of 35 region files rendered on device; 35 pins/catalog tested, visual rendering verified for 1 only.
+
+
+## 2026-11-13 catalog byte pin and multi-region tests
+- New `VietnamRegionSpec.sizeBytes` pins 35 exact archives from independent verifier log 43379440781, ledger `tools/vietnam34/PACK_BYTES_VERIFIED.tsv`; all archive names, zooms, lengths and SHA hashes are checksummed during import, no remote catalog.
+- SAF import of recognized file performs Android DocumentsUI size preflight if available, free-space check, then bounded streamed SHA/length validation before promotion; unrecognized imports remain untrusted.
+- Real screenshots: 01 Hà Nội 157,112 road pixels and 79 Ho Chi Minh City 183,085, CI https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43387058322 success, evidence artifact 14019316787. With 24 Bắc Ninh old run, 3/35 verified. Source NOT approved for navigation/legal maritime lines.
+- A fresh Bắc Ninh CI encountered emulator storage race before import (43387058086 FAIL). A separate retry helper was committed (a3e53366), new CI pending.

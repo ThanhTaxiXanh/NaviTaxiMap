@@ -54,3 +54,9 @@
 ## Resolved QA scope, 2026-11-13
 - Both new CI 43385141310 and 43385141410 succeeded. No observed regression in existing Android smoke tests; old real Hanoi pilot still 58,015 rendered local-road pixels.
 - Remaining unverified items are not errors marked resolved: 34 other on-device PMTiles, physical Xiaomi, 35-pack long-term HTTPS hosting, resumable downloads, label fonts, ODbL/legal-boundary release audit.
+
+
+## Android emulator storage race (2026-11-13)
+- **Observed FAIL:** run 43387058086, original real Bắc Ninh archive SHA OK and debug APK installed, then `adb push ... /sdcard/Download/24-bac-ninh.pmtiles` failed `remote couldn't create file: Operation not permitted`, before SAF or map rendering. Do not attribute this to Shortbread data or style.
+- **Fix candidate:** commit a3e53366 adds `ci/push-emulator-download.sh`: waits for writable emulated storage, retries, and compares uploaded length; both single and multi-region workflows use it. New run 43387711796 PENDING, cannot mark resolved yet.
+- **Other evidence:** run 43387058322 independently PASS for real Hà Nội and HCM via older script, showing Android renderer worked for both provinces on that runner.

@@ -48,3 +48,11 @@
 - First workflow failed only because Python 3.14 lacked pinned Shapely 2.0.7 binary wheel; fixed using Python 3.12 setup. Final CI build 43378133931 PASS.
 - Independent 35-file manifest/head/tile-type/byte-size/SHA256 regression CI 43379440781 PASS, published checksum summary artifact.
 - Explicitly not a legal border product or navigable offline route database. No main/release changes, app multi-region catalog still pending.
+
+
+## 2026-11-13 Shortbread catalog hardening and multi-region visual QA
+- Catalog now pins every 35 package exact size from previously independent SHA verification logs (file: tools/vietnam34/PACK_BYTES_VERIFIED.tsv), validates known-region manual SAF imports against expected bytes/hash and storage budget.
+- New tests: PinnedRegionImportTest for mismatch rejection, 35-entry Kotlin/Python size/hash tests, real offline Android emulator workflow for Hà Nội + Hồ Chí Minh (CI 43387058322 PASS).
+- 01 Hà Nội: 157,112 offline road-color pixels; 79 Hồ Chí Minh: 183,085. Including earlier Bắc Ninh: 3/35 archives screenshot-proven.
+- CI file-storage race found in 43387058086. Added retry + byte-length verification helper in a3e53366, repeat CI pending.
+- No main, PR, release or distribution changes.

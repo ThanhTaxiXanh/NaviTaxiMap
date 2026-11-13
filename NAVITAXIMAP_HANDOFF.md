@@ -147,3 +147,11 @@ Cần chú ý: OpenFreeMap chỉ là online prototype. Không cào hàng loạt 
 - Bắc Ninh thật: https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43385141410 PASS (SAF, SHA-256, airplane mode, Shortbread 1.0 offline 266.196 pixel); ảnh/log trong artifact 14017389861.
 - Danh mục 35 tên/SHA trong Android đã được kiểm thử trùng tools/vietnam34/SHA256SUMS.txt; CHỈ BẮC NINH là gói Shortbread mới đã kiểm ảnh Android. KHÔNG được gọi 35/35 APK đã hiển thị, KHÔNG có tải trực tiếp 35 gói hay dẫn đường. Main SHA vẫn phải kiểm mỗi phiên, không push main/PR/merge/release.
 - Việc tiếp theo: sao lưu artifact trước 27/11/2026, thiết kế hosting miễn phí bền vững/được phép, exact size + verified download/Range resume; kiểm các gói khác và Xiaomi, ODbL và ranh giới theo nguồn pháp lý.
+
+
+## CHECKPOINT PHÁT TRIỂN TIẾP THEO (13/11/2026): ghim dung lượng + kiểm nhiều tỉnh
+- Đầu phiên, HEAD `91a891079f867bdc0418e538c958455c297665d9`; `main` giữ `ea76d1c110bd32f3393be7c4dbf24f8424772a2a`.
+- Commit `7d747d1c64704b4143e4358c00d75724afaea591` bổ sung `sizeBytes` cho 35 entry trong `Vietnam35Catalog`, kiểm preflight DocumentsUI / đủ trống / SHA / size giới hạn streaming trước khi ghi metadata. Tệp `tools/vietnam34/PACK_BYTES_VERIFIED.tsv` lấy từ 35 dòng log kiểm chứng độc lập run 43379440781. Tổng 34 gói = 287.504.805 byte, gói VN = 556.229.998 byte.
+- **CI 43387058322 SUCCESS:** Hà Nội `01-ha-noi.pmtiles` 17.562.631 byte/157.112 pixel đường; Hồ Chí Minh `79-ho-chi-minh.pmtiles` 18.217.716 byte/183.085 pixel. SHA và nhập SAF thật, bản đồ Shortbread khi máy bay, cảnh báo KHÔNG dẫn đường. Chứng cứ artifact 14019316787. Cộng Bắc Ninh đã có trước: **3/35 được kiểm pixel trên emulator**.
+- **CI 43387058086 FAIL** do tệp không đẩy được vào `/sdcard/Download` trước khi bộ nhớ emulator sẵn sàng; không phải lỗi pixel. Commit `a3e53366e622f3d856bbf17f627edd86aee9ab72` thêm helper retry + kiểm byte, CI mới 43387711796/43387711798/43387711858 đang chạy, phải đối chiếu sau.
+- Vẫn CHƯA có kho lưu bền vững được phê duyệt, tải 35 gói HTTPS trong Android, resume, điều hướng, Xiaomi, ODbL phân phối, đường biên pháp lý; không push main, không PR, merge, release.

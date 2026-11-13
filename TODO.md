@@ -54,3 +54,11 @@
 - [x] Confirm both CI jobs from new feature commit: 43385141310 Android debug + emulator SUCCESS, 43385141410 real Bắc Ninh Shortbread SUCCESS.
 - [ ] Android verification 35/35 PMTiles files (only 1/35 new regional render proven); national large archive memory/storage testing pending.
 - [ ] Add approved long-term 35-pack download distribution with exact byte lengths, Range resume, metadata/signature policy and cancellation.
+
+
+## Follow-up after 2026-11-13 exact-size and multi-region work
+- [x] Pin exact byte lengths (35/35) alongside SHA-256 using independent verified log, and cross-check via Python/Kotlin.
+- [x] Verify Android offline real Hà Nội 01 and Hồ Chí Minh 79 using true SAF import, airplane mode and screenshot pixels; CI 43387058322 PASS; combined new shortbread Android visual coverage is now 3/35 (Bắc Ninh, Hà Nội, TP.HCM).
+- [x] Add expected byte-length cap and SHA-pinned preactivation checks to known-region SAF imports, with JVM negative cases (new build unit job successful).
+- [ ] Check latest CI of emulator storage-ready retry: 43387711796/43387711798, and full standard Android 43387711858.
+- [ ] Test remaining 32/35 packs on actual Android (especially 556 MB nationwide); establish approved long-lived artifact hosting and secure resumable download; no fabricated URLs.

@@ -85,3 +85,9 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 - Android debug run https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43385141310: SUCCESS (build, JUnit, Python, emulator).
 - Real Bắc Ninh Shortbread run https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43385141410: SUCCESS (SHA, real SAF import, airplane mode, pixel screenshot).
 - These test source commit 4a55a873. Later documentation-only commits use [skip ci]; do not misstate them as separate tested Android binaries.
+
+
+## 2026-11-13 new CI evidence
+- 43387058111 Android debug build/unit tests: **build job SUCCESS**; full standard emulator regression job was still underway at this checkpoint.
+- 43387058322 Hà Nội + Hồ Chí Minh real Shortbread Android: **SUCCESS**; 01 file 17,562,631 bytes / 157,112 road pixels, 79 file 18,217,716 bytes / 183,085 road pixels, SHA and SAF PASS. Artifact 14019316787.
+- 43387058086 Bắc Ninh retest: **FAIL** at `adb push` into not-yet-writable emulator /sdcard/Download, unrelated to map pixel callback; do not count as successful regression. Fix a3e53366 and rerun 43387711796; multi recheck 43387711798 and Android full 43387711858 pending.

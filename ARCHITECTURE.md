@@ -64,3 +64,9 @@ App modules currently live in `app`; the future module boundaries below are arch
 4. Pin go-pmtiles CLI v1.31.2 to convert MBTiles into 34 province PMTiles and full nationwide original MBTiles into country PMTiles z0–14. Preserve original MVT layer schema; no per-feature boundary clipping or republishing of external raster tiles.
 5. Output `manifest.json` containing 35 files, full SHA-256, source pointers, tile counts, license and safety flags. Independent CI 43379440781 rehashes each artifact and validates PMTiles v3 MVT headers.
 6. **No Android 35-pack runtime renderer or distributed regional catalog implemented.** Shortbread-compatible offline style and download manager remain separate future work.
+
+
+## 2026-11-13 stronger Shortbread offline 35-pack import
+- Frozen 35-entry checksum and exact-byte ledger in Vietnam35Catalog + PACK_BYTES_VERIFIED.tsv, sourced from independent 43379440781 rehash evidence. Renderer only activates recognized/manual SAF-imported PMTiles after fresh full-file hash and PMTiles header validation.
+- For recognized files, initial DocumentsUI name/size hint and device usable capacity preflight, then LocalPackStore streaming expected-size cap and exact SHA+length before committing index; unrecognized user imports still explicitly UNVERIFIED.
+- Android visual evidence currently **3/35** (Bắc Ninh, Hà Nội, Hồ Chí Minh); no nationwide QA, approved online data endpoint, routing, legal boundaries, or production release.
