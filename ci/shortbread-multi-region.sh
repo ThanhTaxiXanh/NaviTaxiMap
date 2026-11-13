@@ -27,8 +27,35 @@ for record in "01 01-ha-noi.pmtiles $HANOI" "79 79-ho-chi-minh.pmtiles $HCM"; do
     adb shell am force-stop vn.navitaximap || true
     adb shell am start -W -n vn.navitaximap/.MainActivity | tee "$OUT/import-launch.txt"
     sleep 6
-    NAVITAXI_SAF_NAME="$NAME" NAVITAXI_SAF_SHA256="$SHA" NAVITAXI_SAF_BYTES="$SIZE" \
-        python3 ci/saf-picker-smoke.py "$OUT" | tee "$OUT/import-verified.txt"
+    region_saf_once() {
+        local evidence_log="${1:?SAF log}"
+        NAVITAXI_SAF_NAME="$NAME" NAVITAXI_SAF_SHA256="$SHA" NAVITAXI_SAF_BYTES="$SIZE" \
+            python3 ci/saf-picker-smoke.py "$OUT" > "$evidence_log" 2>&1
+    }
+    if region_saf_once "$OUT/import-first.log"; then
+        echo "MULTI_REGION_SAF_FIRST_PASS code=$CODE"
+    elif grep -q "Pixel Launcher isn't responding" "$OUT/import-first.log"; then
+        # Retry exactly once after system Launcher ANR, not on corruption,
+        # checksum failure, invalid PMTiles or missing offline roads.
+        echo "MULTI_REGION_LAUNCHER_ANR_RETRY code=$CODE"
+        adb shell input keyevent 4 || true
+        adb shell am force-stop com.google.android.apps.nexuslauncher || true
+        adb shell am force-stop vn.navitaximap || true
+        adb shell am start -W -n vn.navitaximap/.MainActivity | tee "$OUT/retry-launch.txt"
+        sleep 10
+        if region_saf_once "$OUT/import-retry.log"; then
+            echo "MULTI_REGION_SAF_RETRY_PASS code=$CODE"
+        else
+            tail -75 "$OUT/import-retry.log" >&2
+            exit 1
+        fi
+    else
+        tail -75 "$OUT/import-first.log" >&2
+        exit 1
+    fi
+    (cat "$OUT/import-first.log"; test ! -f "$OUT/import-retry.log" || cat "$OUT/import-retry.log") |
+        grep -E "SAF picker PASS|SAF STREAM|SAF_STREAM_SHA256_OK" | tee "$OUT/import-verified.txt"
+    grep -q "SAF picker PASS: selected $NAME" "$OUT/import-verified.txt"
     adb shell am force-stop vn.navitaximap
     adb shell cmd connectivity airplane-mode enable
     adb shell svc wifi disable
