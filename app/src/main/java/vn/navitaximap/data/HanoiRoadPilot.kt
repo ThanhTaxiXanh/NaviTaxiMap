@@ -2,45 +2,51 @@ package vn.navitaximap.data
 
 import android.content.Context
 import java.io.File
-import java.io.FileOutputStream
-import java.nio.file.Files
-import java.nio.file.StandardCopyOption
 
 /**
- * Bundled small real OSM road-only preview. Never mark as navigation-approved.
+ * Tiny real OSM Hanoi road-only sample. No routing/navigation approval.
  *
- * Frozen OSM bbox: 105.849..105.858 E, 21.031..21.037 N
- * Snapshot SHA-256: db180ccb4a19e287888af400513dff2104d4c692b32d060a8416f1b6c08c7697
- * © OpenStreetMap contributors, Open Database License 1.0 (ODbL).
- * The road-only MVT archive does not include a route graph or border assertions.
+ * Source: OSM API bbox 105.849,21.031,105.858,21.037,
+ * snapshot 2026-11-13, ODbL 1.0, © OpenStreetMap contributors.
+ * Raw source and deterministic vector build: HANOI_OSM_PILOT.md.
  */
 object HanoiRoadPilot {
     private const val ASSET = "hanoi_real_roads.pmtiles"
-    private const val HASH = "ff932662ba476e570debd19d8323e2c9fed11dfa98322dfd39a4023ed3e0cf9d"
+    private var cachedStore: CatalogPackStore? = null
 
+    @Synchronized
+    private fun store(context: Context): CatalogPackStore {
+        return cachedStore ?: CatalogPackStore(
+            File(context.applicationContext.filesDir, "catalog-packs")
+        ).also { cachedStore = it }
+    }
+
+    val spec: CatalogPackSpec get() = PilotCatalog.hanoiRoads
+
+    /** Existing verified catalog file or locally bundled hash-pinned copy. */
     fun install(context: Context): File {
-        val destination = File(context.filesDir, "hanoi_real_roads_preview.pmtiles")
-        if (OfflinePackVerifier.verify(destination, HASH)) return destination
-        val partial = File(context.filesDir, "hanoi_real_roads_preview.pmtiles.partial")
-        try {
-            context.assets.open(ASSET).use { input ->
-                FileOutputStream(partial).use { output ->
-                    input.copyTo(output, bufferSize = 64 * 1024)
-                    output.fd.sync()
-                }
-            }
-            check(OfflinePackVerifier.verify(partial, HASH)) {
-                "Hanoi OSM preview package checksum mismatch"
-            }
-            val header = PmtilesHeader.inspect(partial)
-            check(header.minZoom == 14 && header.maxZoom == 17) {
-                "Unexpected zoom range in OSM pilot"
-            }
-            Files.move(partial.toPath(), destination.toPath(),
-                StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING)
-            return destination
-        } finally {
-            partial.delete()
+        val storage = store(context)
+        storage.verifiedCurrent(spec)?.let { return it.file }
+        return context.assets.open(ASSET).use { input ->
+            storage.install(spec, input, "BUNDLED").file
         }
     }
+
+    /** Explicit user-requested network action; no automatic background downloads. */
+    fun download(
+        context: Context,
+        cancelled: () -> Boolean = { false },
+        onProgress: (Long, Long) -> Unit = { _, _ -> }
+    ): CatalogPackStore.Installed =
+        PinnedHttpsPackDownloader(store(context)).download(spec, cancelled, onProgress)
+
+    fun installed(context: Context): CatalogPackStore.Installed? =
+        store(context).verifiedCurrent(spec)
+
+    fun versionInstalled(context: Context): Int? =
+        store(context).versionInstalled(spec)
+
+    fun delete(context: Context): Boolean = store(context).delete(spec)
+
+    fun recover(context: Context): Int = store(context).recoverOrphans(spec)
 }
