@@ -66,7 +66,7 @@ sleep 8
 adb logcat -d -s NaviTaxiMapImport:I NaviTaxiMapImport:E > smoke-evidence/import-logcat.txt
 adb shell run-as vn.navitaximap ls files/offline-packs | tee smoke-evidence/imported-pack-files.txt
 # Android logcat tag filters can omit buffered messages. Verify bytes, not a text log.
-PACK_ID="$(sed -nE 's/^([0-9a-f-]{36})\\.pmtiles$/\\1/p' smoke-evidence/imported-pack-files.txt | head -n1)"
+PACK_ID="$(sed -nE 's/^([0-9a-f-]{36})\.pmtiles$/\1/p' smoke-evidence/imported-pack-files.txt | head -n1)"
 if [[ -z "$PACK_ID" ]]; then
   echo "No imported app-private archive found" >&2
   exit 1
@@ -81,7 +81,7 @@ index = Path("smoke-evidence/imported-pack.properties").read_text()
 expected = "860e0383397b64eac881932bacf625bbb740db23abba4e008ac846967e7c1407"
 actual = hashlib.sha256(binary).hexdigest()
 assert actual == expected, f"Unexpected imported archive SHA-256: {actual}"
-assert binary[:8] == b"PMTiles\\x03"
+assert binary[:8] == b"PMTiles\x03"
 assert "sha256=" + expected in index, "Missing persisted checksum"
 assert "sourceApproval=UNVERIFIED" in index, "Source approval incorrectly elevated"
 print(f"Imported PMTiles verified by bytes: {len(binary)} bytes, SHA-256={actual}")
