@@ -59,3 +59,8 @@ Despite three independently proven full region PMTiles renders (CI 43387711796 a
 ## All 34 provincial real archive proof milestone
 - Original source SHA+size verified and imported with SAF, airplane mode screenshots now evidenced for **all 34 provinces**, accumulated across independent CI workflow completions. Missing two 31 Hai Phong and 48 Da Nang closed by successful run 43438393919 (102,298 and 217,958 blue road-color pixels respectively). Not a release, province boundary or routing certification.
 - Nationwide 00-viet-nam-all.pmtiles (556,229,998 bytes) still **not** proven Android until CI 43438780443 completes with streamed exact-size/hash import and real screenshot.
+
+
+## Real national archive currently has only shared-storage SHA evidence
+- Source original nationwide PMTiles 556,229,998 bytes, SHA 678704befd7b4b42726199994671ddccb1c2c029daab40f53098709cd5b12d55 was byte-identical on emulator shared Downloads in 43438780443, but that run FAILED when Pixel Launcher ANR blocked Android SAF picker. Therefore 34/35 verified visual archives, NOT 35/35.
+- Latest a9cd6ce adds streaming 1MiB readback hash in Python, no extra raw evidence; aa2f975 adds one launcher-ANR-only reattempt. Final stream SHA+airplane mode test run 43439851626 still pending. Normal user national overview unchanged; test uses debug-only Hanoi detail camera.

@@ -108,3 +108,9 @@ Real OSM pilot source snapshot: workflow https://github.com/ThanhTaxiXanh/NaviTa
 - Narrow [43438393919](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43438393919) SUCCESS, original 31 Hai Phong 7,279,113 bytes / 102,298 actual offline road-color pixels, 48 Da Nang 11,974,113 bytes / 217,958 pixels. Correct source SHA, native SAF and OSM/no-navigation UI. Hai Phong recovered from one Launcher ANR.
 - Together with 32 proven before, **all 34 distinct provincial archives** have real offline Android pixel evidence from multiple workflow runs. Entire 34-shard single run not all green because an emulator job was cancelled; do not conflate those claims.
 - Genuinely independent nationwide 556,229,998-byte PMTiles Android QA run 43438780443 remains in progress at writing. No nationwide proof, endorsed navigation, legal boundary or approved distribution.
+
+
+## 2026-11-13 national 556MB verification: byte-level success, SAF render pending
+- After 34/34 distinct provincial Android visual proofs, true nationwide archive `00-viet-nam-all.pmtiles`, 556,229,998 bytes, SHA `678704befd7b4b42726199994671ddccb1c2c029daab40f53098709cd5b12d55` was verified original and on Android Downloads by 43438780443. This job FAILED on Pixel Launcher ANR before SAF was invoked, not a rendering/PMTiles checksum failure.
+- Fix aa2f975 adds exactly one recovery/retry on launcher ANR, maintains mandatory streaming full-file readback SHA, correct-size assertion and actual airplane-mode road screenshot. New national QA 43439851626 IN PROGRESS. 35/35 NOT proven until real evidence.
+- Fresh HN and HCM visual QA 43438780281 SUCCESS; 34/34 province proofs intact. No approved source hosting, map legal borders or navigation approval.

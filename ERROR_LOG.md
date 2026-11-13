@@ -96,3 +96,8 @@
 ## 2026-11-13 last provincial cases resolved
 - In targeted 43438393919 first attempt Hải Phòng blocked by Android Pixel Launcher ANR; one controlled retry succeeded with SHA-verified SAF import and 102,298 actual offline road pixels. Đà Nẵng succeeded 217,958 pixels on first try. These are not new PMTiles errors.
 - 34/34 distinct provincial visual proofs now exist across CI runs, although full one-workflow 34-shard success absent. Last 556MB nationwide PMTiles still being tested separately (43438780443).
+
+
+## 2026-11-13 recurring Pixel Launcher ANR on national import
+- National QA 43438780443 verified real nationwide PMTiles source SHA/size and matching SHA within Android Downloads, then UIAutomator saw `Pixel Launcher isn't responding` overlay, blocked `Dữ liệu bản đồ` before SAF. This is **CI environment / system UI failure before data import**, not a map file checksum failure. Do not promote 556MB into proven Android rendered catalog.
+- Fix aa2f975: bounded retry **only when** exact Launcher ANR text is found; launch activity again after force-stop launcher, retain all original hash/SAF/pixel assertions. CI 43439851626 not yet concluded. Another separate Bac Ninh workflow 43438780338 also failed on same system dialog; HN/HCM 43438780281 independently succeeded.

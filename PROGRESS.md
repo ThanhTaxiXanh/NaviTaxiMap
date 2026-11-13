@@ -108,3 +108,8 @@
 ## 2026-11-13 evidence update
 - **34/34 actual provincial PMTiles imported/visually proven offline in Android**, accumulated across previously completed successful individual province checks and targeted SUCCESS 43438393919 (31 102,298 px, 48 217,958 px). 34-province all-green in a single workflow remains blocked by emulator launcher.
 - Nationwide 556MB streaming SHA/SAF and screenshot CI 43438780443 underway; do not call 35/35 unless its end-to-end proof succeeds.
+
+
+## 2026-11-13 new QA state
+- National 556MB: 43438780443 copied exact SHA byte-identical original to emulator /sdcard/Download but failed before DocumentsUI due Pixel Launcher ANR; rerun aa2f975/43439851626 has one bounded launcher retry; national visual proof pending, 34/35 distinct larger archives proven.
+- HN/HCM 43438780281 SUCCESS on latest byte-pin code (157,112 / 183,085 roads pixels), including actual Android shared-storage SHA and SAF.

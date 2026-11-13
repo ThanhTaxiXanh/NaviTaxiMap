@@ -103,3 +103,9 @@
 - [x] Close last two province archive screenshot gaps: 31 Hải Phòng 102,298 pixels, 48 Đà Nẵng 217,958 pixels, CI 43438393919 PASS; 34/34 provincial maps proven offline individually across runs.
 - [ ] Await and analyze nationwide 556MB CI 43438780443. Its success is still necessary for 35/35 distinct archives.
 - [ ] Normalize emulator launcher race without diluting real SHA/SAF/pixel assertions; possible independent CI regressions can fail even if a region was proven previously.
+
+
+## Exact remaining large archive acceptance gate
+- [x] Establish true 556,229,998-byte national source SHA and byte-identical Android Downloads transfer from 43438780443.
+- [ ] Verify actual full national file SAF import, streaming readback SHA (without 556MB Python in-memory copy), style loaded and offline road screenshot via run 43439851626; do NOT mark 35/35 until then.
+- [ ] Investigate continued CI Android launcher ANR if one recovery also fails; preserve source SHA, UI screenshots and hard fail checks. 34/34 distinct provincial visual proofs are already completed independently.

@@ -129,3 +129,8 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 - Run 43438393919 **SUCCESS**, 31 Hai Phong and 48 Da Nang both exact SHA+SAF+offline real-road screenshots; 102,298 and 217,958 pixels. Result 2/2. All 34 provincial Shortbread PMTiles now have individually supported Android visual proofs across runs.
 - Full original 34-shard run 43395054211 remained CANCELLED, three shards 25/25 SUCCESS; standalone targeted run closed the two missing provinces.
 - National 43438780443 and further Android regression in progress at checkpoint.
+
+
+## Current 2026-11-13 national CI runs
+- 43438780443 **FAIL** due Android Pixel Launcher ANR before selecting nationwide SAF. It DID pass checksum of 556,229,998-byte source and Android shared-storage copy. No stream readback / rendered map proof yet.
+- 43439851626 **RUNNING** after adding one ANR-only restart in aa2f975. 43438780281 HN+HCM SUCCESS; 43438780338 Bắc Ninh special run FAILED on launcher ANR; normal Android 43438780381 build SUCCESS (emulator status pending at checkpoint).
