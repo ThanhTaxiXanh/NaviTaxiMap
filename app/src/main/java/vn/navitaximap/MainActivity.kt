@@ -32,6 +32,7 @@ import org.maplibre.android.maps.MapView
 import org.maplibre.android.maps.Style
 import java.util.Locale
 import vn.navitaximap.data.DemoOfflinePack
+import vn.navitaximap.data.HanoiRoadPilot
 import vn.navitaximap.data.LocalPackStore
 import java.util.concurrent.Executors
 import org.maplibre.android.style.sources.VectorSource
@@ -88,7 +89,9 @@ class MainActivity : Activity(), LocationListener {
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync { map ->
             liveMap = map
-            if (intent.getBooleanExtra(EXTRA_OFFLINE_DEMO, false)) {
+            if (intent.getBooleanExtra(EXTRA_OSM_ROADS_PILOT, false)) {
+                showHanoiRoadPilot(map)
+            } else if (intent.getBooleanExtra(EXTRA_OFFLINE_DEMO, false)) {
                 showOfflineDemo(map)
             } else {
                 showOnline(map)
@@ -187,6 +190,7 @@ class MainActivity : Activity(), LocationListener {
             .setItems(arrayOf(
                 "Nhập tệp PMTiles từ thiết bị",
                 "Các gói đã nhập",
+                "Xem đường OSM Hà Nội offline (mẫu nhỏ)",
                 "Nguồn và giới hạn sử dụng"
             )) { _, item ->
                 when (item) {
@@ -198,8 +202,9 @@ class MainActivity : Activity(), LocationListener {
                         startActivityForResult(pick, REQUEST_PM_TILES)
                     }
                     1 -> showLocalPacks()
+                    2 -> liveMap?.let { showHanoiRoadPilot(it) }
                     else -> explain("Thông tin dữ liệu",
-                        "Nguồn online: OpenFreeMap/OpenStreetMap. Gói PMTiles người dùng chọn sẽ chỉ được lưu trong ứng dụng, kiểm tra cấu trúc và SHA-256, chưa xác minh giấy phép hay tính chính xác địa lý. Chưa có giao diện vẽ gói tự nhập vì cần style/layer được duyệt. Gói tổng hợp dùng để thử bộ đọc, không dùng dẫn đường.")
+                        "Nguồn online: OpenFreeMap/OpenStreetMap. Gói PMTiles người dùng chọn sẽ chỉ được lưu trong ứng dụng, kiểm tra cấu trúc và SHA-256, chưa xác minh giấy phép hay tính chính xác địa lý. Chưa có giao diện vẽ gói tự nhập vì cần style/layer được duyệt. Gói đường OSM Hà Nội chỉ là một phần nhỏ có xuất xứ OSM, © OpenStreetMap contributors, ODbL 1.0; không phải bản đồ đầy đủ hoặc dữ liệu điều hướng. Gói tổng hợp dùng để thử bộ đọc, không dùng dẫn đường.")
                 }
             }.show()
     }
@@ -349,6 +354,49 @@ class MainActivity : Activity(), LocationListener {
         }
     }
 
+
+    /**
+     * A tiny REAL OSM road-only visual preview (about 1 km2 of Hanoi).
+     * Source is a dated, hash-pinned API snapshot and ODbL 1.0; it is
+     * NOT an approved routing database, legal boundary layer or city map.
+     * This style has NO remote sprites, glyphs or URL assets.
+     */
+    private fun showHanoiRoadPilot(map: MapLibreMap) {
+        try {
+            val archive = HanoiRoadPilot.install(this)
+            val styleJson = """{"version":8,"name":"NaviTaxiMap Hanoi OSM roads preview",
+                "sources":{},"layers":[{"id":"pilot-background","type":"background",
+                "paint":{"background-color":"#f3f7f3"}}]}"""
+            map.setStyle(Style.Builder().fromJson(styleJson)) { style ->
+                val source = VectorSource(
+                    "hanoi-pilot-vector", "pmtiles://file://${archive.absolutePath}"
+                )
+                style.addSource(source)
+                fun addRoadLayer(id: String, layerName: String, color: Int, width: Float) {
+                    val layer = LineLayer(id, "hanoi-pilot-vector")
+                    layer.setSourceLayer(layerName)
+                    layer.setProperties(lineColor(color), lineWidth(width))
+                    style.addLayer(layer)
+                }
+                addRoadLayer("hanoi-paths", "road_pedestrian",
+                    Color.rgb(128, 151, 143), 1.8f)
+                addRoadLayer("hanoi-local-roads", "road_local",
+                    Color.rgb(39, 94, 108), 3.2f)
+                addRoadLayer("hanoi-major-roads", "road_major",
+                    Color.rgb(211, 100, 52), 4.5f)
+                offlineDemo = true
+                offlineButton.text = "Quay về bản đồ online"
+                statusText.text = "Offline Hà Nội • đường OSM thật (mẫu) • © OpenStreetMap contributors (ODbL) • KHÔNG dẫn đường"
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                    LatLng(21.0340, 105.8535), 16.2
+                ))
+            }
+        } catch (error: Exception) {
+            statusText.text = "Mẫu đường OSM offline không đọc được."
+            explain("Lỗi gói đường mẫu", error.message ?: "Không xác minh được PMTiles.")
+        }
+    }
+
     private fun explainLocationPrivacy() {
         AlertDialog.Builder(this)
             .setTitle("Quyền vị trí và bản đồ trực tuyến")
@@ -487,6 +535,7 @@ class MainActivity : Activity(), LocationListener {
         private const val REQUEST_PM_TILES = 102
         private const val EXTRA_DEBUG_IMPORT_FIXTURE = "vn.navitaximap.DEBUG_IMPORT_FIXTURE"
         private const val EXTRA_OFFLINE_DEMO = "vn.navitaximap.OFFLINE_DEMO"
+        private const val EXTRA_OSM_ROADS_PILOT = "vn.navitaximap.REAL_OSM_PILOT"
         private const val STREET_STYLE_LIGHT = "https://tiles.openfreemap.org/styles/liberty"
         private const val STREET_STYLE_DARK = "https://tiles.openfreemap.org/styles/dark"
     }
