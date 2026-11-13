@@ -76,3 +76,8 @@ Despite three independently proven full region PMTiles renders (CI 43387711796 a
 - National 00-viet-nam-all.pmtiles 556,229,998 bytes, SHA 678704befd7b4b42726199994671ddccb1c2c029daab40f53098709cd5b12d55 independently SHA-verified through original, Android Downloads and **app-private streamed readback**: 43441211821 SUCCESS after launcher retry, 157,112 actual road-colored pixels at Hanoi in airplane mode. This is *one representative national archive viewport*, not a completeness proof of legal/admin areas, routes, or map labels.
 - Extra run 43441211834 exposed DocumentsUI test XML collision; fix 1ce22829 stores UIAutomator snapshot only under /data/local/tmp and rejects non-PMTiles names; CI reruns pending.
 - All 35 archives are RESEARCH PREVIEW / NOT APPROVED FOR NAVIGATION OR DISTRIBUTION. No permanent CDN, download/resume, UI labels or physical Xiaomi verification.
+
+
+## CI after 35/35 genuine original visual proofs
+- Full national pack import/sha/airplane screenshot success repeated 43454411510 (first SAF attempt, 556,229,998 byte stream, 157,112 road pixels), alongside successful Android full 43454411956 and Bac Ninh 43454411692.
+- Multi-region Hanoi/HCM duplicate QA hit OS Pixel Launcher ANR 43454411531 before selecting the file. Retry mechanism now recovers exactly once for this class only (720efe42); pre-emulator shell/Python syntax gate e05b1ed. CI 43455374999 pending, province rerun 43454411678 ongoing.

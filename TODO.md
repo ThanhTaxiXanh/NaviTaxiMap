@@ -124,3 +124,11 @@
 - [ ] Check all five CI runs triggered by 1ce22829, especially full 34-shard + national, and preserve any actual FAIL without inventing resolution.
 - [ ] Design secure approved long-term regional distribution with stable HTTPS URLs, Range download resume and exact byte/SHA staging; artifact originals expire 27/11/2026 and are not enduring store. No URLs may be invented.
 - [ ] Real Xiaomi testing, navigation-appropriate graph/route approval, legal geography, ODbL redistribution attribution/rights audit remain separate.
+
+
+## Pending CI after 35/35 original offline proof
+- [x] True second national 556MB SAF/streamed SHA/offline pixel pass 43454411510, no longer only a one-off.
+- [x] Full Android regression and Bac Ninh smoke after correcting SAF XML contamination: 43454411956 and 43454411692 SUCCESS.
+- [ ] Check 43454411678 four-shard 34 province recheck after moving XML to /data/local/tmp. Mark clean only from four jobs passing.
+- [ ] Check HN/HCM CI 43455374999 and Android CI 43455375003 after controlled launcher retry and syntax gate; do not mask non-system faults.
+- [ ] Continue infrastructure design for approved, durable HTTPS 35-pack distribution with resumable Range and pinned manifest; current Actions artifacts expire 2026-11-27, no approval or public URLs.

@@ -149,3 +149,9 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 - 43441211805 Android debug **SUCCESS** both build+emulator; 43441211810 Bắc Ninh **SUCCESS**; 43441211781 Hà Nội+HCM **SUCCESS**.
 - 43441211834 **FAIL** 1/34 in duplicate run due instrumentation XML being selected by DocumentsUI instead of 08 Tuyên Quang, evidenced by app's selected-stream debug log.
 - Code commit 1ce22829 fixes test pollution and adds early .pmtiles guard; reruns 43454411956 normal, 43454411510 national, 43454411678 34 original provinces, 43454411692 Bắc Ninh, 43454411531 HN/HCM all PENDING at checkpoint.
+
+
+## 2026-11-13 after test instrumentation collision correction
+- Android full 43454411956 SUCCESS both build and emulator; national 556MB QA 43454411510 SUCCESS (streamed SHA after real SAF, 157,112 road pixels); Bac Ninh 43454411692 SUCCESS.
+- HN/HCM 43454411531 FAIL because emulator Pixel Launcher ANR blocked app menu before SAF (source/downloaded SHA correct). New multi CI 43455374999 tests one ANR-only retry in commit 720efe42 and shell/Python lint in e05b1ed; result PENDING.
+- 34-region full coverage 43454411678 build SUCCESS, 4 shards IN PROGRESS. This does not revoke earlier all-green 43438780272 for 34/34.

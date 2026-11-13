@@ -113,3 +113,8 @@
 - National 556MB prior errors: run 43438780443 launcher ANR, 43439851626 imported non-PMTiles data, now run 43441211821 **SUCCESS** complete true origin SHA, SAF streamed readback, offline 157,112 vector-road pixels after Launcher ANR retry. Source national archive validated, no longer outstanding render defect.
 - Additional real 34-region QA 43441211834 had ONE Tuyên Quang 08 failure: debug app explicitly logged `SAF_SELECTED_STREAM name=navitaxi-picker.xml pinned=none headerBytes=8 isPmtilesV3=false`. Android UIAutomator wrote its own hierarchy into shared /sdcard, making it visible in DocumentsUI Recent and causing a wrong-document tap. The same original 08 archive correctly passed run 43438780272. Not a corrupt tile archive.
 - Commit 1ce22829 moves hierarchy XML to shell `/data/local/tmp`, deletes legacy shared copy before opening picker, rejects non-.pmtiles document names at app import, removes raw name from debug logging, adds static/mock automated test. New run 43454411678 and other CI underway, do not mark fix regression PASS without completed tests.
+
+
+## Latest 2026-11-13 emulator flakes vs PMTiles data
+- UIAutomator XML collision root cause addressed by 1ce22829; national run 43454411510 SUCCESS and Bac Ninh run 43454411692 SUCCESS. 34-shard rerun 43454411678 in progress.
+- HN/HCM 43454411531 failed when Pixel Launcher itself was not responding, BEFORE app's import menu. Host and Android shared file SHA correct. Added one retry strictly gated on that exact system message in 720efe42; standardized `bash -n` in e05b1ed. Follow-up 43455374999 still running, no false green status.

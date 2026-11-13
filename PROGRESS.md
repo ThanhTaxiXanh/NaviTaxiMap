@@ -125,3 +125,9 @@
 - **35/35 Shortbread PMTiles archives have end-to-end Android emulated device screenshot proof**: all 34 province archives in one success 43438780272; 556,229,998-byte national original stream SHA+SAF+airplane-mode 157,112 road pixels run 43441211821 SUCCESS.
 - Additional 34-province run 43441211834 FAIL because uiautomator XML in Android DocumentsUI Recents was accidentally imported instead of Tuyên Quang (08), not a broken PMTiles archive. Fixed instrument file path to /data/local/tmp in 1ce22829 and added app extension gate/unit test. Five new CI runs triggered, awaiting proof.
 - Pending: durable ODbL-compliant hosting with signed pinned manifest/resumable downloads, Xiaomi physical verification, accessibility/labels, navigation pipeline based on approved routing data, legal borders review.
+
+
+## 2026-11-13 final milestone retested on new app build
+- Real national PMTiles original 556,229,998-byte SHA and airplane-mode render 157,112 pixels, CI 43454411510 SUCCESS again without launcher retry; 35/35 independent genuine files have proven Android visual screenshots across CI.
+- Fixed injected UI XML recents pollution in 1ce22829, full Android CI 43454411956 + Bac Ninh CI 43454411692 both SUCCESS.
+- New multiregion CI 43454411531 FAILED at system Pixel Launcher ANR; single ANR-only retry 720efe42, lint gate e05b1ed, rerun CI 43455374999 pending. 34-shard 43454411678 also still running at checkpoint.
