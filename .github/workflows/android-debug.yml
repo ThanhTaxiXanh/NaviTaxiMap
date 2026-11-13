@@ -34,8 +34,10 @@ jobs:
         run: python3 -m unittest discover -s tools/vietnam-sovereignty-map/tests -v
       - name: Unit-test reproducible OSM to PMTiles generator
         run: python3 -m unittest discover -s tools/osm_hanoi_pilot/tests -v
-      - name: Validate Android Shortbread 35-pack pins and private artifact preservation verifier
-        run: python3 -m unittest discover -s tools/vietnam34 -p 'test_*.py' -v
+      - name: Validate Android Shortbread pins and private preservation verifier (no Shapely pipeline dependency)
+        run: |
+          python3 -m unittest discover -s tools/vietnam34 -p 'test_android_shortbread.py' -v
+          python3 -m unittest discover -s tools/vietnam34 -p 'test_preservation_receipt.py' -v
       - name: Verify real OSM Hanoi pilot source snapshot and bundled PMTiles bytes
         run: python3 tools/osm_hanoi_pilot/verify_embedded_pilot.py
       - name: Upload debug APK (not a release)
