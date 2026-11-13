@@ -65,17 +65,25 @@ adb shell am start -W -n vn.navitaximap/.MainActivity --ez vn.navitaximap.DEBUG_
 sleep 8
 adb logcat -d -s NaviTaxiMapImport:I NaviTaxiMapImport:E > smoke-evidence/import-logcat.txt
 adb shell run-as vn.navitaximap ls files/offline-packs | tee smoke-evidence/imported-pack-files.txt
-if ! grep -q 'DEBUG_IMPORT_PASS' smoke-evidence/import-logcat.txt; then
-  echo "Phase 4 streaming PMTiles import/verify did not complete" >&2
-  cat smoke-evidence/import-logcat.txt >&2
+# Android logcat tag filters can omit buffered messages. Verify bytes, not a text log.
+PACK_ID="$(sed -nE 's/^([0-9a-f-]{36})\\.pmtiles$/\\1/p' smoke-evidence/imported-pack-files.txt | head -n1)"
+if [[ -z "$PACK_ID" ]]; then
+  echo "No imported app-private archive found" >&2
   exit 1
 fi
-if ! grep -q '\.pmtiles' smoke-evidence/imported-pack-files.txt; then
-  echo "No imported app-private .pmtiles archive found" >&2
-  exit 1
-fi
-if ! grep -q '\.properties' smoke-evidence/imported-pack-files.txt; then
-  echo "No imported metadata index found" >&2
-  exit 1
-fi
-echo "Offline pack import PASS: stream stored, indexed and SHA-256 re-verified while airplane mode was enabled."
+adb exec-out run-as vn.navitaximap cat "files/offline-packs/$PACK_ID.pmtiles" > smoke-evidence/imported-pack.pmtiles
+adb exec-out run-as vn.navitaximap cat "files/offline-packs/$PACK_ID.properties" > smoke-evidence/imported-pack.properties
+python3 - <<'PY'
+from pathlib import Path
+import hashlib
+binary = Path("smoke-evidence/imported-pack.pmtiles").read_bytes()
+index = Path("smoke-evidence/imported-pack.properties").read_text()
+expected = "860e0383397b64eac881932bacf625bbb740db23abba4e008ac846967e7c1407"
+actual = hashlib.sha256(binary).hexdigest()
+assert actual == expected, f"Unexpected imported archive SHA-256: {actual}"
+assert binary[:8] == b"PMTiles\\x03"
+assert "sha256=" + expected in index, "Missing persisted checksum"
+assert "sourceApproval=UNVERIFIED" in index, "Source approval incorrectly elevated"
+print(f"Imported PMTiles verified by bytes: {len(binary)} bytes, SHA-256={actual}")
+PY
+echo "Offline pack import PASS: imported bytes and metadata match expected fixture in airplane mode."
