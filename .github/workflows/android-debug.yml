@@ -26,6 +26,8 @@ jobs:
         run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
       - name: Test Android and assemble debug APK
         run: gradle --no-daemon --stacktrace :app:testDebugUnitTest :app:assembleDebug
+      - name: Verify synthetic PMTiles v3 fixture
+        run: python3 -m unittest discover -s tools/pmtiles_fixture/tests -v
       - name: Unit-test Vietnam map approval engine
         run: python3 -m unittest discover -s tools/vietnam-sovereignty-map/tests -v
       - name: Upload debug APK (not a release)

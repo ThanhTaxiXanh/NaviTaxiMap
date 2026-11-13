@@ -1,13 +1,11 @@
-# TODO (theo phụ thuộc)
-
-- [ ] Xác minh kết quả Github Actions build/test trên nhánh develop; sửa đến khi pass.
-- [ ] Kiểm tra Android APK trên thiết bị thật: mở map, xoay/nghiêng, GPS, quyền truy cập, pause/resume, crash/logcat.
-- [ ] Kiểm toán toàn bộ dependency/giấy phép/transitive.
-- [ ] Dựng style + font/sprite được cấp quyền phân phối, theme map sáng/tối thật.
-- [ ] Xây dựng PMTiles reader + kiểm thử HTTP Range, random-access, checksum và local cache.
-- [ ] Tạo manifest offline và cơ chế cập nhật atomic/rollback.
-- [ ] Phê duyệt nguồn và kiểm tra danh mục 34 tỉnh/thành.
-- [ ] POI, search, routing offline, navigation và TTS.
-- [ ] 3D, road intelligence, traffic có nguồn và timestamp.
-- [ ] Phê duyệt dữ liệu Hoàng Sa/Trường Sa; thực hiện audit online/offline có golden độc lập.
-- [ ] Tối ưu GPU/RAM/CPU; đo FPS; kiểm thử phát hành trên Android thật.
+# TODO
+- [ ] Verify offline synthetic PMTiles vector tile actually renders, without Internet (screenshot and logs).
+- [ ] Verify offline demo toggles back online, changes theme, handles rotation, corrupt packages and low storage.
+- [ ] Add explicit data-source/attribution details in UI; audit tile provider terms and third-party licenses.
+- [ ] Build actual offline regional PMTiles with approved OSM source and independent labels/attribution.
+- [ ] Create per-province manifest, size metadata, checksum, resume/pause, atomic updates and deletion.
+- [ ] Start safe GPS/compass tests on Xiaomi; real-device install via authorized ADB/Termux is BLOCKED.
+- [ ] Search/POI, street graph, routing Valhalla/OSRM, navigation voice and recalc.
+- [ ] Traffic source and last-updated data; speed signs with verified provenance.
+- [ ] Geographic archives and independent legal/label audit of Hoàng Sa and Trường Sa.
+- [ ] Performance metrics and final release procedures only after real-device QA.

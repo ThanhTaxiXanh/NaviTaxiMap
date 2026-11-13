@@ -31,3 +31,11 @@ Không được xem demo style là nguồn production hoặc offline. Cần phê
 Các mục tìm kiếm, POI, định tuyến, dẫn đường, traffic, PMTiles, bản đồ offline 34 tỉnh, 3D và hồ sơ Hoàng Sa/Trường Sa hiện **chưa hoàn thành**. Ảnh thiết kế `IMG_4470.png` đến `IMG_4478.png` chỉ là tham chiếu giao diện, không phải ảnh chụp phần mềm hoạt động.
 
 Đọc `ARCHITECTURE.md`, `DATA_SOURCES.md`, `BUILD_STATUS.md` và `PROJECT_STATE.md` trước khi triển khai tiếp.
+
+## Phase 3: local PMTiles demonstration (synthetic, not a Vietnam offline map)
+The `PMTiles offline (mẫu)` button switches to a tiny self-contained MVT tile.
+It stores a verified decoded PMTiles v3 file in app-private storage and uses
+MapLibre's native `pmtiles://file://` handler. It only shows made-up schematic
+lines; **never use these lines for navigation**.
+CI tests the fixture and launches the app in Android emulator airplane mode.
+Use `tools/pmtiles_fixture` for source, SHA-256 and tests.

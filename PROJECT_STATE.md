@@ -1,19 +1,27 @@
 # PROJECT_STATE
-Ngày khởi tạo: 2026-11-13 (Asia/Bangkok)
-Nhánh làm việc: develop/phase0-android-maplibre
-Nhánh main: phải giữ nguyên, chưa được phép merge.
+As of: 2026-11-13 (Asia/Bangkok)
+Repo: ThanhTaxiXanh/NaviTaxiMap
+Working branch: develop/phase0-android-maplibre
+Protected main: DO NOT merge, create PR, or push until explicitly authorized.
 
-## Trạng thái hiện tại
-- PHASE 0: IN PROGRESS. Đã kiểm tra repo GitHub gần trống; thiết bị Xiaomi/Termux chưa kết nối.
-- PHASE 1: IN PROGRESS. Đã soạn dự án Android Kotlin với MapView, UI và GPS theo yêu cầu.
-- PHASE 2: IN PROGRESS. Đã khai báo MapLibre, cần kết quả build/debug thực tế.
-- PHASE 3–18: NOT STARTED, trừ bộ công cụ kiểm tra dữ liệu được nhập sớm.
-- APK debug: chưa xác nhận biên dịch ở thời điểm khởi tạo commit.
-- Android device debugging: BLOCKED do không có kết nối thiết bị/ADB.
+## Phase status, based on real evidence
+- PHASE 0: IN PROGRESS (GitHub/CI verified; Xiaomi Termux/Shizuku environment not connected).
+- PHASE 1: IN PROGRESS (Kotlin app/MapView/UI built and launches Android emulator).
+- PHASE 2: IN PROGRESS (MapLibre + OpenFreeMap street style rendered on emulator, but no production basemap).
+- PHASE 3: IN PROGRESS (synthetic PMTiles v3 fixture + native file protocol integrated; emulator smoke and screenshot verification pending on latest source).
+- PHASE 4-18: NOT STARTED, except early data-policy validation tool.
+- Real-device QA: BLOCKED, no remote Android/ADB access.
+- Release APK: NOT STARTED.
 
-## Những điều tuyệt đối không giả định
-Không có PMTiles offline đã chạy; không có routing, speed limit, traffic thật, danh mục offline hoàn chỉnh hoặc lớp dữ liệu chủ quyền đã được duyệt.
-Không khẳng định UI theo ảnh mẫu đã triển khai trọn vẹn.
+## Verified baseline
+- GitHub run 43353698195: PASS Kotlin build, unit tests, Android emulator install/launch.
+- Screenshot of that run: OSM street lines shown online in emulator.
+- Original ZIP unit tests: 4/4 PASS. Synthetic fixture validation: 3/3 PASS in local Python (must re-run on CI).
 
-## Đợt tiếp
-Đọc kết quả GitHub Actions; sửa lỗi biên dịch nếu có; mở rộng cấu trúc renderer, nguồn và offline đúng kiến trúc; kiểm thử trên Android thật khi có kênh kết nối.
+## Not done
+Offline Vietnam PMTiles, POI, route graph, navigation, traffic, speed signs,
+34 provinces, 3D, approved geopolitical layers and production data licensing.
+
+## Next iteration
+Read CI log and offline screenshot. If native PMTiles fails, diagnose and fix until
+actual tile lines render with connectivity disabled. Keep all fixes on working branch.

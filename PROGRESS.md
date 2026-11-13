@@ -1,12 +1,10 @@
 # PROGRESS
 2026-11-13
-- Nhánh develop/phase0-android-maplibre đã tạo từ main, main không thay đổi.
-- Đã đọc master prompt và ZIP validator, rà soát 9 ảnh tham chiếu.
-- Đã triển khai app Android/Kotlin, MapLibre renderer demo, UI cơ bản và GPS khi người dùng yêu cầu.
-- Đã thêm verifier SHA-256, Python validation harness, test Android, docs và CI chỉ trên nhánh develop.
-- CI lần 1: phát hiện SDK tools package lỗi, đã sửa.
-- CI lần 2: phát hiện Kotlin metadata 2.2 và compiler 2.0 không tương thích, đã sửa.
-- CI lần 3 (43352195061): PASS Android assembleDebug, testDebugUnitTest và Python unit tests.
-- Đã xác minh APK tải về là ZIP không hỏng, chứa các ABI Android.
-- Đã thêm smoke test dùng Android emulator để kiểm chứng khởi chạy và thu screenshot/logcat; chờ kết quả thực tế.
-- Chưa kết nối được thiết bị Xiaomi; không nhận thành công khi chưa kiểm thử thật.
+- Preserved main and continued develop/phase0-android-maplibre.
+- Verified latest online map baseline CI 43353698195 PASS with map screenshot.
+- Investigated official MapLibre Native Android PMTiles support (>=11.7.0), using pmtiles://file://.
+- Generated deterministic PMTiles v3 / MVT vector test fixture (560 bytes, SHA-256 recorded).
+- Added Android private-storage installation with SHA-256 integrity check, online/offline demo toggle and test launch intent.
+- Added CI build + Python fixture tests + emulator airplane mode smoke and image/log capture.
+- No claim of live navigation, offline provinces, traffic or Hoàng Sa/Trường Sa map data.
+- Offline runtime and test image are PENDING verification on GitHub.
