@@ -34,3 +34,8 @@
 - CI 43373898829 / 43374048067: 22 of 23 JVM tests PASS but an assertion erroneously rejected `/main/` appearing inside `app/src/main/assets`, even though source URL was correctly pinned to a 40-digit commit. Not a broken downloader or SHA mismatch.
 - Fixed test to inspect only the repository reference segment `/NaviTaxiMap/main/`, commit `510c12c`. CI 43374393332 all jobs PASS including real pinned HTTPS GET and offline renderer.
 - Current constraints: no signed remote manifest, no cross-process lock/directory fsync, no real pause/resume/retry integration, no end-to-end source legal certification.
+
+## Vietnam 35-pack production incidents and status
+- First new build CI 43377995854 FAILED while attempting to compile Shapely 2.0.7 on runner default Python 3.14 (`geos_c.h` not found). No map packages published. Fixed in 7b7c57a by pinning Python 3.12 with binary wheel; final build 43378133931 ALL PASS.
+- OSM Geofabrik admin4 boundary PBF 332,558,874 B exported 33 polygons, missing Khánh Hòa relation area. Retrieved relation 1887959 with full member geometry through official OSM API; independently SHA256 audited, resulting 34/34 shapes. No fabricated fallback shape.
+- **Open QA risks:** OSM admin4 polygons are not legal boundaries; large maritime components in some provinces, whole-vector-tile rather than line-geometry clipping, Geofabrik Shortbread extract may omit disputed islands; style, distribution license review, 35-pack Android rendering and offline routing not yet done. No false claim of legally certified sovereign map.

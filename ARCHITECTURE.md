@@ -56,3 +56,11 @@ App modules currently live in `app`; the future module boundaries below are arch
 - Local asset install uses the exact same catalog store/checks and works in airplane mode.
 - Prior metadata/PMTiles version persists through failed update tests; no background scheduler or remote manifest. One catalog item now; no signed distribution channel.
 - CI 43374393332: 23 JVM tests, real HTTPS to emulator, on-device SHA readback, switch to airplane mode, real-road colored pixels and catalog UI passed.
+
+## Large-area 35-pack generation pipeline
+1. Decision 19/2025/QD-TTg names/codes in `tools/vietnam34/provinces_34.json`.
+2. Geofabrik latest OSM PBF -> osmium admin_level=4 relation geometry audit (33 polygons); separately OSM API relation 1887959 full geometry for Khánh Hòa (34th). Both sources pinned by SHA256.
+3. Geofabrik experimental Shortbread 1.0 MBTiles (686.7MB) -> `tools/vietnam34/build_national_and_provinces.py` -> use Shapely STRtree to select preexisting, real MVT tile bytes at z8–14 intersecting each technical OSM province polygon.
+4. Pin go-pmtiles CLI v1.31.2 to convert MBTiles into 34 province PMTiles and full nationwide original MBTiles into country PMTiles z0–14. Preserve original MVT layer schema; no per-feature boundary clipping or republishing of external raster tiles.
+5. Output `manifest.json` containing 35 files, full SHA-256, source pointers, tile counts, license and safety flags. Independent CI 43379440781 rehashes each artifact and validates PMTiles v3 MVT headers.
+6. **No Android 35-pack runtime renderer or distributed regional catalog implemented.** Shortbread-compatible offline style and download manager remain separate future work.

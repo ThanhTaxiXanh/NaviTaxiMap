@@ -58,3 +58,11 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 - Debug APK 44,725,536 bytes (ZIP integrity PASS), SHA-256 `5428dcc5ae920b7f3a183de27883f626703a116757136efba9b5c6b5782911e0`. Downloaded from run's `NaviTaxiMap-debug` artifact, NOT a signed/production APK.
 - Emulator evidence: `NaviTaxiMap-emulator-evidence` artifact of 43374393332, including downloaded on-device bytes and properties, catalog-dialog screenshot/XML, offline OSM screenshot, SAF picker and corruption/recovery output.
 - NOT tested: full regional catalogs, download pause/resume over actual poor connectivity, physically installed Xiaomi, production provenance approval, route graph, ODbL public distribution audit.
+
+## Large Vietnam data build (not an Android APK change), 2026-11-13
+- Source snapshot and provinces: Geofabrik Shortbread `vietnam-shortbread-1.0.mbtiles` 686,698,496 bytes, SHA256 `492402e2ebc49516ba72ff90bb0212eba29fab3cc2a9addcb95bb39d6b1089d5`. PBF OSM audit 332,558,874 bytes, 33 admin4 multipolygons; separately OSM relation 1887959 restored the 34th shape for Khánh Hòa.
+- Python+Shapely 2.0.7 region tile-footprint splitter, pinned PMTiles CLI v1.31.2 generated 35 valid v3 vector PMTiles. National **556,229,998 B** (567,706 tiles), provinces **287,504,805 B** total, province zoom 8–14, national zoom 0–14.
+- [CI 43378133931](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43378133931): **ALL JOBS PASS**.
+- [Independent CI 43379440781](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43379440781): **ALL JOBS PASS**; opened and rehashed all 35 files, checked PMTiles v3/MVT headers, reported identical source and regional manifest metadata.
+- Deliverables as two artifacts: `NaviTaxiMap-34-Provinces-OSM-UNREVIEWED` (about 287.5 MB) and `NaviTaxiMap-Vietnam-Whole-Country-OSM-UNREVIEWED` (about 556.2 MB), plus separate small `NaviTaxiMap-Vietnam35-Verified-Manifest-SHA256`.
+- **NO 35-pack Android runtime/emulator proof yet**; all 35 are GIS DATA output only. Need Shortbread-compatible style and catalog download integration. Status UNREVIEWED, no navigation approval, no official maritime/admin boundaries.

@@ -29,3 +29,9 @@ Do not use the public OpenFreeMap server for bulk scraping or unauthorized offli
 - Immutable source URL: `https://raw.githubusercontent.com/ThanhTaxiXanh/NaviTaxiMap/554cfe62013c80146842aea85cb3625e583f2ced/app/src/main/assets/hanoi_real_roads.pmtiles`.
 - Android CI 43374393332 fetched this exact 53,956-byte byte sequence from HTTPS, verified SHA-256 `ff932662ba476e570debd19d8323e2c9fed11dfa98322dfd39a4023ed3e0cf9d` and then rendered offline in airplane mode. Filename/URL is pinned in `PilotCatalog` and refuses branch-name substitutions.
 - This is source-identical to the frozen OpenStreetMap API bbox snapshot, not a verified 34-province map. ODbL attribution remains mandatory; `UNREVIEWED_VISUAL_PREVIEW` is not geographic/legal approval.
+
+## Complete 35 PMTiles data build, Geofabrik Shortbread OSM (not official geography)
+- Vector tiles: `https://download.geofabrik.de/asia/vietnam-shortbread-1.0.mbtiles`, fixed snapshot 686,698,496 bytes, SHA256 `492402e2ebc49516ba72ff90bb0212eba29fab3cc2a9addcb95bb39d6b1089d5`, OSM contributors/ODbL and Geofabrik Shortbread 1.0 credits.
+- Technical province polygons: `vietnam-latest.osm.pbf` Geofabrik OSM 332,558,874 bytes SHA256 `ddb9155f112af521d0674e4f40b87173f92954e5b8a3f71445d3008b506ef9ed`; 33 administrative polygons + one direct official OSM relation `1887959` (Khánh Hòa) 4,647,689 bytes SHA256 `2b94689adcc3bf8fbfffe83387655421598b08dae3b32a908791e1d995c595b1`.
+- Official **names/codes only**: Decision 19/2025/QD-TTg; geometry is **not** government-approved. Provinces cut by tile-rectangle intersection, non-exact and may show roads outside region boundaries. National "Vietnam" is Geofabrik country extract coverage, not a statement about legal maritime claims.
+- Built and integrity checked 35 PMTiles in CI 43378133931 and 43379440781. See `VIETNAM35_PACKS.md`.

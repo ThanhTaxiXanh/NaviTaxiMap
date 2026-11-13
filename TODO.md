@@ -26,3 +26,13 @@
 - [ ] Download/resume with range requests, pause/resume after process death, retry/backoff, configurable data budget, per-region catalog and 34 provincial packages.
 - [ ] Cross-process locking, fsync of parent metadata directories, tested atomic update rollback through sudden power loss on physical device.
 - [ ] Test real Android UI cancellation, download retry, corrupt data and delete/reinstall under network loss and rotation; currently only core cancellation is JVM tested.
+
+## 35-region geographical data
+- [x] Establish authoritative 34 province/city codes and names effective July 2025.
+- [x] Obtain real OSM administrative polygon inputs for all 34 areas, including full-relation recovery for Khánh Hòa; label all as **UNREVIEWED**.
+- [x] Download OSM Geofabrik Shortbread Vietnam source, produce 34 regional PMTiles + one national PMTiles (35 total), with per-file SHA256 and no placeholder packs (CI 43378133931).
+- [x] Independently reread/rehash/inspect all 35 PMTiles v3/MVT outputs, source fingerprint, 34 official province codes (CI 43379440781 ALL PASS).
+- [ ] Integrate Shortbread v1.0 compatible offline road map style into Android and offer a 35-pack verified download/catalog manager; current APK remains limited to small Hanoi pilot.
+- [ ] Add streaming resume, partial-download recovery, device storage planning, expiration-safe artifact hosting and update manifests. GitHub Actions artifacts are temporary.
+- [ ] Review polygon overlaps, maritime disputed areas/island coverage, province boundary precision, source attribution, ODbL distribution and 35-pack legal release clearance independently.
+- [ ] Validate every generated pack with real Android pixel-render smoke, physical Xiaomi, latency, memory, storage and low-bandwidth connectivity tests.

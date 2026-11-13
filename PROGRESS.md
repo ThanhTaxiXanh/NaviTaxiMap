@@ -45,3 +45,11 @@
 - Added Android catalog manager UI: information, verify SHA-256, repair from bundled APK, manual HTTPS transfer with confirmation and cancel, delete app-private copy.
 - CI 43374393332 ALL JOBS PASS, including actual HTTPS download, SHA readback from emulator, ODbL/non-navigation metadata, offline colored roads (58,015 pixels), catalog dialog UI, SAF importer and simulated interruption cleanup.
 - Kept `main` untouched. Real Hanoi pilot remains a very small **unreviewed visual sample**; NOT navigation-ready, NOT 34 provinces.
+
+## 35 OSM real Vietnam PMTiles packages: produced and independently verified 2026-11-13
+- Loaded official 34 province/city code/name list from Decision 19/2025/QD-TTg; archived in `tools/vietnam34/provinces_34.json`.
+- Captured Geofabrik OSM PBF with SHA-256 and built 33 admin4 multipolygons. First PBF polygon export omitted Khánh Hòa; corrected by fetching a single full OSM relation 1887959 from the OSM official API, hashed separately. All 34 polygon inputs validated, but are **not legal authority for boundaries**.
+- Downloaded full Geofabrik experimental Shortbread MVT MBTiles (686,698,496 B). Split into 34 packs using whole-tile intersection with OSM administrative polygons; converted full-country MBTiles to one more PMTiles. No synthetic roads or placeholder empty provinces.
+- 35 PMTiles built: nationwide 556,229,998 bytes/567,706 tiles; 34 provinces 287,504,805 bytes. All have source provenance, ODbL attribution and unreviewed/non-navigation status in manifest.
+- CI 43378133931 build PASS. CI 43379440781 independent rehash and structural PMTiles validation **35/35 PASS**. Artifacts and full file inventory in `VIETNAM35_PACKS.md`.
+- **Still needs** user-facing 35-pack catalog, Shortbread local MapLibre style, streamed transfer with resumability, independent spatial/license/sovereignty review, mobile hardware/performance tests.

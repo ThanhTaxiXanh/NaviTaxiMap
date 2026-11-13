@@ -56,3 +56,9 @@ A limited road-only map preview can be opened via **Dữ liệu bản đồ** �
 Open **Dữ liệu bản đồ** → **Quản lý / tải gói OSM Hà Nội**. You can inspect v1/source/hash, use a bundled offline copy, explicitly consent to a tiny (54 KB) HTTPS download from a fixed GitHub commit, verify SHA-256, or delete the app-owned copy. Only this limited visual road-preview is available. The pack is **UNREVIEWED**, cannot navigate, and is not a countrywide offline basemap.
 
 [CI 43374393332](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43374393332): **ALL JOBS PASS**, including an **actual** Android HTTPS fetch of the exact pinned PMTiles, byte-for-byte and metadata verification, then offline road-rendering while in airplane mode (58,015 road-colored pixels), Android file picker and catalog UI tests. See [CATALOG_PACK_EVIDENCE.md](CATALOG_PACK_EVIDENCE.md).
+
+## NEW: 34 real OSM regional PMTiles + one full Vietnam PMTiles (data artifacts only)
+
+Data build [43378133931](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43378133931) **PASS** and independent 35-file verification [43379440781](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43379440781) **PASS**. Built one nationwide 556.23 MB PMTiles (567,706 vector tiles at zoom 0–14) plus 34 per-province/municipality PMTiles totaling 287.50 MB (zoom 8–14), using OSM Geofabrik experimental Shortbread tiles and 34 OSM admin4 polygon masks. Exact manifest and checksums: [VIETNAM35_PACKS.md](VIETNAM35_PACKS.md).
+
+These are **separate downloadable data archives**, not yet integrated into the Android catalog or usable for turn-by-turn taxi navigation. Province tile-intersection boundaries are approximate for tile selection and NOT legal or sovereign-border overlays. ODbL release audit remains open.

@@ -40,3 +40,11 @@
 - Android API 34 in CI 43374393332: **ALL JOBS PASS**. Fetched 53,956 bytes via real HTTPS into app-private pack, independently checked SHA/version/license/non-navigation status, then rendered actual real OSM roads in airplane mode and verified catalog UI.
 - One early test incorrectly rejected URL due `/main/` within Android's legitimate `src/main/assets` path; corrected to check the repository Git ref segment in `510c12c`.
 - Retains development-only status; no main merge, no 34-province data or route graph.
+
+## 2026-11-13 Data milestone: 35 Vietnam Shortbread PMTiles
+- Added official 34 administrative code/name mapping, OSM admin4 geometry audit and full-relation recovery for missing Khánh Hòa polygon.
+- Implemented reusable real MVT tile-footprint intersection splitter and pinned go-pmtiles conversion into 34 provincial tilesets and one nationwide tileset.
+- Built **35 actual PMTiles** from frozen Geofabrik Shortbread source: 556,229,998 bytes nationwide, 287,504,805 bytes province aggregate; 567,706 country tiles. Did not create placeholders.
+- First workflow failed only because Python 3.14 lacked pinned Shapely 2.0.7 binary wheel; fixed using Python 3.12 setup. Final CI build 43378133931 PASS.
+- Independent 35-file manifest/head/tile-type/byte-size/SHA256 regression CI 43379440781 PASS, published checksum summary artifact.
+- Explicitly not a legal border product or navigable offline route database. No main/release changes, app multi-region catalog still pending.

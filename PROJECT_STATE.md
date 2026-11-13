@@ -32,3 +32,11 @@ Real OSM pilot source snapshot: workflow https://github.com/ThanhTaxiXanh/NaviTa
 - Local catalog UI supports checking installed version/hash, reinstalling from APK, confirmed delete and explicitly confirmed HTTPS transfer with cancellation hook.
 - CI [43374393332](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43374393332) ALL JOBS PASS. Emulator online received actual file through `PinnedHttpsPackDownloader` (origin=PINNED_HTTPS), re-read 53,956 bytes SHA exact, then airplane mode displayed roads and 58,015 colored pixels. Native DocumentsUI picker, simulated interrupted imports and provenance dialog PASS.
 - **sourceApproval=UNREVIEWED_VISUAL_PREVIEW; navigationApproved=false**. Full 34-region catalog, signed external manifests, pause/resume downloads, usable navigation and physical Xiaomi QA remain NOT STARTED/IN PROGRESS as appropriate.
+
+## Data expansion: 35 actual OSM PMTiles, 2026-11-13
+- **ALL 35 DATA PACKS GENERATED** (34 official-code province/city pack labels + one whole-country extract), separate downloadable artifacts, source OSM/Geofabrik Shortbread tiles, 567,706 national MVT tiles through z14.
+- Total 34 provincial archive bytes: **287,504,805**. Nationwide archive bytes: **556,229,998**. Nationwide SHA-256: `678704befd7b4b42726199994671ddccb1c2c029daab40f53098709cd5b12d55`.
+- [Generation 43378133931](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43378133931) ALL PASS, [independent 35 SHA verification 43379440781](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43379440781) ALL PASS.
+- 34 polygons resolved from OpenStreetMap ODbL administrative relations, including independently recovered Khánh Hòa relation. Selection is tile-level intersection, not exact legal borders or full feature clipping. NOT navigation ready, NOT sovereignty overlays, NOT approved for public release.
+- **APK has NOT integrated all 35 files**: existing app only supports the small Hanoi visual-preview catalog. Latest Android build unchanged from prior successfully tested code.
+- See `VIETNAM35_PACKS.md` and `tools/vietnam34/SHA256SUMS.txt`.
