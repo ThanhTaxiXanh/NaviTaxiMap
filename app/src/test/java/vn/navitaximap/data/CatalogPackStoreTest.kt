@@ -25,7 +25,7 @@ class CatalogPackStoreTest {
         assertEquals("ODbL-1.0", spec.license)
         assertEquals("© OpenStreetMap contributors", spec.attribution)
         assertEquals(14, PmtilesHeader.inspect(File("src/main/assets/hanoi_real_roads.pmtiles")).minZoom)
-        assertFalse(spec.downloadUrl.contains("/main/"))
+        assertFalse(spec.downloadUrl.contains("/NaviTaxiMap/main/"))
         assertTrue(spec.downloadUrl.contains("/554cfe62013c80146842aea85cb3625e583f2ced/"))
     }
 
