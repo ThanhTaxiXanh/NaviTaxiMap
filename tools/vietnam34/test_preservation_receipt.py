@@ -132,7 +132,7 @@ class OriginalArchivePreservationTest(unittest.TestCase):
         cases = [
             ("bad magic", "b'NOT-PMT!' + b'Q' * 128",
              "136", "'0' * 64"),
-            ("bad SHA", "b'PMTiles\\\\x03' + b'A' * 128",
+            ("bad SHA", f"{HEADER!r} + b'A' * 128",
              "136", "'f' * 64"),
         ]
         for label, payload, byte_count, digest in cases:
