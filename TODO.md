@@ -140,3 +140,10 @@
 - [ ] Inspect Android CI 43458014933 for compiler/JUnit errors and emulator, fix if needed before declaring new feature PASS.
 - [ ] Obtain explicit authorization for ODbL redistribution and actual permanent HTTPS origin, allowlisted host, manifest lifecycle and cache policy before enabling any downloader UI/network.
 - [ ] Reduce 2x temporary disk usage and test real network/physical Xiaomi separately, with no automatic background transfer prior to user opt-in.
+
+
+## 2026-11-13 immediate CI gate
+- [x] Diagnose emulator 43458014933 failure with downloaded evidence artifact 14055795953; system Pixel Launcher modal hid actual app status, while 40,721 PMTiles pixels rendered.
+- [x] Add bounded Launcher-only overlay recovery to standard `ci/smoke-emulator.sh`, maintaining strict UI and pixel assertions, commit 3b141de.
+- [ ] Validate complete 43459478560 Android CI (build/JUnit and emulator) before marking new Range staging feature all-green.
+- [ ] Keep `distributionApproved=false` until HTTPS origin, ODbL redistribution permission and durable manifest are explicitly approved. Local test transfer is not a user download.

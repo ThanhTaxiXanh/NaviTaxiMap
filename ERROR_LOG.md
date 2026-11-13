@@ -118,3 +118,8 @@
 ## Latest 2026-11-13 emulator flakes vs PMTiles data
 - UIAutomator XML collision root cause addressed by 1ce22829; national run 43454411510 SUCCESS and Bac Ninh run 43454411692 SUCCESS. 34-shard rerun 43454411678 in progress.
 - HN/HCM 43454411531 failed when Pixel Launcher itself was not responding, BEFORE app's import menu. Host and Android shared file SHA correct. Added one retry strictly gated on that exact system message in 720efe42; standardized `bash -n` in e05b1ed. Follow-up 43455374999 still running, no false green status.
+
+
+## 2026-11-13 Android Launcher ANR covered offline proof despite correct rendering
+- Reproduced run 43458014933: `ci/check-offline-screenshot.py` found 40,721 colored pixels, but `offline-window.xml` had only `Pixel Launcher isn't responding`, `Close app`, `Wait`; artifact screenshot directly showed NaviTaxiMap offline demo status behind modal. Emulator OS launcher overlay, NOT PMTiles missing or Kotlin transfer error.
+- Fix 3b141de strictly detects specific system ANR overlay before any automated recovery; at most 3 bounded tries, re-verifies status and retains screenshot pixel, pid and fatal-exception guards. No unconditional skip, no weakened pixel or mock map. New CI 43459478560 pending.

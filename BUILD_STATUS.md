@@ -160,3 +160,8 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 ## 2026-11-13 release-safe range-stage feature QA
 - Prior run 43454411678 34/34 original provinces all SUCCESS; 43454411510 national 556MB SUCCESS; 43455502132 HN/HCM SUCCESS; 43455502057 Android build+emulator SUCCESS.
 - 389d71bf adds dormant HTTPS Range staging with JVM tests; 43458014933 Android debug compile/emulator in progress at note. No claim of operational downloads or approved hosting.
+
+
+## 2026-11-13 Range staging QA and emulator regression details
+- 43458014933: build/JUnit SUCCESS, standard Android emulator FAILURE at UIAutomator offline status check. Artifact 14055795953 contains 40,721 synthetic road pixels and screenshot/status under Android system `Pixel Launcher isn't responding` modal; XML contained only launcher dialog. Pixel check PASSED, UI text assertion failed appropriately.
+- Code 3b141de CI-only bounded system overlay handling + bash -n check; new 43459478560 PENDING. Does not relax offline pixel or UI status acceptance; source Kotlin Range unchanged.

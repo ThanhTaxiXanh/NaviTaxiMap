@@ -136,3 +136,8 @@
 ## 2026-11-13 next slice: approval-gated resumable transfers
 - All unfinished actual region workflows from previous conversation now SUCCESS, including 34/34 one-workflow 43454411678 and 556MB national 43454411510.
 - Added Range staging engine (feature 389d71bf) + JUnit FakeRange scenarios for partial resume / wrong 206 / denied redirect / SHA mismatch / host/HTTPS authorization. Gate remains `distributionApproved=false`, no URLs, no Android UI or real network call. Build CI 43458014933 PENDING.
+
+
+## 2026-11-13 23:08 CI QA fidelity
+- New Range client compile/JUnit passed 43458014933, emulator failed because system Launcher ANR masked otherwise correct synthetic offline PMTiles status and 40,721 colored road pixels. Inspected real screenshot and XML, not guesswork.
+- 3b141de retries only system ANR overlay and demands final app UI status; ci/smoke-emulator.sh syntax gate. Run 43459478560 pending. No download host/approval enabled.

@@ -139,3 +139,9 @@ Real OSM pilot source snapshot: workflow https://github.com/ThanhTaxiXanh/NaviTa
 - Verified previous unfinished runs: 43454411678 full 34 real provincial Shortbread emulator five jobs SUCCESS, 43454411510 national 556MB screenshot + streamed app-private SHA SUCCESS, 43454411692 Bac Ninh SUCCESS, 43455502132 Hanoi/HCM SUCCESS, 43455502057 full Android debug + emulator SUCCESS.
 - Introduced dormant `PinnedHttpsRangeTransfer.kt` with strict HTTPS hostname gate, exact 206 Range resume and pinned size+SHA, app-private partial staging, second LocalPackStore verification. `ApprovedCatalogPackDownloader` refuses all transfers while `Vietnam35Catalog.distributionApproved=false`. No hostname, URL or product download UI configured. Explicit design `PACK_DISTRIBUTION_GATE.md`.
 - Feature commit 389d71bf; Android CI 43458014933 PENDING at this note. Existing all-35 Android proofs do not grant routing/boundary/distribution approval.
+
+
+## 2026-11-13 new HTTPS Range engine: unit green, emulator launcher overlay diagnosed
+- Feature 389d71bf internal HTTPS Range continuation, strict reviewed host and SHA pinned, default blocked by `distributionApproved=false`; JUnit and Android compile run 43458014933 SUCCESS.
+- Emulator phase 43458014933 FAILED at synthetic offline UI status due actual Pixel Launcher ANR overlay. Artifact 14055795953 inspected: 40,721 genuine colored PMTiles pixels, visible app status behind overlay, UIAutomator XML only system dialog. This is not evidence of a failed renderer or download.
+- CI-only fix 3b141de adds bounded overlay recovery while still enforcing UI status and vector pixel proof. Android CI 43459478560 RUNNING at checkpoint. Previous 35 real archive offline visual proof across 43454411510+43454411678 remains SUCCESS.
