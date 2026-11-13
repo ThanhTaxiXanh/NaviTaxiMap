@@ -216,6 +216,16 @@ def main():
     except Exception as exc:
         print(f"SAF PICKER FAILED: {exc}", file=sys.stderr)
         try:
+            # Debug-only Android stream metadata: which file DocumentsUI passed
+            # and whether its first eight bytes match PMTiles v3 magic.
+            logs = adb("logcat", "-d", "-s", "NaviTaxiMapSAF:I",
+                       "NaviTaxiMapShortbread:I", "AndroidRuntime:E", check=False)
+            (OUT / "saf-selected-stream-logcat.txt").write_text(logs)
+            print("SAF stream probe:", [s for s in logs.splitlines()
+                  if "SAF_SELECTED_STREAM" in s][-3:], file=sys.stderr)
+        except Exception as log_error:
+            print(f"SAF stream log capture error: {log_error}", file=sys.stderr)
+        try:
             screenshot("failure")
             root = snapshot("failure")
             print("Visible nodes:", [(n.get("text"), n.get("content-desc"))

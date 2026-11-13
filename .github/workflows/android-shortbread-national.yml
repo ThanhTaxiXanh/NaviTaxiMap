@@ -3,6 +3,8 @@ on:
   push:
     branches: ['develop/phase0-android-maplibre']
     paths:
+      - 'app/src/main/java/vn/navitaximap/MainActivity.kt'
+      - 'ci/saf-picker-smoke.py'
       - 'ci/shortbread-national-emulator.sh'
       - '.github/workflows/android-shortbread-national.yml'
   workflow_dispatch:

@@ -277,7 +277,24 @@ class MainActivity : Activity(), LocationListener {
                 }
                 val input = contentResolver.openInputStream(uri)
                     ?: error("Cannot open selected document")
-                packStore.importPack(input, name, region?.sha256, region?.sizeBytes)
+                // For debug QA only: inspect the selected SAF STREAM, not the
+                // separate /sdcard/Download path. A stale DocumentsUI URI may
+                // expose different bytes even when that path's SHA is valid.
+                // No URI, raw file content or personal data is emitted to logs.
+                val guardedInput = if ((applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
+                    val buffered = java.io.BufferedInputStream(input, 16 * 1024)
+                    buffered.mark(8)
+                    val magic = ByteArray(8)
+                    val got = buffered.read(magic)
+                    buffered.reset()
+                    val validMagic = got == 8 && magic.contentEquals(
+                        byteArrayOf(80, 77, 84, 105, 108, 101, 115, 3))
+                    Log.i("NaviTaxiMapSAF", "SAF_SELECTED_STREAM " +
+                        "name=" + name + " pinned=" + (region?.code ?: "none") +
+                        " headerBytes=" + got + " isPmtilesV3=" + validMagic)
+                    buffered
+                } else input
+                packStore.importPack(guardedInput, name, region?.sha256, region?.sizeBytes)
             }
             runOnUiThread {
                 if (isDestroyed) return@runOnUiThread
