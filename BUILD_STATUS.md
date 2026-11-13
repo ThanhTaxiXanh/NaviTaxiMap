@@ -141,3 +141,11 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 - 43438780281 Hà Nội/TP.HCM standalone **SUCCESS**; 43438780381 standard Android **SUCCESS**.
 - 43438780443 national 556MB **FAIL before SAF** on Launcher ANR, 43439851626 national **FAIL during SAF** with `Not a PMTiles v3 archive` after correct Android Download full SHA. Cannot call national ready.
 - 43441211821 national QA with debug selected-stream magic diagnostics is **PENDING**. Do not report it green without `SAF_STREAM_SHA256_OK` + road pixels.
+
+
+## 2026-11-13 authoritative all 35 archive evidence
+- 43438780272 **SUCCESS** 34/34 provincial original archives; four shards 9,9,8,8 without failure.
+- 43441211821 **SUCCESS** full 556,229,998-byte national archive actual SAF import with streamed SHA, airplane mode 157,112 road-colored pixels; completes 35/35 unique archive visual QA across two workflows.
+- 43441211805 Android debug **SUCCESS** both build+emulator; 43441211810 Bắc Ninh **SUCCESS**; 43441211781 Hà Nội+HCM **SUCCESS**.
+- 43441211834 **FAIL** 1/34 in duplicate run due instrumentation XML being selected by DocumentsUI instead of 08 Tuyên Quang, evidenced by app's selected-stream debug log.
+- Code commit 1ce22829 fixes test pollution and adds early .pmtiles guard; reruns 43454411956 normal, 43454411510 national, 43454411678 34 original provinces, 43454411692 Bắc Ninh, 43454411531 HN/HCM all PENDING at checkpoint.

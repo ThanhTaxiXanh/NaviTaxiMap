@@ -119,3 +119,9 @@
 - **34/34 province PMTiles offline proof SUCCESS in single workflow** 43438780272, four shard totals 9/9+9/9+8/8+8/8. All named SHA pinned user-selected SAF imports; renderer offline checked via screenshots.
 - Nationwide original 556MB correct header/SHA in build verifier and correct full SHA on Android Downloads, but Android SAF UI import run 43439851626 failed as `Not a PMTiles v3 archive`, so 35th visual proof remains open.
 - Added 02b91f7 debug-only actual SAF stream magic/filename log, national CI 43441211821 underway, cannot claim result before end.
+
+
+## 2026-11-13 35/35 real offline render milestone
+- **35/35 Shortbread PMTiles archives have end-to-end Android emulated device screenshot proof**: all 34 province archives in one success 43438780272; 556,229,998-byte national original stream SHA+SAF+airplane-mode 157,112 road pixels run 43441211821 SUCCESS.
+- Additional 34-province run 43441211834 FAIL because uiautomator XML in Android DocumentsUI Recents was accidentally imported instead of Tuyên Quang (08), not a broken PMTiles archive. Fixed instrument file path to /data/local/tmp in 1ce22829 and added app extension gate/unit test. Five new CI runs triggered, awaiting proof.
+- Pending: durable ODbL-compliant hosting with signed pinned manifest/resumable downloads, Xiaomi physical verification, accessibility/labels, navigation pipeline based on approved routing data, legal borders review.

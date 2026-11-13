@@ -115,3 +115,12 @@
 - [x] Verify single-workflow 34/34 success 43438780272 (9+9+8+8, screenshots and pinned SHA). Keep legal/navigation approval FALSE.
 - [ ] Analyze 43441211821 logs, especially `SAF_SELECTED_STREAM` actual name, catalog pinned region and `isPmtilesV3`, to diagnose national 556MB `Not a PMTiles v3 archive` despite correct original and Android Download SHA.
 - [ ] Repeat national emulator until **imported** 556,229,998 exact bytes, streamed SHA, offline road screenshot PASS; without this NO 35/35. Do not bypass DocumentsUI or skip SHA/pixel acceptance.
+
+
+## 2026-11-13 verified milestones and next gates
+- [x] 34 original provincial archives true Android SAF/pixel-proof in one all-green run 43438780272.
+- [x] 556,229,998-byte national archive true Android SAF/streaming full SHA/airplane-mode pixel-proof 43441211821 SUCCESS, completes **35/35** actual distinct package visual evidence.
+- [x] Diagnose 43441211834 DocumentsUI test data collision: `navitaxi-picker.xml` accidentally selected instead of `08-tuyen-quang.pmtiles` via Recents, not real map corrupt. Change CI XML path out of /sdcard and require .pmtiles before app streams. Commit 1ce22829.
+- [ ] Check all five CI runs triggered by 1ce22829, especially full 34-shard + national, and preserve any actual FAIL without inventing resolution.
+- [ ] Design secure approved long-term regional distribution with stable HTTPS URLs, Range download resume and exact byte/SHA staging; artifact originals expire 27/11/2026 and are not enduring store. No URLs may be invented.
+- [ ] Real Xiaomi testing, navigation-appropriate graph/route approval, legal geography, ODbL redistribution attribution/rights audit remain separate.

@@ -69,3 +69,10 @@ Despite three independently proven full region PMTiles renders (CI 43387711796 a
 ## 2026-11-13 all original 34 provinces passed one CI run, nationwide still gated
 - Run 43438780272 SUCCESS, original 34 region exact SHA/size, real DocumentsUI, byte readback, airplane-mode MapLibre and road pixels, 9/9+9/9+8/8+8/8. Normal Android 43438780381 and HN/HCM 43438780281 separately SUCCESS.
 - National 556,229,998-byte file full SHA verified on source and Android shared storage, but first SAF run blocked by Pixel Launcher, second failed `Not a PMTiles v3 archive` after entering DocumentsUI. Debug-only ContentResolver head/name probe 02b91f7 and national CI 43441211821 to distinguish selected URI stream from source; not yet run end-to-end.
+
+
+## 2026-11-13 all 35 PMTiles real Android screenshot verification DONE
+- 34 provinces successfully source SHA + native SAF imported and shown offline in 43438780272 all 4 emulator shards.
+- National 00-viet-nam-all.pmtiles 556,229,998 bytes, SHA 678704befd7b4b42726199994671ddccb1c2c029daab40f53098709cd5b12d55 independently SHA-verified through original, Android Downloads and **app-private streamed readback**: 43441211821 SUCCESS after launcher retry, 157,112 actual road-colored pixels at Hanoi in airplane mode. This is *one representative national archive viewport*, not a completeness proof of legal/admin areas, routes, or map labels.
+- Extra run 43441211834 exposed DocumentsUI test XML collision; fix 1ce22829 stores UIAutomator snapshot only under /data/local/tmp and rejects non-PMTiles names; CI reruns pending.
+- All 35 archives are RESEARCH PREVIEW / NOT APPROVED FOR NAVIGATION OR DISTRIBUTION. No permanent CDN, download/resume, UI labels or physical Xiaomi verification.

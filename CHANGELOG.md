@@ -75,3 +75,8 @@
 - First real 34-province QA with corrected urban cameras yielded 25 new successes in three completed shards, four formerly empty areas fixed; one shard cancelled from emulator Launcher ANR. 32/34 distinct provincial screenshot proofs remain valid across workflow attempts.
 - Code af381426 creates 31/48 targeted bounded emulator test to avoid long stalled shards.
 - Code a9cd6ce introduces streaming 556MB PMTiles host-side adb readback hash verification for nationwide QA, longer SAF modal wait, debug-only urban detail screenshot without modifying normal national overview. Targeted and nationwide result pending; no release or legal approval.
+
+
+## 2026-11-13 original 35 OSM Shortbread PMTiles Android emulator milestone
+- 34/34 original provincial maps verified in entire-success 43438780272; original 556,229,998-byte Vietnam-wide map additionally verified in independent-success 43441211821, using true Android DocumentsUI, streamed app-private full SHA-256 and airplane mode road screenshot (157,112 pixels). 35/35 unique archives screenshot-proofed, not a release.
+- Diagnosed extra run 43441211834 failure as test instrumentation XML accidentally imported from /sdcard/DocumentsUI instead of a region PMTiles. Fix 1ce22829 moved UIAutomator XML into shell-private tmp, app rejects non-.pmtiles URI names, added test, privacy hygiene for debug log. CI retest pending.
