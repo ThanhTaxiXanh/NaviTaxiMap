@@ -1,49 +1,38 @@
 # NaviTaxiMap
 
-Android/Kotlin, MapLibre Native, ưu tiên dữ liệu OSM và offline, không dùng Google Maps SDK.
+NaviTaxiMap is an Android/Kotlin mapping and navigation project for Vietnam with a **zero mandatory paid-service** target. It uses MapLibre Native and OpenStreetMap-based geographic data. The project is a **development prototype**, not a production navigation application.
 
-**Trạng thái:** Bộ khung đang phát triển. Chưa có sản phẩm đủ điều kiện dẫn đường thực tế.
+## Safety and branches
 
-## Nhánh và an toàn phát hành
-- Phát triển tại `develop/phase0-android-maplibre`.
-- Không merge/pull request vào `main` khi chưa có sự đồng ý của chủ dự án.
-- GitHub Actions chỉ build `app-debug.apk` trên nhánh `develop/**`; không phát hành.
+- Development branch: [`develop/phase0-android-maplibre`](https://github.com/ThanhTaxiXanh/NaviTaxiMap/tree/develop/phase0-android-maplibre).
+- `main`: **no pushes, merges or pull requests into main without the owner's explicit permission**.
+- GitHub Actions builds and tests debug APKs on `develop/**`, without publishing a release.
+- Do not use the app while driving: routing, speed signs, offline road data and traffic are not validated or implemented.
 
-## Chạy và kiểm thử
-Máy phát triển cần Android SDK 35, JDK 17 và Gradle 8.9.
+## Current capabilities
+
+- Android/Kotlin Activity, MapLibre Native 13.5.4 with online OpenFreeMap Liberty/Dark style using OSM.
+- User-initiated GPS location permission. Online map tiles may disclose viewed map area to the third-party tile provider; disclosure precedes location request.
+- Tiny synthetic PMTiles v3 tile archive with checksum validation; MapLibre native local PMTiles reader **visibly renders synthetic lines in airplane mode** (CI [43359838414](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43359838414)).
+- **Phase 4 import prototype:** `Dữ liệu bản đồ` -> `Nhập tệp PMTiles từ thiết bị`. Android system document picker, streaming app-private file copy, SHA-256, PMTiles header preflight, list/re-verify/delete. Imported files remain **unapproved**, and are not rendered as map layers by this feature.
+- Test infrastructure: JUnit, synthetic PMTiles fixture integrity checks, user-supplied geographic data policy checks, emulator screenshot/logcat tests.
+
+See [OFFLINE_MANAGER.md](OFFLINE_MANAGER.md), [ARCHITECTURE.md](ARCHITECTURE.md), [DATA_SOURCES.md](DATA_SOURCES.md), [LICENSES.md](LICENSES.md) and [BUILD_STATUS.md](BUILD_STATUS.md).
+
+## Development build
+
+Required: JDK 17, Android SDK platform 35 and Gradle 8.9.
 
 ```sh
-gradle :app:testDebugUnitTest :app:assembleDebug
+gradle --no-daemon :app:testDebugUnitTest :app:assembleDebug
+python3 -m unittest discover -s tools/pmtiles_fixture/tests -v
 python3 -m unittest discover -s tools/vietnam-sovereignty-map/tests -v
 ```
 
-Ứng dụng dùng MapLibre Android OpenGL ES và **demo style công khai chỉ để thử nghiệm**:
-`https://demotiles.maplibre.org/style.json`. Khi không có kết nối, dữ liệu bản đồ demo không đảm bảo xuất hiện.
-Không được xem demo style là nguồn production hoặc offline. Cần phê duyệt dữ liệu, license và phương án phân phối.
+CI config: [`.github/workflows/android-debug.yml`](.github/workflows/android-debug.yml). Debug APK is uploaded as `NaviTaxiMap-debug` in the matching GitHub Actions run. It is not signed for production distribution.
 
-## Mã chức năng hiện tại
-- MapLibre MapView và vòng đời Android.
-- UI tiếng Việt với bản đồ lớn, nút bấm dễ nhìn và giao diện chrome sáng/tối.
-- GPS theo yêu cầu người dùng, quyền cấp lúc thao tác và hiển thị giá trị thực.
-- Trình xác minh SHA-256 cho tệp offline (chưa phải bộ đọc PMTiles).
-- Bộ công cụ kiểm tra nguồn dữ liệu vùng biển Việt Nam dưới `tools/vietnam-sovereignty-map`.
+## Not yet developed
 
-Các mục tìm kiếm, POI, định tuyến, dẫn đường, traffic, PMTiles, bản đồ offline 34 tỉnh, 3D và hồ sơ Hoàng Sa/Trường Sa hiện **chưa hoàn thành**. Ảnh thiết kế `IMG_4470.png` đến `IMG_4478.png` chỉ là tham chiếu giao diện, không phải ảnh chụp phần mềm hoạt động.
+Verified geographic offline data packs for 34 provinces/cities, download/pause/resume, search/POI, routing/navigation/TTS, live traffic, Road Intelligence, 3D, legal/historical archive, comprehensive UI and real-device Xiaomi testing.
 
-Đọc `ARCHITECTURE.md`, `DATA_SOURCES.md`, `BUILD_STATUS.md` và `PROJECT_STATE.md` trước khi triển khai tiếp.
-
-## Phase 3: local PMTiles demonstration (synthetic, not a Vietnam offline map)
-The `PMTiles offline (mẫu)` button switches to a tiny self-contained MVT tile.
-It stores a verified decoded PMTiles v3 file in app-private storage and uses
-MapLibre's native `pmtiles://file://` handler. It only shows made-up schematic
-lines; **never use these lines for navigation**.
-CI tests the fixture and launches the app in Android emulator airplane mode.
-Use `tools/pmtiles_fixture` for source, SHA-256 and tests.
-
-## Bằng chứng mới nhất: PMTiles tổng hợp hoạt động khi không có mạng
-GitHub Actions [43359838414](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43359838414)
-đã build, kiểm thử, cài APK, bật chế độ máy bay và chụp màn hình.
-Kiểm tra pixel chứng minh đường MVT tổng hợp được hiển thị từ
-`pmtiles://file://` với gói 5 ô (z0, z1). Logcat không ghi nhận lỗi
-FATAL EXCEPTION. Đây **không** phải bản đồ đường thật hoặc gói offline
-34 tỉnh và **không thể dùng để dẫn đường**.
+Nine images provided by the project owner are design references, not screenshots of implemented features. Do not infer real road-network completeness or approved borders from a synthetic test image.

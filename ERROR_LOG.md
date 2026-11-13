@@ -1,13 +1,17 @@
 # ERROR_LOG
-## Resolved with evidence
-1. CI 43351850610: obsolete Android SDK tools package; setup-android v4 fixed.
-2. CI 43351946604: Kotlin 2.0 compiler vs MapLibre 2.2 metadata; Kotlin 2.2.10 fixed.
-3. CI 43352713250: first map display style lacked roads; OpenFreeMap Liberty/Dark fixed, verified 43353698195.
-4. CI 43358323365: synthetic PMTiles z0 archive app-launched but vector map was blank, not a true PASS. Root cause not isolated conclusively; revised fixture to five tiles (z0+z1), uncompressed directory and added screenshot pixel assertion. CI 43359838414 confirms visible geometry and passes.
+## Resolved
+- Android SDK setup tried an obsolete tools package, upgraded setup-android@v4.
+- Kotlin compiler 2.0 metadata mismatch with MapLibre 13.5.4, upgraded Kotlin to 2.2.10.
+- Original world-demo tiles had no street detail; switched to OpenFreeMap prototype style.
+- First synthetic offline PMTiles screenshot blank; fixed five-tile fixture and added screenshot pixel assertion (CI 43359838414 PASS).
+
+## New incident
+- CI 43361851396: import smoke returned FAILURE on absence of `DEBUG_IMPORT_PASS` filtered logcat message. On the same emulator, both imported PMTiles and metadata files were present, and online/offline screens passed. This was a verification-signaling failure, not proof that archive import failed.
+- Fix commits: `09c6e11` and `62a7cc5`. Script now reads and checks exact import bytes and metadata with SHA-256. Latest CI 43362607683 pending.
 
 ## Open
-- Need verify PMTiles behavior with realistic, licensed Vietnam vector packages, bounds and multiple zooms.
-- Need ensure offline package manager safely handles downloads, pause/resume, corrupt files, atomics, storage pressure and rollback.
-- No connected Xiaomi/Termux device for physical QA.
-- No approved live traffic/sovereignty polygons/verified speed limits.
-- No production style/attribution audit.
+- Confirm byte-level emulator test and audit any remaining failure.
+- Need actual system file-picker interaction and source-provided SHA-256 workflow.
+- Need recovery for orphaned data between two atomic renames, resume/pause downloads, storage-pressure handling.
+- Xiaomi device is not connected, no physical QA.
+- No approved regional basemap, POI, offline routing, verified traffic/speed/legal boundary data.

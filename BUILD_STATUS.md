@@ -1,23 +1,17 @@
 # BUILD_STATUS
+2026-11-13 | working branch develop/phase0-android-maplibre
 
-Branch: develop/phase0-android-maplibre
-Verified code commit: 24d83a802109bb368044cc793d00e2d13faf2f76
-CI: https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43359838414
+## Verified baseline
+- Android AGP 8.7.3, Kotlin 2.2.10, JDK 17, Gradle 8.9, compile SDK 35.
+- MapLibre Native Android OpenGL ES 13.5.4.
+- Run [43359838414](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43359838414): Android debug build + unit suites + emulator airplane-mode synthetic PMTiles rendering PASS.
+- Run [43361851396](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43361851396): Gradle build and unit tests PASS; emulator installed/opened APK, displayed offline geometry and created imported PMTiles + metadata files. Smoke job FAIL because logcat-only success assertion did not see a message.
+- New regression script directly reads app-private imported archive bytes and metadata, checks SHA-256 and sourceApproval=UNVERIFIED, rather than relying on logcat.
 
-## Verified
-- AGP 8.7.3, Gradle 8.9, JDK 17, Kotlin 2.2.10, compileSdk 35.
-- MapLibre native OpenGL ES 13.5.4.
-- Android :app:testDebugUnitTest and :app:assembleDebug PASS.
-- Python PMTiles v3 tests: 3/3 PASS. Vietnam data approval logic: 4/4 PASS.
-- Android API 34 emulator: APK install Success; MainActivity COLD launch OK.
-- Emulator airplane mode enabled; offline-mode MainActivity COLD launch OK.
-- PMTiles source from app-private file rendered synthetic vector grid in screenshot.
-- Image inspection script confirms line-color pixels in central map viewport.
-- No AndroidRuntime FATAL EXCEPTION in saved log.
-- Binary APK ZIP integrity validated separately.
-- Offline renderer proof-of-concept: DONE, only for synthetic MVT fixture.
+## Latest pipeline
+- Code commit: `62a7cc55bee4b3a44f905fb4360be9dbb5f9d48e`
+- Run [43362607683](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43362607683): latest byte-level emulator result pending at time of documentation update.
+- Debug APK (earlier same Kotlin code): created, zip integrity verified. Not a production release.
 
-## Still unverified or blocked
-- Real Xiaomi installation, GPS accuracy, speed/compass, memory, battery, landscape.
-- Real PMTiles province data, legal source licenses, size/updates/corruption recovery.
-- Production APK and navigation behavior: NOT STARTED.
+## Blocked
+Physical Xiaomi debugging and live GPS; actual Android system-picker interaction; real Vietnam regional tiles, download lifecycle and licensed styles; production signing and navigation QA.

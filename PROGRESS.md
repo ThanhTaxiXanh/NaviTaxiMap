@@ -1,14 +1,12 @@
 # PROGRESS
-
-2026-11-13 (working branch only)
-- Reviewed project master prompt, sovereignty-map ZIP and 9 design images.
-- Created independent working branch, preserved main.
-- Developed Android/Kotlin + MapLibre app with online street map and GPS on-demand.
-- Resolved Android SDK setup and Kotlin metadata CI compilation failures.
-- Completed first emulator online map render proof with OpenFreeMap style.
-- Implemented PMTiles v3 native local reader integration and SHA-256 guard.
-- First offline rendering attempt CI 43358323365: app launched but map vector lines NOT visible (identified from screenshot).
-- Fixed test fixture to include z0/z1 complete directory, five tiles, and uncompressed directory; added image pixel regression assertion and full logcat capture.
-- Latest CI 43359838414: build/tests/emulator PASS, offline grid lines visible with airplane mode.
-- Real-world offline Vietnam map packs and driving functions remain NOT STARTED.
-- Update these files and inspect latest CI before any further phase change.
+2026-11-13 | Phase 4 import prototype
+- Confirmed prior offline PMTiles renderer CI 43359838414 PASS.
+- Added `PmtilesHeader`: defensive PMTiles v3 preflight for MVT, ranges, zooms, coordinates and compression flags.
+- Added `LocalPackStore`: streaming copy, optional expected SHA-256, app-private staging, atomic per-file promotion, .properties index, listing, re-hash and delete.
+- Added JUnit tests for valid import, corruption, oversize, wrong hash and unsafe IDs.
+- Added Android SAF document picker and menu for import, display, validation and deletion.
+- Added DEBUG-only fixture import for emulator, runs while airplane mode enabled.
+- GitHub build / testDebugUnitTest PASS for Phase 4 source.
+- CI 43361851396: metadata and archive exist on emulator but smoke falsely failed due to empty tag-filtered logcat output; revised smoke to read and hash actual app-private archive.
+- Latest byte-level smoke CI 43362607683: pending result.
+- All changes on develop branch, no main merge.

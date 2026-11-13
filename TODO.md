@@ -1,12 +1,15 @@
 # TODO
-- [x] Test native PMTiles v3 file reader with deterministic MVT fixture on Android emulator in airplane mode.
-- [x] Verify actual offline geometry via screenshot and automated regression check.
-- [ ] Audit source data, attribution and approved fonts/sprites/local styles for real Vietnam map offline.
-- [ ] Create at least one real authorized PMTiles region; verify real roads and coordinates, no synthetic placeholders.
-- [ ] Offline pack manager: 34 provinces, download/pause/resume, version/hash, atomic updates, storage reporting.
-- [ ] GPS integration tests on Xiaomi: permission, accuracy, battery, speed; physical device QA BLOCKED.
-- [ ] Offline search/POI, route graph, Valhalla/OSRM route engine, TTS navigation, reroute.
-- [ ] Road intelligence and traffic with verified authoritative sources + update timestamps.
-- [ ] 3D with licensed geometry, benchmark FPS/ram, landscape/portrait.
-- [ ] Hoàng Sa/Trường Sa archive with provenance, independent expected-golden, legal layers clearly distinguished.
-- [ ] Full release build, user testing, legal review, only merge to main with explicit authorization.
+- [x] Render deterministic synthetic PMTiles vector tile in airplane mode on Android emulator.
+- [x] Add local streamed PMTiles import, SHA-256, PMTiles header checks and JUnit tests.
+- [x] Add SAF import and list/verify/delete user interface code.
+- [ ] Confirm byte-level importer emulator smoke after replacing logcat-only signal (CI 43362607683).
+- [ ] Automate real system picker interaction, file deletion, tampered file recovery and process interruption tests.
+- [ ] Add signed/approved pack manifests, attribution and independent provenance approval.
+- [ ] Add crash recovery and orphan staging cleanup, free-space checks, consistent metadata transaction.
+- [ ] Create authorized and licensed offline real-road PMTiles for a small Vietnam region.
+- [ ] Region catalog of 34 provinces, download/pause/resume/cancel/version/update/delete.
+- [ ] Integrate local fonts/sprites and reviewed MapLibre style to render real MVT layers.
+- [ ] Real Xiaomi GPS and UI performance/rotation/battery tests (BLOCKED).
+- [ ] POI/search, offline routing graph, navigation/TTS, road warnings, traffic, 3D.
+- [ ] Hoàng Sa/Trường Sa legal/historical archive with independent source review.
+- [ ] Production build, third-party attribution audit and signed release only after owner approval.

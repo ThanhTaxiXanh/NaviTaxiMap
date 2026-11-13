@@ -1,13 +1,13 @@
 # CHANGELOG
-## 2026-11-13 – Phase 3 PMTiles read/render proof
-- Local synthetic PMTiles v3 archive with five MVT tiles, reproducible Python generator.
-- Native MapLibre PMTiles file reader using private storage + SHA-256 validation.
-- UI toggle online map / offline synthetic diagnostic.
-- Added emulator airplane-mode cold-launch test, screenshot regression assertion and saved logcat.
-- Fixed blank first offline render, confirmed visible synthetic grid at CI 43359838414.
-- Documentation updated, no release or main merge.
 
-## Earlier in the day
-- Bootstrapped Android app, CI, offline package verifier and source policy tests.
-- Fixed Android SDK / Kotlin compatibility.
-- Verified OpenFreeMap/OSM street map in Android emulator.
+## 2026-11-13 Phase 4: Local PMTiles import
+- Implemented `LocalPackStore` stream importer with SHA-256 and size limits.
+- Added PMTiles v3 structural checks and MVT-only type gating in `PmtilesHeader`.
+- Added Android system file picker, imported-pack listing, checksum re-check and confirmed deletion.
+- Added JUnit regression tests and emulator fixture import check.
+- Replaced fragile logcat-only CI signal with direct verification of imported archive bytes and metadata.
+- Phase 4 not complete until real packages, Android picker and lifecycle/recovery are tested.
+
+## Earlier
+- Android project + MapLibre online street map bootstrapped and CI fixed.
+- Synthetic PMTiles v3 reader/render verified in Android 34 emulator airplane mode.

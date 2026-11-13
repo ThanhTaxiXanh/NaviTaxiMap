@@ -1,35 +1,36 @@
-# Kiến trúc NaviTaxiMap
+# NaviTaxiMap architecture
 
-## Kiến trúc mục tiêu
-`UI -> Map Renderer -> MapData/PMTiles -> Offline packages`
-`UI -> GPS -> Navigation -> Routing -> offline route graph`
-`UI -> Search/POI -> SQLite`
-`UI -> Road Intelligence/Traffic -> nguồn được xác minh`
-`UI -> Vietnam Geographic Engine -> hồ sơ tư liệu có nguồn`
+## Current implementation
+```
+MainActivity (online MapLibre UI + permission-gated GPS)
+  |-- MapLibre Native (OpenFreeMap Liberty/Dark remote style)
+  |-- DemoOfflinePack (synthetic PMTiles fixture -> private file -> MapLibre)
+  |-- LocalPackStore (user selected content:// -> staged private PMTiles)
+       |-- SHA-256 streaming copy and re-verification
+       |-- PmtilesHeader (v3 structural checks, MVT only)
+       |-- private .properties index with UNVERIFIED provenance
+       |-- list / verify / delete
+```
 
-Chỉ `app` là module Android hiện đã khởi tạo. Các ranh giới trên là thiết kế module mục tiêu, KHÔNG phải module hoàn thành.
+App modules currently live in `app`; the future module boundaries below are architectural plans, not implemented Android modules.
 
-## Phase 0/1/2
-- Android app: Kotlin, minSdk 26, target 35, compile 35.
-- Map renderer: MapLibre Native Android OpenGL ES 13.5.4.
-- Demo map style: truy cập Internet, dùng làm bản đồ thử nghiệm, không có SLA.
-- GPS: Android LocationManager theo thao tác người dùng. Không gửi vị trí lên máy chủ ứng dụng.
-- OfflinePackVerifier: kiểm tra SHA-256 trước kích hoạt. Phải bổ sung schema/version/atomic activation.
-- Hiện không có PMTiles decoder, không được nhận là offline navigation.
+## Future components
+`Map Renderer -> MapData/PMTiles -> Offline Package Manager -> licensed region packs`
+`GPS -> Navigation -> Routing -> offline road graph`
+`Search/POI -> SQLite`
+`Road Intelligence/Traffic -> approved dated data sources`
+`Vietnam Geographic Engine -> provenance + legal archive`
 
-## Các quy tắc dữ liệu
-Tách biệt dữ liệu địa lý, tên nhãn, diễn giải chủ quyền, và đường ranh giới pháp lý. Chỉ tích hợp dữ liệu được chấp thuận có xuất xứ và quyền phân phối được xác minh. Không suy đoán tọa độ hoặc đường ranh giới.
+## Design constraints
+- Offline tiles and offline routing graphs are different resources; rendering PMTiles alone is not navigation.
+- MapLibre Native supports `pmtiles://file://` but **does not provide bulk offline pack downloads/caching**. The application must own package lifecycle.
+- Android SAF `ACTION_OPEN_DOCUMENT` returns access to a selected URI, not blanket filesystem permissions.
+- SHA-256 alone is integrity against a known hash, not source attribution, sovereignty certification or licensing.
+- Imported files are **never automatically promoted to approved road data**.
+- App-private storage and streaming avoid large memory buffers. Per-pack storage transactions and interrupted-download recovery still need engineering.
+- No Android root operations, paid dependencies, fabricated traffic/speed limits or speculative maritime lines.
 
-## Kiểm thử
-GitHub Actions trên nhánh develop: kiểm thử đơn vị + biên dịch debug + upload artifact. Chưa có thiết bị Android điều khiển từ xa để kiểm thử cài đặt, tương tác, GPU hay GNSS.
-
-## Verified PMTiles integration, 2026-11-13
-The Android SDK 13.5.4 supports `pmtiles://file://` directly. NaviTaxiMap
-packs a deterministic Base64-encoded fixture, checks its decoded SHA-256 and
-atomically writes the archive to app-private storage before adding a
-`VectorSource` with `LineLayer` on the style callback.
-
-Run 43359838414 verified MVT geometry is actually visible on an Android 34
-emulator in airplane mode (not merely an app launch). This is a synthetic
-5-tile z0/z1 fixture, not a map package. The native reader is separate
-from a future package downloader, catalog, checksum manifest and routing data.
+## Verified baseline
+- CI 43359838414: offline synthetic MVT geometry rendered in airplane mode.
+- Phase 4 import JUnit and Android APK assemble PASSED on GitHub; full current emulator QA pending.
+- Physical Xiaomi debug unavailable due to absent device connection.
