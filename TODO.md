@@ -186,3 +186,11 @@
 - [x] Close Android Python test glob failure: workflow 43527115725 full build/JUnit and emulator SUCCESS after 8d6f17462; no added dependency or relaxed tests.
 - [ ] PRIORITY: before 2026-11-27 06:25 UTC, download/save BOTH 34-region and 556MB national original artifact ZIPs in **owner-approved private persistent storage** and run local verification against saved copies. CI receipt is not a backup. Do not publish externally without consent and ODbL legal review.
 - [ ] Review ODbL redistribution, sustainable HTTPS server, immutable manifest, consent-based downloads, Xiaomi device and routing/legality as separate gates. Keep distributionApproved=false and source registry empty.
+
+
+## 2026-11-14 06:54 ICT next action after fail-closed Python QA
+- [x] Replace all 31 unsafe Python optimized-mode-removable `assert` checks in original archive verifier with mandatory `require` validations; verify correct-v3-header bad-SHA case under `python -O`.
+- [x] CI 43530370885 SUCCESS, 35 original PMTiles 843734803 bytes read and SHA verified; 8 test cases under normal and `-O`, metadata-only receipt uploaded.
+- [ ] Confirm emulator/Android CI 43530370833 for a1926367 and do not mark green before both jobs conclude.
+- [ ] URGENT: approved private durable destination and copy of two original source ZIPs **before 2026-11-27 06:25 UTC**; verify saved copies after copying. Existing receipt is NOT backup; no new storage decision without authorization.
+- [ ] Keep HTTPS origin approval empty and `distributionApproved=false`; physical Xiaomi/ODbL/route graph/border approvals remain independent.

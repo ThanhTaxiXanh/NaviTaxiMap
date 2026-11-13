@@ -190,3 +190,8 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 - 43526911330 private original artifact source verifier **SUCCESS** 35/35 exact SHA+size+header over 843734803 bytes; evidence only 2872-byte metadata ZIP.
 - 43527115725 Android debug **SUCCESS** and emulator smoke **SUCCESS**; script test discovery no longer imports Shapely pipeline. Earlier duplicate failed runs 43526690969/43526911079 from optional dependency misselection now resolved.
 - 43454411678 34 provinces + 43454411510 national 556MB real offline preview remain SUCCESS, previously verified. No public downloads.
+
+
+## 2026-11-14 06:54 ICT optimized Python source verifier CI
+- Private original source QA [43530370885](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43530370885) **SUCCESS** with 8 normal + 8 `python -O` tests and all 843734803 bytes / 35 original PMTiles verified, metadata only uploaded.
+- Android debug regression [43530370833](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43530370833) IN PROGRESS at documentation checkpoint. Do not claim emulator green until it finishes; Android 43527115725 previous SUCCESS.

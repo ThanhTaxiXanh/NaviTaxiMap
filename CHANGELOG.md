@@ -105,3 +105,8 @@
 - Added `tools/vietnam34/verify_private_preservation.py` for read-only ZIP/extracted folder PMTiles full SHA+size/header checks, metadata-only private receipt (no server/upload/data copy) and seven attack/corruption regression tests.
 - Added on-push CI `private-shortbread-preservation.yml` to download both original GitHub source artifacts from run 43378133931 into disposable runner and upload only receipt. First workflow 43526911330 SUCCESS with 843734803 source bytes and metadata artifact ~2.9 KB.
 - Fixed Android test selection to exclude Shapely-dependent geography pipeline tests while still running all preservation mock tests, 8d6f17462. Pending Android 43527115725. Permanent original data copies require owner-approved private storage before Nov 27 expiration.
+
+
+## 2026-11-14 original source verification fail-closed even when Python optimized
+- Replaced all 31 business integrity `assert` statements in `verify_private_preservation.py` with mandatory `require` exceptions. New optimized-mode subprocess checks reject fake header and corrupt SHA even with real PMTiles v3 magic. Added `python3 -O -m unittest` CI alongside normal mode.
+- Workflow 43530370885 SUCCESS, 8/8 tests normal + optimized and full 35 original PMTiles 843734803 byte exact SHA/size/magic. Metadata receipt only, no backup or license approval.

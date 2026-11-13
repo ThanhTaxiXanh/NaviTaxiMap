@@ -147,3 +147,8 @@
 
 ## 2026-11-14 06:33 ICT Shapely CI issue closed
 - Android CI 43526690969, 43526911079 failed because `-p test_*.py` imported `test_pipeline.py` from tools/vietnam34 requiring `shapely` that is not installed by Android workflow. All 7 preservation tests themselves succeeded. Fixed in 8d6f17462 with explicitly separate two test modules; 43527115725 SUCCESS across build/JUnit AND emulator, verified via job log. Data SHA correct; no PMTiles regression.
+
+
+## 2026-11-14 security loophole closed in source archive verifier
+- Prior `verify_private_preservation.py` used regular Python `assert` for business-critical SHA/full byte size/PMTiles v3 magic/path checks; interpreter `python -O` removes asserts entirely and could falsely claim a damaged original valid. Fixed commits 9935d982 and a1926367: 31 mandatory require/ValueError checks, optimized-mode subprocess test for bad header and correct-header/wrong-SHA.
+- QA [43530370885](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43530370885) SUCCESS both 8-test suites with and without `-O` and the full original private sources. No data copied to durable/private storage; original source expiration unresolved.

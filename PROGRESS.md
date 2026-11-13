@@ -168,3 +168,9 @@
 - **43526911330 SUCCESS**: verify 35 original files full SHA, exact 843734803 bytes, PMTiles v3; upload metadata-only tiny receipt, zero new data hosting.
 - **43527115725 SUCCESS**: Android Gradle/JUnit and emulator offline PMTiles vector UI / SAF SHA / real OSM Hanoi road visual/attribution proof.
 - Outstanding human-controlled task: owner-approved private storage for both original archive ZIPs before Nov27 expiry. Receipt alone does not preserve bytes; no ODbL distribution approval.
+
+
+## 2026-11-14 06:54 ICT stronger private original integrity proof
+- Fixed fail-open `python -O` integrity assertions in source archive checker; 31 checks now always fail closed. Two optimized-mode failure cases include real PMTiles magic with corrupted SHA. Code commits 9935d982 and a1926367.
+- 43530370885 SUCCESS: normal and optimized Python 8/8 tests, real 35 source PMTiles SHA+size checks over 843734803 bytes; receipt-only, NO backup or redistribution. Android 43530370833 pending.
+- Original 34 + VN artifacts from 43378133931 expire 27 Nov 2026; owner-approved private storage unresolved. Existing 35/35 Android offline screenshot proofs unchanged.

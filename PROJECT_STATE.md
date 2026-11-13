@@ -173,3 +173,9 @@ Real OSM pilot source snapshot: workflow https://github.com/ThanhTaxiXanh/NaviTa
 - Original ZIP/source validation 43526911330 SUCCESS, 35/35 source files 843734803 bytes exact size, SHA, PMTiles magic; metadata-only 2872-byte receipt, not original archive backup.
 - Android code+emulator regression 43527115725 SUCCESS both jobs following isolated Python test patterns, including UI offline geometry, SAF SHA fixture and OSM Hanoi attribution.
 - Source 34+national GitHub original artifacts expire 2026-11-27 ~06:25 UTC; owner-approved PRIVATE durable backup still outstanding. `PRIVATE_ORIGINAL_BACKUP.md` and CLI enable offline verification after manual download. No download/distribution approved.
+
+
+## 2026-11-14 optimized Python original-archive verification protection
+- Original private source verifier previously depended on Python `assert` statements which `python -O` disables. Security commit 9935d982 replaces 31 business integrity validations with `require(...)` raising ValueError regardless of optimized interpreter, including SHA/full bytes/magic/header, source ZIP/path and receipt directory. Follow-up a1926367 adds true wrong-SHA-with-valid-magic optimized mode test (8 Python source-verifier tests).
+- Real two original GitHub source artifact verifier CI 43530370885 **SUCCESS**: 8/8 tests normal and 8/8 with `-O`, exact 35 original PMTiles 843734803 bytes SHA/size/magic, receipt only. No public data distribution or private durable backup made.
+- Android CI 43530370833 remains pending as of documentation. Main branch protected and unchanged. Two original source artifacts expire 2026-11-27 06:25 UTC, user-approved private backup required before then.

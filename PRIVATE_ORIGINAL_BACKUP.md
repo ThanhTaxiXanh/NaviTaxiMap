@@ -68,3 +68,7 @@ quyết định của chủ dự án và đánh giá ODbL/nguồn dữ liệu tr
 ## Kết quả sau kiểm thử nguồn và Android
 - Full-original verification `43526911330`: SUCCESS, 35/35 file, 843.734.803 byte, biên bản metadata-only ID 14085237703.
 - Android workflow `43527115725`: SUCCESS hai jobs, gồm 7 bài kiểm thử verifier và test bản đồ/SHA SAF/emulator. **Hai ZIP chứa PMTiles vẫn chưa được bảo quản tại nơi lưu trữ riêng tư lâu dài** bằng công cụ này. Giữ nguyên hành động tải hai ZIP gốc thủ công trước 27/11/2026.
+
+
+## Cảnh báo an toàn mới (14/11/2026)
+Từ commit `9935d982` (test chốt bằng `a1926367`), công cụ kiểm chứng không còn dùng Python `assert` để xác minh SHA, byte count, magic PMTiles hoặc ZIP path. Chạy với `python -O` cũng **không** bỏ qua kiểm tra nguồn. Workflow GitHub [43530370885](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43530370885) SUCCESS 8 bài kiểm thử ở cả chế độ thường và `-O`, 35 tệp gốc đọc đủ 843.734.803 byte. **Vẫn cần tải và giữ hai ZIP gốc ở nơi riêng tư đã được đồng ý** trước 27/11/2026, receipt không là backup.
