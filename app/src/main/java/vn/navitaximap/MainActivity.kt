@@ -31,6 +31,7 @@ import org.maplibre.android.maps.MapLibreMap
 import org.maplibre.android.maps.MapView
 import org.maplibre.android.maps.Style
 import java.util.Locale
+import java.util.concurrent.atomic.AtomicBoolean
 import vn.navitaximap.data.DemoOfflinePack
 import vn.navitaximap.data.HanoiRoadPilot
 import vn.navitaximap.data.LocalPackStore
@@ -78,7 +79,10 @@ class MainActivity : Activity(), LocationListener {
         setContentView(root)
         // Keep interrupted staging files and one-sided promotions out of the catalog.
         packExecutor.execute {
-            val report = runCatching { packStore.recoverInterruptedImports() }
+            val report = runCatching {
+                packStore.recoverInterruptedImports()
+                HanoiRoadPilot.recover(this)
+            }
             report.onFailure { Log.e("NaviTaxiMapRecovery", "Unable to recover incomplete packs", it) }
         }
         if ((applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0 &&
@@ -191,6 +195,7 @@ class MainActivity : Activity(), LocationListener {
                 "Nhập tệp PMTiles từ thiết bị",
                 "Các gói đã nhập",
                 "Xem đường OSM Hà Nội offline (mẫu nhỏ)",
+                "Quản lý / tải gói OSM Hà Nội",
                 "Nguồn và giới hạn sử dụng"
             )) { _, item ->
                 when (item) {
@@ -203,6 +208,7 @@ class MainActivity : Activity(), LocationListener {
                     }
                     1 -> showLocalPacks()
                     2 -> liveMap?.let { showHanoiRoadPilot(it) }
+                    3 -> showPilotCatalog()
                     else -> explain("Thông tin dữ liệu",
                         "Nguồn online: OpenFreeMap/OpenStreetMap. Gói PMTiles người dùng chọn sẽ chỉ được lưu trong ứng dụng, kiểm tra cấu trúc và SHA-256, chưa xác minh giấy phép hay tính chính xác địa lý. Chưa có giao diện vẽ gói tự nhập vì cần style/layer được duyệt. Gói đường OSM Hà Nội chỉ là một phần nhỏ có xuất xứ OSM, © OpenStreetMap contributors, ODbL 1.0; không phải bản đồ đầy đủ hoặc dữ liệu điều hướng. Gói tổng hợp dùng để thử bộ đọc, không dùng dẫn đường.")
                 }
@@ -246,6 +252,161 @@ class MainActivity : Activity(), LocationListener {
                 }.onFailure { error ->
                     statusText.text = "Không thể nhập PMTiles."
                     explain("Nhập không thành công", error.message ?: "File không hợp lệ.")
+                }
+            }
+        }
+    }
+
+
+    /**
+     * A pinned *visual-preview* catalog, separate from arbitrary imported
+     * UNVERIFIED PMTiles. This is not a navigation-data approval process.
+     * Never start remote transfer without explicit user confirmation.
+     */
+    private fun showPilotCatalog() {
+        statusText.text = "Đang kiểm tra phiên bản và SHA-256 của gói Hà Nội..."
+        packExecutor.execute {
+            val result = runCatching {
+                HanoiRoadPilot.recover(this)
+                HanoiRoadPilot.installed(this) to HanoiRoadPilot.versionInstalled(this)
+            }
+            runOnUiThread {
+                if (isDestroyed) return@runOnUiThread
+                result.onFailure {
+                    statusText.text = "Không kiểm tra được danh mục bản đồ."
+                    explain("Lỗi dữ liệu", it.message ?: "Không xác minh được gói.")
+                }.onSuccess { (verified, version) ->
+                    val spec = HanoiRoadPilot.spec
+                    val state = when {
+                        verified != null -> "Đã cài v${verified.version} • SHA-256 hợp lệ • ${verified.origin}"
+                        version != null -> "Gói có sẵn nhưng không khớp bản v${spec.version}; cần cài lại"
+                        else -> "Chưa cài (có bản đi kèm APK để dùng offline)"
+                    }
+                    AlertDialog.Builder(this)
+                        .setTitle("Danh mục bản đồ • mẫu Hà Nội")
+                        .setMessage(
+                            "$state\nVùng thử nghiệm rất nhỏ • zoom ${spec.minZoom}-${spec.maxZoom}" +
+                            "\n${spec.sizeBytes / 1024} KiB • SHA-256: ${spec.sha256}" +
+                            "\nNguồn gốc OSM: ${spec.sourceXmlSha256}" +
+                            "\n© OpenStreetMap contributors • ODbL 1.0" +
+                            "\nCHƯA DUYỆT để dẫn đường hoặc xác định ranh giới."
+                        )
+                        .setItems(arrayOf(
+                            "Cài / sửa gói từ APK (không cần mạng)",
+                            "Tải qua HTTPS từ commit đã ghim",
+                            "Kiểm tra lại SHA-256",
+                            "Xóa bản sao khỏi ứng dụng"
+                        )) { _, choice ->
+                            when (choice) {
+                                0 -> installPilotFromApk()
+                                1 -> confirmPinnedPilotDownload()
+                                2 -> verifyPilotCatalog()
+                                else -> confirmDeletePilotCatalog()
+                            }
+                        }
+                        .setNegativeButton("Đóng", null)
+                        .show()
+                }
+            }
+        }
+    }
+
+    private fun installPilotFromApk() {
+        statusText.text = "Đang kiểm tra gói OSM đi kèm APK..."
+        packExecutor.execute {
+            val result = runCatching { HanoiRoadPilot.install(this) }
+            runOnUiThread {
+                if (isDestroyed) return@runOnUiThread
+                result.onSuccess {
+                    statusText.text = "Đã cài gói mẫu Hà Nội và kiểm tra SHA-256."
+                    explain("Đã lưu bản thử nghiệm",
+                        "Gói OSM mẫu từ APK đã được kiểm tra mã SHA-256, chỉ dành cho xem đường. Không dùng dẫn đường.")
+                }.onFailure {
+                    statusText.text = "Không cài được PMTiles mẫu."
+                    explain("Không thể cài", it.message ?: "Lỗi dữ liệu.")
+                }
+            }
+        }
+    }
+
+    private fun verifyPilotCatalog() {
+        statusText.text = "Đang băm lại toàn bộ gói đã cài..."
+        packExecutor.execute {
+            val verified = runCatching { HanoiRoadPilot.installed(this) }
+            runOnUiThread {
+                if (isDestroyed) return@runOnUiThread
+                statusText.text = if (verified.getOrNull() != null) {
+                    "Gói OSM Hà Nội v1 khớp SHA-256 • chưa duyệt để dẫn đường"
+                } else "Chưa cài hoặc gói OSM Hà Nội đã thay đổi; hãy cài lại."
+            }
+        }
+    }
+
+    private fun confirmDeletePilotCatalog() {
+        AlertDialog.Builder(this)
+            .setTitle("Xóa gói bản đồ mẫu?")
+            .setMessage("Chỉ xóa bản sao PMTiles riêng trong ứng dụng. Dữ liệu OSM và tệp đi kèm APK không bị xóa. Khi xem lại, gói có thể được cài lại từ APK.")
+            .setPositiveButton("Xóa") { _, _ ->
+                packExecutor.execute {
+                    val result = runCatching { HanoiRoadPilot.delete(this) }
+                    runOnUiThread {
+                        if (!isDestroyed) statusText.text =
+                            if (result.getOrDefault(false)) "Đã xóa bản sao gói OSM Hà Nội"
+                            else "Không tìm thấy bản sao hoặc không thể xóa"
+                    }
+                }
+            }
+            .setNegativeButton("Hủy", null)
+            .show()
+    }
+
+    private fun confirmPinnedPilotDownload() {
+        val spec = HanoiRoadPilot.spec
+        AlertDialog.Builder(this)
+            .setTitle("Tải đúng gói PMTiles đã ghim")
+            .setMessage(
+                "Sẽ tải một lần ${spec.sizeBytes / 1024} KiB qua HTTPS từ commit GitHub cố định." +
+                "\nỨng dụng kiểm tra dung lượng, cấu trúc PMTiles và SHA-256 trước khi cài." +
+                "\nKhông tải khi chưa đồng ý; không tải bộ ô bản đồ công cộng." +
+                "\nGói vẫn CHƯA DUYỆT để dẫn đường. Tiếp tục?"
+            )
+            .setPositiveButton("Tải gói") { _, _ -> downloadPinnedPilot() }
+            .setNegativeButton("Hủy", null)
+            .show()
+    }
+
+    private fun downloadPinnedPilot() {
+        val cancelled = AtomicBoolean(false)
+        val progress = AlertDialog.Builder(this)
+            .setTitle("Tải gói OSM mẫu đã ghim")
+            .setMessage("Đang kết nối qua HTTPS...")
+            .setNegativeButton("Hủy tải") { _, _ -> cancelled.set(true) }
+            .create()
+        progress.show()
+        packExecutor.execute {
+            val result = runCatching {
+                HanoiRoadPilot.download(
+                    this,
+                    cancelled = { cancelled.get() },
+                    onProgress = { copied, expected ->
+                        runOnUiThread {
+                            if (!isDestroyed && progress.isShowing) {
+                                progress.setMessage("Đã nhận $copied / $expected byte; đang kiểm tra SHA-256...")
+                            }
+                        }
+                    }
+                )
+            }
+            runOnUiThread {
+                if (isDestroyed) return@runOnUiThread
+                progress.dismiss()
+                result.onSuccess { pack ->
+                    statusText.text = "Gói Hà Nội v${pack.version} • SHA-256 hợp lệ • chỉ để xem".replace("${pack.version}", pack.version.toString())
+                    explain("Đã tải và xác minh gói",
+                        "Đã cài ${pack.sizeBytes} byte từ nguồn ghim, SHA-256 khớp. Không dùng để dẫn đường.".replace("${pack.sizeBytes}", pack.sizeBytes.toString()))
+                }.onFailure { error ->
+                    statusText.text = if (cancelled.get()) "Đã hủy tải gói." else "Không thể tải / xác minh PMTiles."
+                    explain("Chưa cài gói từ mạng", error.message ?: "Lỗi kết nối hoặc checksum.")
                 }
             }
         }
