@@ -25,3 +25,15 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 - Debug APK 44,638,931 bytes, ZIP integrity PASS, SHA-256 `8b0a1aa4c849786809a3ec58b8089ebde2f54870c0997b05243d7423a3db4cf0`.
 - Evidence in workflow artifact `NaviTaxiMap-emulator-evidence`.
 - Not a production APK. Physical Xiaomi, real road PMTiles, full SAF picker and cross-process recovery remain unverified.
+
+## Latest Phase 4: Real Android SAF picker smoke, 2026-11-13
+- Tested code commit: `a3f76d1636a30acca6e56a393fbf60264f3fb7f6`.
+- [GitHub Actions run 43367761361](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43367761361): **ALL JOBS PASS**.
+- Android :app:testDebugUnitTest, :app:assembleDebug, fixture Python 3/3 and geographic-policy Python 4/4 PASS.
+- Emulator API 34 in airplane mode: online app startup, synthetic PMTiles offline tile render and screenshot assertions PASS; synthetic import/readback, simulated interruption cleanup and preserved archive PASS.
+- **Real Android DocumentsUI ACTION_OPEN_DOCUMENT selected a PMTiles file from Recent**. `onActivityResult` passed its URI to `LocalPackStore.importPack`, whose storage was read back and checked independently.
+- UI selected file: `navitaxi-saf-test.pmtiles`; imported bytes: 1,268; SHA-256 `860e0383397b64eac881932bacf625bbb740db23abba4e008ac846967e7c1407` matching source.
+- Persisted metadata includes name, size, hash and `sourceApproval=UNVERIFIED` and was independently inspected; no geospatial source approved.
+- APK 44,638,931 bytes; sha256 `bd70084157c20928df57e62e81273e091f24be80b81d9f5c1192e819d16ece50`; ZIP integrity PASS.
+- Artifact `NaviTaxiMap-emulator-evidence` contains `saf-success.png`, `saf-result.xml`, imported archive and metadata plus prior smoke screenshots.
+- LIMITS: still no hardware Xiaomi/real road map/route graph, no production signing, no true source provenance approval; actual picker test was on Android 34 emulator.

@@ -38,7 +38,10 @@ Verified geographic offline data packs for 34 provinces/cities, download/pause/r
 Nine images provided by the project owner are design references, not screenshots of implemented features. Do not infer real road-network completeness or approved borders from a synthetic test image.
 
 ## Phase 4 verified smoke
-Run 43362607683 confirms that Android can import a synthetic PMTiles archive into app-private storage with airplane mode enabled, re-read its bytes and check SHA-256 without changing its unverified source status. Full interactive system picker and real provincial data remain untested.
+Run 43362607683 confirms that Android can import a synthetic PMTiles archive into app-private storage with airplane mode enabled, re-read its bytes and check SHA-256 without changing its unverified source status. Full interactive system picker was later verified in emulator CI 43367761361; real provincial data remain untested.
 
 ## Phase 4 reliability validation
 Latest [CI 43364225600](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43364225600): Android build/unit/emulator tests all PASS, including simulated interrupted-import recovery in airplane mode. Local package recovery and free-space checks are **prototype** features, not proof of fault tolerance under real hardware power loss. Open OSM road-data source/PMTiles pilot requirements are recorded in [REAL_OSM_SOURCE_PLAN.md](REAL_OSM_SOURCE_PLAN.md).
+
+## User-selected file import, verified in emulator
+[CI 43367761361](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43367761361) confirms Android's real DocumentsUI picker can open a local `.pmtiles` file, return its content URI to NaviTaxiMap, and finish a private streamed copy with SHA-256 matching the original. In the app, tap **Dữ liệu bản đồ** -> **Nhập tệp PMTiles từ thiết bị** to reach this prototype workflow. Imports are unapproved storage entries, not usable offline driving maps. See [SAF_PICKER_EVIDENCE.md](SAF_PICKER_EVIDENCE.md).

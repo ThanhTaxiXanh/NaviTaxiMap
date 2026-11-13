@@ -30,9 +30,15 @@
 3. **Crash recovery:** Basic startup/pre-import cleanup of incomplete generated UUID files is implemented and emulator-tested (CI 43364225600 PASS). However, atomic moves do **not** form an actual metadata/database transaction: cross-process locking, filesystem directory fsync, real power-loss testing and rollback of an existing installed version remain TODO.
 4. **Download manager:** Remote downloading, pause/resume/cancel, retry, range requests and updates are NOT implemented. No mass downloading from OpenFreeMap.
 5. **34 provinces:** Real licensed provincial PMTiles, POI, search and routing datasets are NOT present.
-6. **Device QA:** Android emulator testing is not physical Xiaomi/Termux/GPS testing; actual picker UI and Android permission lifecycle require follow-up.
+6. **Device QA:** Android emulator testing is not physical Xiaomi/Termux/GPS testing; Android system DocumentsUI picker flow VERIFIED in Android 34 emulator CI 43367761361; Xiaomi hardware and broader permission/lifecycle variations still require follow-up.
 
 References:
 - [Android Storage Access Framework](https://developer.android.com/training/data-storage/shared/documents-files)
 - [PMTiles v3 specification](https://github.com/protomaps/PMTiles/blob/main/spec/v3/spec.md)
 - [MapLibre Native Android local PMTiles](https://maplibre.org/maplibre-native/android/examples/data/PMTiles/)
+
+## Real system file-picker QA (2026-11-13)
+- End-to-end Android 34 emulator test in airplane mode: `Dữ liệu bản đồ` -> `Nhập tệp PMTiles từ thiết bị` -> DocumentsUI `Recent` -> `navitaxi-saf-test.pmtiles`.
+- System returns a selected content URI, app copies to app-private storage and displays success. Exact 1,268 bytes and SHA-256 are independently verified from `run-as` file, not only status text.
+- Stored index retains `sourceApproval=UNVERIFIED`. No broad storage permission, no remote tile download.
+- Verified: [GitHub Actions 43367761361](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43367761361), artifact `NaviTaxiMap-emulator-evidence`; see `SAF_PICKER_EVIDENCE.md`.

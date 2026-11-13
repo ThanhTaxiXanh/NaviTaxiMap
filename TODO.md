@@ -3,7 +3,8 @@
 - [x] Add local streamed PMTiles import, SHA-256, PMTiles header checks and JUnit tests.
 - [x] Add SAF import and list/verify/delete user interface code.
 - [x] Confirm byte-level importer emulator smoke after replacing logcat-only signal (CI 43362607683 PASS).
-- [ ] Automate real system picker interaction, file deletion, tampered file recovery and process interruption tests.
+- [x] Automate real Android system DocumentsUI PMTiles picker and independently verify stored import in airplane mode (CI 43367761361 PASS).
+- [ ] Automate UI deletion, tampered file recovery, cancellation and process-interruption tests beyond controlled startup cleanup.
 - [ ] Add signed/approved pack manifests, attribution and independent provenance approval.
 - [x] Add basic interruption recovery for private staging/orphan PMTiles/index and streamed free-space safety checks (CI 43364225600 PASS).
 - [ ] Hardening: multi-process locking, metadata/directory durability after sudden power failure, disk-full/injected I/O testing on physical Xiaomi and transactional update rollback.

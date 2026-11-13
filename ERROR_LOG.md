@@ -11,7 +11,7 @@
 
 ## Open
 - Byte-level emulator import smoke verified in CI 43362607683; continue real file-picker and recovery tests.
-- Need actual system file-picker interaction and source-provided SHA-256 workflow.
+- System file-picker interaction now verified in Android API 34 emulator (CI 43367761361). Source-provided signed/approved SHA-256 manifest workflow remains OPEN.
 - Need recovery for orphaned data between two atomic renames, resume/pause downloads, storage-pressure handling.
 - Xiaomi device is not connected, no physical QA.
 - No approved regional basemap, POI, offline routing, verified traffic/speed/legal boundary data.
@@ -20,3 +20,7 @@
 - No new CI blocker: 43364225600 all jobs PASS including synthetic import and simulated interrupted-import cleanup.
 - Risk still open: fsync of parent directory and cross-process locking not implemented. Tests simulate file leftovers and normal app restart, not abrupt hardware power loss.
 - Real OSM geographic/attribution validation and Xiaomi physical device QA still blocked.
+
+## DocumentsUI automation incident: resolved
+- CI 43367038303: full build, prior offline demo/import/recovery PASS; new picker smoke FAILED because the test selected the `preview_icon` control whose content description includes the filename, rather than the real `android:id/title` text node. Evidence preserved in `NaviTaxiMap-emulator-evidence`.
+- Fixed in commit `a3f76d1`: require exact file-title text and resource ID. CI 43367761361 **ALL JOBS PASS**, real system-picker flow verified with UI success dialog and imported bytes/hash.

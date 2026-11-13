@@ -18,3 +18,9 @@
 - Added Android emulator test of four simulated incomplete files and preservation of valid archive after restart.
 - Verified CI 43364225600 all jobs PASS; documented separately from physical/power-loss reliability and real-road limitations.
 - Documented Geofabrik ODbL Vietnam PBF as a candidate source and tilemaker conversion gates, not integrated into app.
+
+## 2026-11-13 Phase 4 Android DocumentsUI end-to-end validation
+- Added real system-picker automation using UIAutomator XML, text-bounds matching and Android native system file picker.
+- Fixed test confusion between file title and the DocumentsUI preview icon, after inspecting saved evidence from first failing run.
+- Verified user-selected synthetic PMTiles import, UI confirmation, app-private file and metadata, SHA-256 readback in offline emulator (CI 43367761361 all jobs PASS).
+- No change to data-provenance approval or production readiness, no merge into main.
