@@ -1,6 +1,8 @@
 """Offline-only preservation verification: no network, uploads, extraction, or big RAM."""
 import hashlib
 import json
+import subprocess
+import sys
 from pathlib import Path
 import stat
 import tempfile
@@ -90,7 +92,7 @@ class OriginalArchivePreservationTest(unittest.TestCase):
                 "24-bac-ninh.pmtiles": replacement
             })
             with self.subTest(case=name):
-                with self.assertRaises(AssertionError):
+                with self.assertRaises(ValueError):
                     verify_source(archive, [self.rows[1]])
 
     def test_duplicate_extra_and_missing_files_fail_without_receipt(self):
@@ -105,14 +107,14 @@ class OriginalArchivePreservationTest(unittest.TestCase):
         for i, contents in enumerate(files):
             with self.subTest(case=i):
                 archive = self.write_zip(f"invalid{i}.zip", contents)
-                with self.assertRaises(AssertionError):
+                with self.assertRaises(ValueError):
                     verify_source(archive, [self.rows[1]])
 
     def test_zip_path_traversal_is_refused_even_if_pmtiles_hash_matches(self):
         artifact = self.write_zip("traversal.zip", {
             "../../24-bac-ninh.pmtiles": self.packets["24-bac-ninh.pmtiles"]
         })
-        with self.assertRaises(AssertionError):
+        with self.assertRaises(ValueError):
             verify_source(artifact, [self.rows[1]])
 
     def test_symlink_inside_extracted_folder_is_refused(self):
@@ -121,5 +123,32 @@ class OriginalArchivePreservationTest(unittest.TestCase):
         existing = self.root / "24-bac-ninh.pmtiles"
         existing.write_bytes(self.packets[existing.name])
         (src / existing.name).symlink_to(existing)
-        with self.assertRaises(AssertionError):
+        with self.assertRaises(ValueError):
             verify_source(src, [self.rows[1]])
+
+    def test_python_optimized_mode_cannot_bypass_integrity_checks(self):
+        """python -O strips assert statements; checks must stay mandatory."""
+        source_dir = Path(__file__).resolve().parent
+        cases = [
+            ("bad magic", "b'NOT-PMT!' + b'Q' * 128",
+             "136", "'0' * 64"),
+            ("bad SHA", "b'PMTiles\\\\x03' + b'A' * 128",
+             "136", "'f' * 64"),
+        ]
+        for label, payload, byte_count, digest in cases:
+            with self.subTest(label=label):
+                code = (
+                    "import io,sys\n"
+                    "from verify_private_preservation import checked_stream\n"
+                    f"payload = {payload}\n"
+                    "try:\n"
+                    f"    checked_stream(io.BytesIO(payload), size={byte_count}, sha256={digest})\n"
+                    "except ValueError:\n"
+                    "    sys.exit(0)\n"
+                    "sys.exit(91)\n"
+                )
+                result = subprocess.run(
+                    [sys.executable, "-O", "-c", code],
+                    cwd=source_dir, capture_output=True, text=True, check=False
+                )
+                self.assertEqual(0, result.returncode, result.stderr + result.stdout)
