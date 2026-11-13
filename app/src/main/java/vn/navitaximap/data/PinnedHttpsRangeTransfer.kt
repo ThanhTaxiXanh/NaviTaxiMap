@@ -167,23 +167,35 @@ internal class PinnedHttpsRangeTransfer(
 }
 
 /**
- * Host/source approval gate. The current catalog explicitly has
- * distributionApproved=false, so this entry point refuses all transfers.
- * A source's exact HTTPS host must also be independently reviewed; no default
- * provider URL is present and none is invented here.
+ * Reviewed map origins are COMPILED configuration, not untrusted caller-supplied
+ * "approvedHost" strings. There are currently NO reviewed redistribution origins.
+ * Future activation requires an explicit reviewed code change, ODbL audit and
+ * independent host ownership/TLS verification. No URL is shipped in the app.
+ */
+internal object ReviewedShortbreadSources {
+    data class Source(val exactHttpsUrl: String, val reviewedHost: String)
+    val byCode: Map<String, Source> = emptyMap()
+}
+
+/**
+ * The only intended transfer-to-catalog entry point. BOTH distribution and a
+ * reviewed origin are mandatory. User input is limited to the known region code;
+ * callers cannot bless an arbitrary domain by passing it as a method argument.
  */
 internal class ApprovedCatalogPackDownloader(
     private val transfer: PinnedHttpsRangeTransfer,
     private val store: LocalPackStore
 ) {
-    fun fetchApproved(code: String, url: String, reviewedHost: String): LocalPackStore.Pack {
+    fun fetchApproved(code: String): LocalPackStore.Pack {
         check(Vietnam35Catalog.distributionApproved) {
             "OSM Shortbread redistribution/download host has not been approved"
         }
         val region = Vietnam35Catalog.packages.singleOrNull { it.code == code }
             ?: throw IllegalArgumentException("Unknown pinned map region")
+        val source = ReviewedShortbreadSources.byCode[region.code]
+            ?: throw IllegalStateException("No audited HTTPS source configured for this region")
         val pin = PinnedHttpsRangeTransfer.Pin(region.fileName, region.sizeBytes, region.sha256)
-        val staged = transfer.stage(pin, url, reviewedHost)
+        val staged = transfer.stage(pin, source.exactHttpsUrl, source.reviewedHost)
         return try {
             store.importPack(staged.file.inputStream(), region.fileName,
                 region.sha256, region.sizeBytes)

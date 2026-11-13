@@ -95,10 +95,10 @@ class PinnedHttpsRangeTransferTest {
             val store = LocalPackStore(File(root, "offline-packs"))
             val gated = ApprovedCatalogPackDownloader(transfer, store)
             assertThrows(IllegalStateException::class.java) {
-                gated.fetchApproved("24",
-                    "https://maps.example.test/24-bac-ninh.pmtiles", "maps.example.test")
+                gated.fetchApproved("24")
             }
             assertEquals(0, calls)
+            assertTrue(ReviewedShortbreadSources.byCode.isEmpty())
             assertFalse(File(root, "offline-packs").exists())
         } finally { root.deleteRecursively() }
     }
@@ -129,6 +129,72 @@ class PinnedHttpsRangeTransferTest {
             }, { Long.MAX_VALUE })
             assertThrows(IllegalArgumentException::class.java) {
                 badDigest.stage(pin, url, "maps.example.test")
+            }
+            assertFalse(File(root, "shortbread-${pin.sha256}.partial").exists())
+        } finally { root.deleteRecursively() }
+    }
+
+    @Test fun mismatchedExistingFullPartialIsErasedWithoutNetwork() {
+        val root = createTempDir(prefix = "navitaxi-range-full-corrupt-")
+        try {
+            val pin = PinnedHttpsRangeTransfer.Pin("24-bac-ninh.pmtiles",
+                payload.size.toLong(), sha(payload))
+            val partial = File(root, "shortbread-${pin.sha256}.partial")
+            partial.writeBytes(ByteArray(payload.size) { 23 })
+            var calls = 0
+            val engine = PinnedHttpsRangeTransfer(root, { url ->
+                calls++
+                FakeRange(url, 206, payload, "bytes 0-${payload.size - 1}/${payload.size}")
+            }, { Long.MAX_VALUE })
+            assertThrows(IllegalArgumentException::class.java) {
+                engine.stage(pin, "https://maps.example.test/24-bac-ninh.pmtiles",
+                    "maps.example.test")
+            }
+            assertEquals(0, calls)
+            assertFalse(partial.exists())
+        } finally { root.deleteRecursively() }
+    }
+
+    @Test fun corruptedResumePrefixCannotProduceVerifiedArchive() {
+        val root = createTempDir(prefix = "navitaxi-range-corrupt-prefix-")
+        try {
+            val pin = PinnedHttpsRangeTransfer.Pin("24-bac-ninh.pmtiles",
+                payload.size.toLong(), sha(payload))
+            val partial = File(root, "shortbread-${pin.sha256}.partial")
+            partial.writeBytes(ByteArray(100) { 19 })
+            val engine = PinnedHttpsRangeTransfer(root, { url ->
+                FakeRange(url, 206, payload.copyOfRange(100, payload.size),
+                    "bytes 100-${payload.size - 1}/${payload.size}")
+            }, { Long.MAX_VALUE })
+            assertThrows(IllegalArgumentException::class.java) {
+                engine.stage(pin, "https://maps.example.test/24-bac-ninh.pmtiles",
+                    "maps.example.test")
+            }
+            assertFalse(partial.exists())
+        } finally { root.deleteRecursively() }
+    }
+
+    @Test fun unavailableCapacityAndEncodedResponseFailBeforeWriting() {
+        val root = createTempDir(prefix = "navitaxi-range-safety-")
+        try {
+            val pin = PinnedHttpsRangeTransfer.Pin("24-bac-ninh.pmtiles",
+                payload.size.toLong(), sha(payload))
+            val url = "https://maps.example.test/24-bac-ninh.pmtiles"
+            var calls = 0
+            val noSpace = PinnedHttpsRangeTransfer(root, { uri ->
+                calls++
+                FakeRange(uri, 206, payload, "bytes 0-${payload.size - 1}/${payload.size}")
+            }, { 0L })
+            assertThrows(IllegalArgumentException::class.java) {
+                noSpace.stage(pin, url, "maps.example.test")
+            }
+            assertEquals(0, calls)
+            val compressed = PinnedHttpsRangeTransfer(root, { uri ->
+                FakeRange(uri, 206, payload, "bytes 0-${payload.size - 1}/${payload.size}",
+                    encoding = "gzip")
+            }, { Long.MAX_VALUE })
+            assertThrows(IllegalArgumentException::class.java) {
+                compressed.stage(pin, url, "maps.example.test")
             }
             assertFalse(File(root, "shortbread-${pin.sha256}.partial").exists())
         } finally { root.deleteRecursively() }
