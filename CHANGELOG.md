@@ -95,3 +95,7 @@
 ## 2026-11-14 00:16 ICT strict Range staging and untrusted progress
 - Added network-free `inspectProgress` for app-private PMTiles .partial staging; full byte count is visibly *not yet SHA verified*. Reused validation before network. Reject malformed present Content-Length, bad/stale oversized partial, symlinked staging/partial. Two more JVM test scenarios for fake 206 responses and corrupted full-size progress.
 - Existing source approval remains two-gate CLOSED; no URL, host, user UI, release or unauthorized OSM redistribution. CI 43471067313 pending.
+
+
+## 2026-11-14 verified local Range engine hardening
+- 076bd58f progress inspection, strict HTTP lengths and safe staging files; 8 mocked Range tests. GitHub Actions 43471067313 SUCCESS in both Android debug/Gradle/JUnit and emulator, including offline geometry, OSM attribution, SAF SHA fixture. No real network source configured or enabled.

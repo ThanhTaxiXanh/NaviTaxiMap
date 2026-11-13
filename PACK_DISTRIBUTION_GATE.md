@@ -51,3 +51,8 @@ Chạy bằng `gradle --no-daemon :app:testDebugUnitTest :app:assembleDebug` tro
 - Lõi kiểm thử `PinnedHttpsRangeTransfer.inspectProgress(pin)` chỉ đọc kích thước tệp `shortbread-<sha>.partial`, không truy cập Internet hay Hash toàn file; kết quả `StagingProgress.completeButUnverified` **không phải dấu đã nhập hoặc file hợp lệ**, kể cả khi nhận đủ byte. `stage` vẫn bắt buộc SHA-256 toàn bộ và `LocalPackStore.importPack` kiểm lại trước khi hiện trong catalog.
 - Không theo symbolic link của thư mục staging hoặc .partial, không chấp nhận kích thước lớn hơn số byte pin. HTTP có `Content-Length` nhưng sai cú pháp, âm, vượt Long hoặc khác byte Range bị từ chối trước khi ghi. Nếu header không có, stream vẫn phải đọc chính xác số byte Range để nghiệm thu.
 - Tổng 8 JUnit simulated Range (không Internet), CI 43471067313 đang thử. Registry nguồn tải vẫn rỗng và `distributionApproved=false`; không dùng mock làm bằng chứng có máy chủ thật.
+
+
+## CI xác nhận 14/11/2026 ~00:24 ICT
+- `43471067313` **SUCCESS**: compile/JUnit với 8 phép thử mô phỏng Range, Android emulator offline PMTiles status/geometry + SAF SHA fixture + OSM attribution PASS. Đây chỉ là nghiệm thu core và hồi quy, KHÔNG phải kiểm thử tải 35 tệp trên máy chủ HTTPS thực.
+- Nguồn `ReviewedShortbreadSources.byCode` vẫn rỗng, `Vietnam35Catalog.distributionApproved=false`; muốn bật cần xét duyệt host, quyền phân phối ODbL, manifest, tích hợp UI opt-in và thử mạng thật/thiết bị thật.

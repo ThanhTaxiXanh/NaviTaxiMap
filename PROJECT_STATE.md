@@ -156,3 +156,8 @@ Real OSM pilot source snapshot: workflow https://github.com/ThanhTaxiXanh/NaviTa
 - Android CI 43468092472 **SUCCESS both Gradle/JUnit and device emulator** for approved-source-gated Range code a0a0be16. Production download gate still CLOSED: `distributionApproved=false`, compiled reviewed origins empty, no URL in app.
 - New feature 076bd58f adds `PinnedHttpsRangeTransfer.inspectProgress` to read *untrusted* .partial byte count without network, even when size equals expected bytes; only full SHA can mark verified. Rejects symlinked staging directory, symlinked or oversized partial and malformed/negative/overflow `Content-Length` when present. Two more JUnit tests (total 8). New Android CI 43471067313 pending as of checkpoint.
 - Real OSM Shortbread 35/35 original PMTiles offline visual proof unchanged, legal/admin/routing/redistribution approvals absent.
+
+
+## 2026-11-14 ~00:24 ICT: new Range safety QA independently green
+- 43471067313 GitHub Actions **SUCCESS** Gradle/JUnit and emulator, code 076bd58f. Emulator synthetic PMTiles offline geometry and UI status pass, exact SHA SAF fixture import pass, real Hanoi OSM pilot road pixels plus attribution pass.
+- Range `inspectProgress` is read-only/unverified and HTTP Content-Length invalid lengths, symlinked staging or oversized partial are strictly rejected. 8 mocked Range JUnit cases; no actual approved network origin, download UI, shipping or routing.

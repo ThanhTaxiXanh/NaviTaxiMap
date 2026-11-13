@@ -152,3 +152,7 @@
 - Confirmed latest previous Android CI 43468092472 **all SUCCESS**, closing pending emulator test.
 - Commit 076bd58f adds read-only untrusted progress accounting and strict HTTP Content-Length / partial symlink/oversize input validation, with 8 mocked Range JUnit total. Download source list remains empty and distribution approval false.
 - CI 43471067313 in progress; no claim of new emulator PASS without final log.
+
+
+## 2026-11-14 ~00:24 ICT acceptance completed
+- CI 43471067313 **SUCCESS** compile + unit tests + Android emulator. Range staging 8 mocked JUnit tests + strict offline/SAF/real OSM regression passed. Code 076bd58f fully exercised in CI insofar as its local mocked behavior; real HTTPS transfer remains untested and prohibited until approval.

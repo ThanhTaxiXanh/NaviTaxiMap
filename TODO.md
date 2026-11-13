@@ -163,3 +163,10 @@
 - [ ] Verify 43471067313 final Android CI build/JUnit/emulator and fix any genuine errors without weakening checksum or pixel tests.
 - [ ] Before any live HTTPS transfer, obtain explicit approved ODbL distribution source, reviewed exact origin and manifest. Catalog `distributionApproved` remains false, registry empty.
 - [ ] Later add user-consented progress UI, partial retention policy, physical Xiaomi test and mobile network interruptions. Do not tie current tests to unapproved public URL.
+
+
+## 2026-11-14 ~00:24 ICT outstanding after full green CI
+- [x] Recheck 43471067313: build+JVM and Android emulator both SUCCESS; close earlier pending CI checkpoint.
+- [ ] Get explicit ODbL redistribution/hosting approval and stable reviewed immutable HTTPS origin(s) before any live downloader or enabling `distributionApproved`. Reviewed map remains empty.
+- [ ] After source approval, add user-consented UI and full real HTTPS Range interruption/resume tests plus Xiaomi physical QA; preserve zero-cost constraint.
+- [ ] Preserve original 35 generated PMTiles before short-lived Actions artifacts expire 27/11/2026, via a storage destination approved by the project owner; do not silently publish them.

@@ -133,3 +133,8 @@
 ## 2026-11-14 00:16 ICT security hardening follow-up
 - No outstanding failure from previous 43468092472: GitHub workflow completed SUCCESS in both compile/JUnit and emulator.
 - Found potential fail-open HTTP header interpretation in original Range staging: present but unparsable `Content-Length` was previously treated like absent. Commit 076bd58f now explicitly rejects malformed, negative, overflow or incorrect present values before writing. Also rejects oversized/symlinked partial and staging dir. New JVM regressions added; 43471067313 awaiting result.
+
+
+## 2026-11-14 CI resolved after Range hardening
+- Run 43471067313 full SUCCESS. Previous potential failures (malformed HTTP length treated absent; oversized or symlink partial) now blocked, tests passed. Emulator passes synthetic offline UI status, real OSM road screenshot and app-private SHA SAF fixture. No open compiler/emulator regression from these changes.
+- Lack of legally reviewed host/distribution remains a deliberate gate, not a CI error.

@@ -175,3 +175,7 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 ## 2026-11-14 00:16 ICT CI evidence and pending code run
 - Run 43468092472 **SUCCESS** both Android build/JUnit and emulator on code a0a0be16.
 - Run 43471067313 tests new 076bd58f Range integrity/progress hardening, **PENDING** at checkpoint. Real 35/35 source archive emulator proof stays on already completed workflows; new downloader still dormant.
+
+
+## 2026-11-14 ~00:24 ICT final workflow result
+- **43471067313 SUCCESS both jobs** on 076bd58f: Android debug/8 Range JUnit test methods plus emulator. Emulator `SYNTHETIC_OFFLINE_PIXELS_READY`, `OFFLINE_DEMO_STATUS_READY`, SAF picker exact SHA 1268 byte fixture, `REAL_OSM_PIXELS_READY` + OpenStreetMap attribution. Release not started.
