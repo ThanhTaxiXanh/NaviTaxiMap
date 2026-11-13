@@ -48,3 +48,6 @@ Latest [CI 43364225600](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/run
 
 ## NEW: Small real OpenStreetMap road preview (Phase 4)
 A limited road-only map preview can be opened via **Dữ liệu bản đồ** → **Xem đường OSM Hà Nội offline (mẫu nhỏ)**. It uses 354 real OSM highway ways from a tiny bbox (105.849–105.858 E, 21.031–21.037 N), rendered by MapLibre from 21 locally bundled PMTiles vector tiles (about 54 KB), **without network access**. Provenance, snapshots, deterministic generator, hashes and ODbL duties are in [HANOI_OSM_PILOT.md](HANOI_OSM_PILOT.md). The preview deliberately has no road labels, citywide coverage, driving graph or legal boundaries; do not use for navigation.
+
+## Real-road offline emulator result
+[CI 43371354137](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43371354137): **ALL JOBS PASS** for the tiny real OSM Hanoi pilot. Android API 34 in airplane mode visibly rendered road geometry from the locally bundled PMTiles; image regression counted 58,015 road-colored pixels, and UI displayed ODbL attribution and **KHÔNG dẫn đường**. Same run retained prior system picker, checksum/recovery and synthetic PMTiles renderer checks. This is still not a usable road navigation product.

@@ -25,7 +25,7 @@
 - CI 43367038303: full build, prior offline demo/import/recovery PASS; new picker smoke FAILED because the test selected the `preview_icon` control whose content description includes the filename, rather than the real `android:id/title` text node. Evidence preserved in `NaviTaxiMap-emulator-evidence`.
 - Fixed in commit `a3f76d1`: require exact file-title text and resource ID. CI 43367761361 **ALL JOBS PASS**, real system-picker flow verified with UI success dialog and imported bytes/hash.
 
-## Real OSM pilot screenshot image-tooling failure (open until new CI)
+## Real OSM pilot screenshot image-tooling failure (RESOLVED)
 - Run 43370534933: Android build/unit/Python data tests PASS; emulator online launch, synthetic offline map, SAF import and crash recovery PASS. Real road screenshot saved; actual geometry visibly rendered in airplane mode and status attribution displayed.
 - First new image regression script imported Pillow, which was not installed on the emulator runner: `ModuleNotFoundError: No module named 'PIL'`. This is a **test dependency issue**, not application crash or missing source geometry.
-- Fix commit `08afe5a` imports the existing Python standard-library PNG decoder from `ci/check-offline-screenshot.py`; run 43371354137 pending final verification.
+- Fix commit `08afe5a` imports the existing Python standard-library PNG decoder from `ci/check-offline-screenshot.py`; run 43371354137 ALL JOBS PASS; 58,015 real road color pixels confirmed and attribution/warning visible.

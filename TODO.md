@@ -9,7 +9,7 @@
 - [x] Add basic interruption recovery for private staging/orphan PMTiles/index and streamed free-space safety checks (CI 43364225600 PASS).
 - [ ] Hardening: multi-process locking, metadata/directory durability after sudden power failure, disk-full/injected I/O testing on physical Xiaomi and transactional update rollback.
 - [x] Capture a tiny REAL OSM Hanoi bbox with source hash, reproducible PMTiles preview and Android screenshot of actual road geometry (21 tiles, 354 highway ways; first emulator image proof 43370534933).
-- [ ] Confirm fully green emulator QA for real road preview after removing Pillow test dependency (run 43371354137).
+- [x] Confirm fully green emulator QA for real OSM road-only preview in airplane mode (run 43371354137, 58,015 pixel assertion PASS).
 - [ ] Obtain independently reviewed, properly segmented licensed real-road data for a meaningful Hanoi/Vietnam province pilot; source-policy/legal/geographic review remains OPEN.
 - [ ] Region catalog of 34 provinces, download/pause/resume/cancel/version/update/delete.
 - [ ] Integrate local fonts/sprites and reviewed MapLibre style to render real MVT layers.

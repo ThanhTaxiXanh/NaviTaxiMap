@@ -30,4 +30,4 @@
 - Added deterministic Python pipeline for MVT/PMTiles with Hilbert tile ordering and three category-based vector layers.
 - Committed frozen compressed normalized road snapshot and 53,956-byte PMTiles asset to dev branch.
 - Added offline MapLibre real-road preview with explicit ODbL and no-navigation label.
-- Android emulator screenshot run 43370534933 shows real roads in airplane mode; new QA initially failed because Pillow was missing. Replaced Pillow dependency with existing stdlib PNG parser. Final CI 43371354137 pending.
+- Android emulator screenshot run 43370534933 shows real roads in airplane mode; new QA initially failed because Pillow was missing. Replaced Pillow dependency with existing stdlib PNG parser. Final CI 43371354137 **ALL JOBS PASS**, including user-selected PMTiles import, simulated interrupted-import cleanup and real OSM Hanoi road screenshot assertion.

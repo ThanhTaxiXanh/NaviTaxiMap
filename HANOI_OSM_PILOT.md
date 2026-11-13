@@ -32,7 +32,7 @@ Menu: **Dữ liệu bản đồ** → **Xem đường OSM Hà Nội offline (m�
 - Android verifies the asset SHA-256, stages the PMTiles file in app-private storage and invokes MapLibre via `pmtiles://file://`.
 - Offline-only style references no Internet glyphs, sprites or tiles. It draws the three road categories using distinct colors.
 - User-facing UI includes attribution and **KHÔNG dẫn đường**. Any GPS recentering is suppressed while the preview is active.
-- Real-data rendering must be verified by Android emulator screenshot with airplane mode and the unique road-colored pixel assertion in `ci/check-osm-pilot-screenshot.py`. Do **not** claim runtime success before that CI passes.
+- Real-data rendering must be verified by Android emulator screenshot with airplane mode and the unique road-colored pixel assertion in `ci/check-osm-pilot-screenshot.py`. Runtime renderer proof is now VERIFIED for this small real-road visual sample by CI 43371354137 (not for navigation).
 
 ## Important limitations
 
@@ -45,4 +45,4 @@ Menu: **Dữ liệu bản đồ** → **Xem đường OSM Hà Nội offline (m�
 ## Renderer test evidence, 2026-11-13
 - Android/API34 airplane-mode screenshot saved in CI [43370534933](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43370534933), `osm-pilot-screenshot.png`. Direct inspection shows actual colored road segments; independent image analysis counted about 66,575 pixels of local road color and 32,027 pixels of major-road color in the central map viewport.
 - That workflow did **not** pass overall: only the new image check failed because `PIL`/Pillow was missing, before the PNG geometry assertion ran. It did not record an app crash.
-- Corrected in code commit `08afe5a16b316f363750fc21b006cf82f39817de`, using the existing standard-library PNG decoder. Latest pipeline [43371354137](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43371354137) pending full result.
+- Corrected in code commit `08afe5a16b316f363750fc21b006cf82f39817de`, using the existing standard-library PNG decoder. Latest pipeline [43371354137](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43371354137) **ALL JOBS PASS**: API 34 emulator in airplane mode rendered tiny real OSM road-only PMTiles. The standard-library PNG regression counted 58,015 road-colored pixels in central viewport; ODbL attribution + KHÔNG dẫn đường were present in Android UI XML. Emulator logs did not record a fatal exception. Complete QA file `HANOI_OSM_PILOT_EVIDENCE.md`.

@@ -33,5 +33,5 @@
 - Parsed 17,828 source nodes, 354 OSM highway ways, 1,691 road geometry references; kept a normalized and compressed road source in git without contributor usernames.
 - Wrote pure-Python deterministic OSM-to-MVT PMTiles v3 converter. Generated 21 vector tiles at zoom 14–17 (53,956 bytes), plus reproducible manifest. Generator/unit tests and one-time build workflow 43370147765 PASS.
 - Added separate MapLibre Native real-road offline pilot (line categories road_major, road_local, road_pedestrian) with visible © OpenStreetMap contributors (ODbL) attribution and KHÔNG dẫn đường label. Existing synthetic diagnostic remains separate.
-- Android emulator screenshot run 43370534933 confirmed real OSM roads are visible offline in airplane mode. Test script failed due missing Pillow in CI, not due map rendering; corrected with existing stdlib PNG decoder, latest retry 43371354137 pending.
+- Android emulator screenshot run 43370534933 confirmed real OSM roads are visible offline in airplane mode. Test script failed due missing Pillow in CI, not due map rendering; corrected with existing stdlib PNG decoder, latest retry 43371354137 **ALL JOBS PASS**, including 58,015 locally rendered road-colored pixels verified by stdlib PNG checker and on-screen ODbL / no-navigation warning.
 - No citywide data, accurate driving navigation or licensed full 34-province package yet.

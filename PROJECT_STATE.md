@@ -17,11 +17,11 @@ main: protected; do not push, merge, create PR or release until owner explicitly
 - Pack import: `data/LocalPackStore.kt`, `data/PmtilesHeader.kt`.
 - Unit tests: `app/src/test/java/vn/navitaximap/data/`.
 - Emulator CI script: `ci/smoke-emulator.sh`.
-- Latest verified CI: https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43367761361 (code commit a3f76d1636a30acca6e56a393fbf60264f3fb7f6, all jobs PASS including system picker).
+- Latest verified CI: https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43371354137 (tested code 08afe5a16b316f363750fc21b006cf82f39817de, all jobs PASS: Android build, SAF, recovery, real OSM road geometry in airplane mode).
 
 ## Not demonstrated
 No complete province/city PMTiles packs (only a tiny real OSM sample), PMTiles download manager, route graph, POI/search, navigation, traffic, speed signs, terrain/3D or approved legal maritime overlays.
 Not installed or tested on the owner's Xiaomi. No production-ready release APK.
 
 ## Next verification
-Real OSM pilot source snapshot: workflow https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43369521518 (17,828 nodes, 354 road ways); deterministic build: https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43370147765 (21 tiles, 53,956 bytes). Full regression CI https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43371354137 is the required final green gate. See HANOI_OSM_PILOT.md.
+Real OSM pilot source snapshot: workflow https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43369521518 (17,828 nodes, 354 road ways); deterministic build: https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43370147765 (21 tiles, 53,956 bytes). Full regression CI https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43371354137 **ALL JOBS PASS**: 58,015 real OSM local-road-colored screenshot pixels in central map viewport, source/license warning exposed, no FATAL EXCEPTION. See HANOI_OSM_PILOT.md.
