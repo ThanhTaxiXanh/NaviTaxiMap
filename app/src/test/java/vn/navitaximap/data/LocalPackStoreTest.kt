@@ -84,4 +84,71 @@ class LocalPackStoreTest {
         assertFalse(store.verifyPack("../outside"))
         assertTrue(root.listFiles().isNullOrEmpty())
     }
+
+    @Test fun cleansPartialOrphanArchiveAndDanglingIndexButPreservesValidPack() = withStore { store, root ->
+        val pack = store.importPack(ByteArrayInputStream(fixture()), "valid")
+        val stageId = "11111111-1111-1111-1111-111111111111"
+        val orphanId = "22222222-2222-2222-2222-222222222222"
+        val indexId = "33333333-3333-3333-3333-333333333333"
+        File(root, "$stageId.partial").writeText("interrupted stream")
+        File(root, "$stageId.properties.partial").writeText("interrupted metadata")
+        File(root, "$orphanId.pmtiles").writeBytes(fixture())
+        File(root, "$indexId.properties").writeText("orphaned index")
+        File(root, "somebody-else.partial").writeText("unrelated")
+        val result = store.recoverInterruptedImports()
+        assertEquals(2, result.discardedStaging)
+        assertEquals(1, result.discardedOrphanArchives)
+        assertEquals(1, result.discardedOrphanIndexes)
+        assertTrue(result.reclaimedBytes > 0)
+        assertEquals(1, store.listPacks().size)
+        assertTrue(store.verifyPack(pack.id))
+        assertTrue(File(root, "somebody-else.partial").exists())
+        assertEquals(0, store.recoverInterruptedImports().removedCount)
+    }
+
+    @Test fun refusesInsufficientFreeSpaceAndCleansStaging() {
+        val root = createTempDir(prefix = "navitaxi-disk-")
+        try {
+            val store = LocalPackStore(root, minimumFreeBytes = 128, freeBytes = { 128L })
+            val error = assertThrows(IllegalArgumentException::class.java) {
+                store.importPack(ByteArrayInputStream(fixture()), "disk full")
+            }
+            assertTrue(error.message?.contains("dung lượng") == true)
+            assertTrue(root.listFiles().isNullOrEmpty())
+        } finally { root.deleteRecursively() }
+    }
+
+    @Test fun partialStreamFailureLeavesNoVisiblePackOrLeftovers() = withStore { store, root ->
+        val bytes = fixture()
+        val failing = object : java.io.InputStream() {
+            var pos = 0
+            override fun read(): Int {
+                if (pos >= 70) throw java.io.IOException("simulated SAF read failure")
+                return bytes[pos++].toInt() and 0xff
+            }
+            override fun read(buffer: ByteArray, offset: Int, length: Int): Int {
+                if (pos >= 70) throw java.io.IOException("simulated SAF read failure")
+                val n = minOf(length, 70 - pos)
+                bytes.copyInto(buffer, offset, pos, pos + n)
+                pos += n
+                return n
+            }
+        }
+        assertThrows(java.io.IOException::class.java) {
+            store.importPack(failing, "interrupted")
+        }
+        assertTrue(root.listFiles().isNullOrEmpty())
+        assertTrue(store.listPacks().isEmpty())
+    }
+
+    @Test fun storageUsageReflectsOnlyCommittedPacks() = withStore { store, root ->
+        val before = store.storageUsage()
+        assertEquals(0L, before.first)
+        val pack = store.importPack(ByteArrayInputStream(fixture()), "size")
+        val after = store.storageUsage()
+        assertEquals(pack.sizeBytes, after.first)
+        assertTrue(after.second > 0)
+        store.deletePack(pack.id)
+        assertEquals(0L, store.storageUsage().first)
+    }
 }

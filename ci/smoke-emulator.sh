@@ -87,3 +87,30 @@ assert "sourceApproval=UNVERIFIED" in index, "Source approval incorrectly elevat
 print(f"Imported PMTiles verified by bytes: {len(binary)} bytes, SHA-256={actual}")
 PY
 echo "Offline pack import PASS: imported bytes and metadata match expected fixture in airplane mode."
+
+
+# Simulate power loss at different points of the two-file import transaction.
+# Keep the previously committed PMTiles + metadata pair intact.
+STAGING_ID=11111111-1111-1111-1111-111111111111
+ORPHAN_ID=22222222-2222-2222-2222-222222222222
+INDEX_ID=33333333-3333-3333-3333-333333333333
+adb shell run-as vn.navitaximap touch "files/offline-packs/$STAGING_ID.partial"
+adb shell run-as vn.navitaximap touch "files/offline-packs/$STAGING_ID.properties.partial"
+adb shell run-as vn.navitaximap touch "files/offline-packs/$ORPHAN_ID.pmtiles"
+adb shell run-as vn.navitaximap touch "files/offline-packs/$INDEX_ID.properties"
+adb shell am force-stop vn.navitaximap
+adb shell am start -W -n vn.navitaximap/.MainActivity --ez vn.navitaximap.OFFLINE_DEMO true | tee smoke-evidence/recovery-launch.txt
+sleep 5
+adb shell run-as vn.navitaximap ls files/offline-packs | tee smoke-evidence/recovered-pack-files.txt
+python3 - <<'PY'
+from pathlib import Path
+before = Path("smoke-evidence/imported-pack-files.txt").read_text().splitlines()
+after = Path("smoke-evidence/recovered-pack-files.txt").read_text().splitlines()
+assert sorted(before) == sorted(after), f"Recovery changed valid packs or retained orphans: {after}"
+assert len([s for s in after if s.endswith(".pmtiles")]) == 1
+assert len([s for s in after if s.endswith(".properties")]) == 1
+print("Crash recovery PASS: 4 simulated incomplete files cleared, original pair unchanged")
+PY
+adb exec-out run-as vn.navitaximap cat "files/offline-packs/$PACK_ID.pmtiles" > smoke-evidence/recovered-pack.pmtiles
+cmp smoke-evidence/imported-pack.pmtiles smoke-evidence/recovered-pack.pmtiles
+echo "Crash recovery PASS: committed PMTiles content is byte-identical after app restart."

@@ -75,6 +75,11 @@ class MainActivity : Activity(), LocationListener {
         root.addView(mapView, FrameLayout.LayoutParams(-1, -1))
         buildChrome(root)
         setContentView(root)
+        // Keep interrupted staging files and one-sided promotions out of the catalog.
+        packExecutor.execute {
+            val report = runCatching { packStore.recoverInterruptedImports() }
+            report.onFailure { Log.e("NaviTaxiMapRecovery", "Unable to recover incomplete packs", it) }
+        }
         if ((applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0 &&
             intent.getBooleanExtra(EXTRA_DEBUG_IMPORT_FIXTURE, false)) {
             importDebugFixtureForSmokeTest()
@@ -244,15 +249,17 @@ class MainActivity : Activity(), LocationListener {
     private fun showLocalPacks() {
         packExecutor.execute {
             val packs = packStore.listPacks()
+            val usage = packStore.storageUsage()
+            val usageLabel = "Đã dùng ${usage.first / (1024 * 1024)} MiB; còn trống ${usage.second / (1024 * 1024)} MiB"
             runOnUiThread {
                 if (isDestroyed) return@runOnUiThread
                 if (packs.isEmpty()) {
-                    explain("Các gói offline", "Chưa có PMTiles nào được nhập.")
+                    explain("Các gói offline", "Chưa có PMTiles nào được nhập.\\n$usageLabel")
                     return@runOnUiThread
                 }
                 val labels = packs.map { "${it.name} • ${it.sizeBytes / 1024} KiB" }.toTypedArray()
                 AlertDialog.Builder(this)
-                    .setTitle("PMTiles đã nhập (chưa duyệt)")
+                    .setTitle("PMTiles chưa duyệt • ${usage.first / (1024 * 1024)} MiB")
                     .setItems(labels) { _, index -> showPackOptions(packs[index]) }
                     .setNegativeButton("Đóng", null).show()
             }
