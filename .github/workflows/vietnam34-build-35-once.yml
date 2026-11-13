@@ -1,0 +1,136 @@
+name: Build 35 Vietnam Shortbread PMTiles (34 province previews + nationwide)
+
+on:
+  push:
+    branches: ['develop/**']
+    paths: ['.github/workflows/vietnam34-build-35-once.yml']
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  real-osm-vietnam-35-packs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 95
+    steps:
+      - uses: actions/checkout@v4
+      - name: Load previously SHA-audited OSM province boundaries
+        uses: actions/download-artifact@v4
+        with:
+          name: Vietnam34-OSM-boundary-source-audit-UNREVIEWED
+          run-id: 43376868151
+          github-token: ${{ github.token }}
+          path: source/admin4
+      - name: Load full Khánh Hòa OSM relation that was incomplete in Geofabrik PBF
+        uses: actions/download-artifact@v4
+        with:
+          name: Khánh-Hòa-OSM-full-relation-source-UNREVIEWED
+          run-id: 43377276622
+          github-token: ${{ github.token }}
+          path: source/khanhhoa
+      - name: Verify independent OSM source fingerprints and exact 34 polygon coverage
+        run: |
+          python3 - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          assert json.loads(Path('source/admin4/pbf-source.json').read_text())['sha256']=='ddb9155f112af521d0674e4f40b87173f92954e5b8a3f71445d3008b506ef9ed'
+          assert '2b94689adcc3bf8fbfffe83387655421598b08dae3b32a908791e1d995c595b1' in Path('source/khanhhoa/source-sha256.txt').read_text()
+          assert hashlib.sha256(Path('source/khanhhoa/khanhhoa-full.osm').read_bytes()).hexdigest() == '2b94689adcc3bf8fbfffe83387655421598b08dae3b32a908791e1d995c595b1'
+          print('OSM_PROVENANCE_OK exact audited PBF and additional Khánh Hòa full relation')
+          PY
+      - name: Install fixed Python geometry version and PMTiles converter v1.31.2
+        run: |
+          python3 -m pip install --disable-pip-version-check shapely==2.0.7
+          curl --fail --location --retry 2 --connect-timeout 20 --max-time 180 \
+            'https://github.com/protomaps/go-pmtiles/releases/download/v1.31.2/go-pmtiles_1.31.2_Linux_x86_64.tar.gz' \
+            -o /tmp/navitaxi-go-pmtiles.tar.gz
+          mkdir -p /tmp/navitaxi-pmtiles-cli
+          tar -xzf /tmp/navitaxi-go-pmtiles.tar.gz -C /tmp/navitaxi-pmtiles-cli
+          find /tmp/navitaxi-pmtiles-cli -maxdepth 3 -type f -printf '%p\n'
+          BIN=$(find /tmp/navitaxi-pmtiles-cli -maxdepth 3 -type f \
+                 \( -name 'pmtiles' -o -name 'go-pmtiles' \) | head -1)
+          test -n "$BIN"
+          chmod +x "$BIN"
+          sudo cp "$BIN" /usr/local/bin/pmtiles
+          pmtiles --help | head -20
+          python3 -m unittest discover -s tools/vietnam34 -p 'test_*.py' -v
+      - name: Download one official Geofabrik Vietnam Shortbread MBTiles snapshot
+        run: |
+          mkdir -p source/shortbread
+          curl --fail --location --retry 2 --connect-timeout 35 --max-time 1600 \
+            'https://download.geofabrik.de/asia/vietnam-shortbread-1.0.mbtiles' \
+            -o source/shortbread/vietnam-shortbread.mbtiles
+          python3 - <<'PY'
+          from pathlib import Path
+          import sqlite3,hashlib,json
+          p=Path("source/shortbread/vietnam-shortbread.mbtiles")
+          assert 450_000_000 < p.stat().st_size < 1_200_000_000, p.stat().st_size
+          assert p.open("rb").read(16) == b"SQLite format 3\x00"
+          con=sqlite3.connect(f"file:{p}?mode=ro",uri=True)
+          meta=dict(con.execute("select name,value from metadata"))
+          print("GEOFABRIK_SHORTBREAD_METADATA",json.dumps({
+            "size":p.stat().st_size,"maxzoom":meta.get('maxzoom'),
+            "minzoom":meta.get('minzoom'),"format":meta.get('format'),
+            "name":meta.get('name')},ensure_ascii=False))
+          assert int(meta.get('maxzoom','0'))>=14
+          assert meta.get('format') in ('pbf','mvt')
+          con.close()
+          print("GEOFABRIK_SHORTBREAD_SHA256",hashlib.sha256(p.read_bytes()).hexdigest())
+          PY
+      - name: Generate 34 region PMTiles plus one country PMTiles from actual OSM tiles
+        run: |
+          python3 -u tools/vietnam34/build_national_and_provinces.py \
+            --mbtiles source/shortbread/vietnam-shortbread.mbtiles \
+            --admin4 source/admin4/osm-admin4-boundaries.geojson \
+            --khanhhoa source/khanhhoa/kh-only.geojson \
+            --outdir vietnam35-pmtiles \
+            --pmtiles-cli pmtiles
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          data=json.loads(Path("vietnam35-pmtiles/manifest.json").read_text())
+          assert len(data["packages"])==35 and data["files_count"]==35
+          assert len(set(p["code"] for p in data["packages"]))==35
+          assert all(Path("vietnam35-pmtiles",p["file"]).stat().st_size == p["size_bytes"]
+                     for p in data["packages"])
+          assert all(p["tiles"]>0 for p in data["packages"])
+          assert data["navigation_approved"] is False
+          assert data["distribution_approved"] is False
+          print("VN35_PACK_COMPLETE 34 province + 1 Vietnam",flush=True)
+          PY
+      - name: Save nationwide real OSM PMTiles and manifest (research preview only)
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: NaviTaxiMap-Vietnam-Whole-Country-OSM-UNREVIEWED
+          path: |
+            vietnam35-pmtiles/00-viet-nam-all.pmtiles
+            vietnam35-pmtiles/manifest.json
+          retention-days: 14
+          if-no-files-found: error
+          compression-level: 0
+      - name: Save all 34 province PMTiles and manifest (not administrative border products)
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: NaviTaxiMap-34-Provinces-OSM-UNREVIEWED
+          path: |
+            vietnam35-pmtiles/*.pmtiles
+            !vietnam35-pmtiles/00-viet-nam-all.pmtiles
+            vietnam35-pmtiles/manifest.json
+          retention-days: 14
+          if-no-files-found: error
+          compression-level: 0
+      - name: Publish failure diagnostics only (never incomplete fake packs)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: NaviTaxiMap-Vietnam35-failure-diagnostics
+          path: |
+            source/admin4/boundary-audit.json
+            source/admin4/pbf-source.json
+            source/khanhhoa/source-sha256.txt
+            vietnam35-pmtiles/manifest.json
+          retention-days: 14
+          if-no-files-found: ignore
