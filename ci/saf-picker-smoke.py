@@ -172,7 +172,10 @@ def verify_persisted(before):
                  "sourceApproval=UNVERIFIED", "size=" + str(EXPECTED_BYTES)]:
         if item not in properties:
             raise AssertionError(f"Index missing {item}: {properties}")
-    (OUT / "saf-imported-pack.pmtiles").write_bytes(archive)
+    # Keep legacy evidence-bytes default. Bulk 34-province CI retains hashes,
+    # metadata and screenshots instead of republishing hundreds of MB of PMTiles.
+    if os.environ.get("NAVITAXI_SAF_PRESERVE_ARCHIVE", "1") == "1":
+        (OUT / "saf-imported-pack.pmtiles").write_bytes(archive)
     (OUT / "saf-imported-pack.properties").write_bytes(index)
     print(f"SAF picker PASS: selected {EXPECTED_NAME} in system UI, stored {len(archive)} bytes, SHA-256={actual_hash}")
 
