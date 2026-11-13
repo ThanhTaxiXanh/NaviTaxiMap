@@ -171,9 +171,21 @@ python3 ci/saf-picker-smoke.py smoke-evidence | tee smoke-evidence/saf-result.tx
 adb shell am force-stop vn.navitaximap
 adb logcat -c
 adb shell am start -W -n vn.navitaximap/.MainActivity --ez vn.navitaximap.REAL_OSM_PILOT true | tee smoke-evidence/osm-pilot-launch.txt
-sleep 15
-adb shell screencap -p /sdcard/navitaxi-real-osm-roads.png
-adb pull /sdcard/navitaxi-real-osm-roads.png smoke-evidence/osm-pilot-screenshot.png
+# MapLibre style source-loading/GL drawing is asynchronous under variable CI load.
+# Keep the existing strict >500 real-road pixel assertion, but retry screenshots
+# for up to ~65 seconds rather than failing on a single empty early frame.
+sleep 14
+for attempt in $(seq 1 9); do
+  sleep 6
+  adb shell screencap -p /sdcard/navitaxi-real-osm-roads.png
+  adb pull /sdcard/navitaxi-real-osm-roads.png smoke-evidence/osm-pilot-screenshot.png
+  if python3 ci/check-osm-pilot-screenshot.py smoke-evidence/osm-pilot-screenshot.png \
+       > smoke-evidence/osm-pilot-pixel-probe.txt 2>&1; then
+    echo "REAL_OSM_PIXELS_READY attempt=$attempt"
+    break
+  fi
+  echo "Real OSM road pixels not yet visible (attempt $attempt/9); retrying"
+done
 adb shell uiautomator dump /sdcard/navitaxi-osm-pilot.xml > /dev/null
 adb pull /sdcard/navitaxi-osm-pilot.xml smoke-evidence/osm-pilot-ui.xml
 adb logcat -d -s AndroidRuntime:E > smoke-evidence/osm-pilot-runtime-errors.txt || true
