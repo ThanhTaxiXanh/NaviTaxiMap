@@ -235,3 +235,7 @@
 ## 2026-11-14 ~17:24 ICT previously imported file tamper safety QA passed
 - New emulator regression 4facd595 + harness correction 59c40667. CI 43584575417 SUCCESS: real imported Bắc Ninh full SHA 11049420 bytes, 266196 offline road pixels, then app-private archive content mutated and private SHA intentionally differs. Cold-start verifyPack refuses corrupted stored file, logs SHORTBREAD_POST_IMPORT_TAMPER_COLD_START_REFUSED_PASS, no style load or offline roads from corrupt data; original Downloads bytes unchanged.
 - 43584575373 SUCCESS Android build/JUnit + emulator. Initial 43584011441 failure was unreliable one-byte adb read test setup, fixed, not app failure. Private backups B2/R2 untouched. No PR/main/merge/release.
+
+## 2026-11-14 ~17:43 ICT active-map integrity improvement awaiting emulator proof
+- New production fail-safe 86985f3a clears local offline style on explicit reverify SHA failure rather than leaving cached road tiles. Native Android test selects real region 24 through catalog AFTER modifying imported copy, checks for blank style/pixels and keeps cold-start regression.
+- CI 43586295098 targeted, 43586295069 normal Android, 43586295082 national, 43586295062 Hanoi/HCM, 43586295180 all 34 originals RUNNING; compile/JVM steps SUCCESS. Do not claim new hot-mode PASS until emulator markers confirmed.

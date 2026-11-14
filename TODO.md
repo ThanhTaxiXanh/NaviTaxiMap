@@ -307,3 +307,10 @@
 - [x] Document prior 43584011441 FAILED due test harness one-byte dd readback returning empty; fixed with full private file hash test-only 59c40667.
 - [ ] Additional protection/QA for modification WHILE an offline MapLibre style is already displaying, plus alternate region direct-picker UX and local data management.
 - [ ] Physical Xiaomi, licensing/ODbL review, reviewed HTTPS origins/manifest and explicit download consent, legally correct maritime/admin layers, routing graph and B2/R2 private bucket-policy/lifecycle check remain not approved. Two owner ZIP backups already uploaded and checksum-confirmed; do NOT re-upload without authorization. No PR/merge/release/main.
+
+## 2026-11-14 ~17:43 ICT active offline SHA re-check gate
+- [x] Implement local-only blank style when a user explicitly reopens a pinned Shortbread region and stored SHA/PMTiles verification fails (86985f3a). No network fallback, navigation or region border layers.
+- [x] Add emulator QA for real displayed road pixels -> app-private one-byte mutation -> reselect same region from catalog without restarting -> explicit verification failure, cleared background, zero road pixels -> cold-start refusal.
+- [ ] Verify targeted 43586295098 terminal log marker SHORTBREAD_HOT_TAMPER_INVALID_STYLE_CLEARED_PASS plus original 266196 road pixels, SHA and cold-start markers; investigate any test failure without weakening assertions.
+- [ ] Check 43586295069 full normal Android, 43586295082 national, 43586295062 Hanoi/HCM and all four shards 43586295180 terminal results.
+- [ ] Still requires separate continuous in-session mutation detection, Xiaomi physical QA, ODbL redistribution, approved HTTPS hosting, routing graph, legal boundaries and private B2/R2 bucket policy/lifecycle review. Owner already saved both original ZIP artifacts to B2/R2; never upload again without authorization.
