@@ -66,11 +66,11 @@ jobs:
           R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
           R2_BUCKET: ${{ secrets.R2_BUCKET }}
         run: bash ci/private-original-cloud-backup.sh
-      - name: Upload METADATA receipt ONLY, never source ZIP bytes
-        if: success()
+      - name: Preserve METADATA receipt ONLY, even if R2 fails after B2
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: NaviTaxiMap-private-B2-R2-receipt-NO-DATA
           path: private-backup-receipt-only
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 14

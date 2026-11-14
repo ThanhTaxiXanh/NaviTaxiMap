@@ -31,9 +31,7 @@ done
 [[ "${R2_BUCKET}" =~ ^[a-z0-9][a-z0-9-]{2,62}$ ]] || {
   echo "::error::R2_BUCKET is not a simple safe bucket name"; exit 2;
 }
-[[ "${R2_ACCOUNT_ID}" =~ ^[a-fA-F0-9]{32}$ ]] || {
-  echo "::error::R2_ACCOUNT_ID must be the 32-character Cloudflare account ID"; exit 2;
-}
+# Cloudflare ID checked only after B2 backup is safely verified.
 
 for bin in curl python3 rclone sha256sum; do
   command -v "$bin" >/dev/null || { echo "::error::Missing required tool $bin"; exit 2; }
@@ -81,40 +79,56 @@ export RCLONE_CONFIG=/dev/null
 export RCLONE_CONFIG_B2NTM_TYPE=b2
 export RCLONE_CONFIG_B2NTM_ACCOUNT="$B2_KEY_ID"
 export RCLONE_CONFIG_B2NTM_KEY="$B2_APPLICATION_KEY"
+# Revisioned prefix, never overwrite historical versions or make them public.
+prefix="originals/github-run-43378133931"
+b2remote="b2ntm:${B2_BUCKET}/${prefix}"
+
+upload_and_readback() {
+  local label="$1" remote="$2"
+  echo "Starting $label private ZIP preservation (no public ACL)"
+  rclone copy "$src" "$remote" --immutable --transfers 1 --checkers 2 \
+    --retries 3 --low-level-retries 10 --stats 30s
+  rclone check "$src" "$remote" --download --one-way --transfers 1 --checkers 1 \
+    --retries 3 --low-level-retries 10
+  rclone copyto "$root/original-zip-sha256.txt" "$remote/original-zip-sha256.txt" --immutable
+  rclone copyto "$root/verification-receipt.json" "$remote/verification-receipt.json" --immutable
+  echo "PRIVATE_${label}_READBACK_PASS originals=2 pmtiles=35 bytes=843734803"
+}
+
+# Backblaze first: misconfigured R2 account ID must not prevent B2 preservation.
+upload_and_readback B2 "$b2remote"
+
+# GitHub evidence contains metadata ONLY, even if R2 later fails.
+mkdir -m 700 -p "$GITHUB_WORKSPACE/private-backup-receipt-only"
+cp "$root/verification-receipt.json" "$GITHUB_WORKSPACE/private-backup-receipt-only/"
+cp "$root/original-zip-sha256.txt" "$GITHUB_WORKSPACE/private-backup-receipt-only/"
+printf '%s\n' "PRIVATE_B2_READBACK_PASS originals=2 pmtiles=35 bytes=843734803" \
+  > "$GITHUB_WORKSPACE/private-backup-receipt-only/b2-confirmation.txt"
+
+# Accept ONLY Cloudflare's official 32-character ID or its canonical R2 endpoint,
+# not arbitrary user-supplied hosts. Never print the raw secret value.
+r2_id="$R2_ACCOUNT_ID"
+r2_id="${r2_id#"${r2_id%%[![:space:]]*}"}"
+r2_id="${r2_id%"${r2_id##*[![:space:]]}"}"
+if [[ "$r2_id" =~ ^https://([a-fA-F0-9]{32})\.r2\.cloudflarestorage\.com/?$ ]]; then
+  r2_id="${BASH_REMATCH[1]}"
+elif [[ "$r2_id" =~ ^([a-fA-F0-9]{32})\.r2\.cloudflarestorage\.com$ ]]; then
+  r2_id="${BASH_REMATCH[1]}"
+fi
+if [[ ! "$r2_id" =~ ^[a-fA-F0-9]{32}$ ]]; then
+  echo "::error::R2_ACCOUNT_ID invalid; use Cloudflare's 32-hex Account ID or official R2 endpoint. B2 readback already verified; R2 pending."
+  exit 2
+fi
 export RCLONE_CONFIG_R2NTM_TYPE=s3
 export RCLONE_CONFIG_R2NTM_PROVIDER=Cloudflare
 export RCLONE_CONFIG_R2NTM_REGION=auto
-export RCLONE_CONFIG_R2NTM_ENDPOINT="https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com"
+export RCLONE_CONFIG_R2NTM_ENDPOINT="https://${r2_id}.r2.cloudflarestorage.com"
 export RCLONE_CONFIG_R2NTM_ACCESS_KEY_ID="$R2_ACCESS_KEY_ID"
 export RCLONE_CONFIG_R2NTM_SECRET_ACCESS_KEY="$R2_SECRET_ACCESS_KEY"
 export RCLONE_CONFIG_R2NTM_NO_CHECK_BUCKET=true
 
-# Revisioned object prefix: never replace an earlier date's original source.
-prefix="originals/github-run-43378133931"
-b2remote="b2ntm:${B2_BUCKET}/${prefix}"
 r2remote="r2ntm:${R2_BUCKET}/${prefix}"
-
-# Copy ONLY the two source ZIPs. --immutable refuses to replace changed data.
-# Never use sync, delete, copy public, or public ACL flags.
-for remote in "$b2remote" "$r2remote"; do
-  echo "Uploading two verified private ZIPs (remote names withheld)"
-  rclone copy "$src" "$remote" --immutable --transfers 1 --checkers 2 \
-    --retries 3 --low-level-retries 10 --stats 30s
-  # Actual readback, not mere listed file sizes or multipart ETags.
-  rclone check "$src" "$remote" --download --one-way --transfers 1 --checkers 1 \
-    --retries 3 --low-level-retries 10
-  echo "PRIVATE_CLOUD_READBACK_PASS"
-done
-
-# Upload only two small metadata receipts, after BOTH storage backends passed.
-for remote in "$b2remote" "$r2remote"; do
-  rclone copyto "$root/original-zip-sha256.txt" "$remote/original-zip-sha256.txt" --immutable
-  rclone copyto "$root/verification-receipt.json" "$remote/verification-receipt.json" --immutable
-  rclone check "$src" "$remote" --download --one-way --transfers 1 --checkers 1
-done
-
-# Evidence for GitHub Actions contains no raw PMTiles and no secret values.
-mkdir -m 700 -p "$GITHUB_WORKSPACE/private-backup-receipt-only"
-cp "$root/verification-receipt.json" "$GITHUB_WORKSPACE/private-backup-receipt-only/"
-cp "$root/original-zip-sha256.txt" "$GITHUB_WORKSPACE/private-backup-receipt-only/"
+upload_and_readback R2 "$r2remote"
+printf '%s\n' "PRIVATE_R2_READBACK_PASS originals=2 pmtiles=35 bytes=843734803" \
+  > "$GITHUB_WORKSPACE/private-backup-receipt-only/r2-confirmation.txt"
 echo "PRIVATE_B2_AND_R2_BACKUP_PASS originals=2 pmtiles=35 bytes=843734803"

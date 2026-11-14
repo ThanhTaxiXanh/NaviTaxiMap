@@ -111,3 +111,7 @@ Từ code `108e3ee5`, branch `develop/phase0-android-maplibre` có workflow `.gi
 ## Chủ dự án cho phép chuyển hai ZIP nguồn vào B2/R2 Private (14/11/2026 11:05 ICT)
 
 Chủ dự án nhắn rõ **"Bắt đầu sao lưu riêng tư B2 và R2"**, sau khi đã tạo hai bucket, khóa truy cập và GitHub Secrets. Commit đánh dấu `[private-backup-go]` **chỉ chạy trên** `develop/phase0-android-maplibre` để kích hoạt job cloud copy. Không cho phép công khai bucket, không giải quyết quyền tái phân phối, không bật tải bản đồ từ app, không sửa `main`. Chỉ xác nhận bảo toàn nguồn nếu đủ hai bản ZIP ở hai kho và cả hai remote byte-readback SHA đều PASS. Nếu chỉ có một kho PASS, ghi trạng thái **PARTIAL**, không nói đã hoàn tất.
+
+## 14/11/2026 ~11:08 ICT: lần kích hoạt đầu và chuẩn bị bản sao B2 trước
+- Chủ dự án phê duyệt upload private B2/R2. Workflow [43554976535](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43554976535) preflight PASS, nhưng uploader FAIL **trước khi tải dữ liệu** vì `R2_ACCOUNT_ID` trong GitHub Secret không theo định dạng 32 ký tự hex. Không log giá trị secret. Chưa có ZIP nào được xác nhận trên B2 hoặc R2 trong lượt đó.
+- Script đổi thứ tự: xác minh đủ 35 PMTiles nguồn rồi copy và **readback B2** trước khi kiểm R2_ACCOUNT_ID; cho phép Cloudflare ID hoặc official R2 endpoint, từ chối domain bất kỳ. Ghi biên bản `b2-confirmation.txt` metadata-only nếu B2 PASS dù R2 FAIL, không nói đủ 2 kho khi R2 chưa xong. Không sửa main, app download flags, không public ZIP.
