@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Cold-start refusal for a previously verified but subsequently modified archive.
+"""Hot-revalidation and cold-start refusal for a modified stored archive.
 
 This runs only on a disposable Android emulator, with no user archives, cloud
 backup objects, endpoints or original ZIPs modified. After successful offline
 Shortbread screenshot QA, change one byte in the app-private *imported copy*.
-A restarted app must fail SHA-256 verification BEFORE MapLibre opens that file.
+An active map must clear cached/visible offline tiles after user-requested
+reverification fails; a subsequent cold restart must also refuse the file.
 """
 import importlib.util
 import os
@@ -87,6 +88,70 @@ def main():
                   "/sdcard/Download/" + EXPECTED_NAME).split()[0].lower() != EXPECTED_HASH:
         raise AssertionError("Tamper test touched the original Downloads document")
     print("SHORTBREAD_POST_IMPORT_PRIVATE_COPY_TAMPERED_SHA_DIFFERS")
+
+    # Keep the same Android process and its already-visible, previously valid
+    # Shortbread map. Explicitly reselect the installed region in the REAL
+    # catalog. The verifier must discard that cached offline style on failure.
+    picker.screenshot("private-corrupt-live-before-reverify")
+    before_shot = picker.OUT / "saf-private-corrupt-live-before-reverify.png"
+    before_probe = subprocess.run(
+        [sys.executable, "ci/check-shortbread-screenshot.py", str(before_shot)],
+        capture_output=True, text=True, timeout=20,
+    )
+    if before_probe.returncode != 0:
+        raise AssertionError("Previously loaded offline road map was not visible before recheck")
+    picker.adb("logcat", "-c")
+    picker.select_text("hot-open-data-menu", ["Dữ liệu bản đồ"])
+    picker.select_text("hot-open-35-catalog", ["35 gói Shortbread"])
+    # Share the exact scroll/select logic already proven by the native picker.
+    direct_spec = importlib.util.spec_from_file_location(
+        "navitaxi_direct_picker", Path(__file__).with_name("shortbread-direct-picker.py")
+    )
+    if direct_spec is None or direct_spec.loader is None:
+        raise RuntimeError("Regional catalog selection helper unavailable")
+    direct = importlib.util.module_from_spec(direct_spec)
+    direct_spec.loader.exec_module(direct)
+    direct.select_bac_ninh_in_scrollable_catalog()
+
+    hot_result = None
+    for _ in range(20):
+        time.sleep(2)
+        root = picker.snapshot("private-corrupt-hot-reverify")
+        visible = " ".join((node.get("text", "") or "")
+                           for node in picker.nodes(root))
+        if "Không mở được gói Shortbread:" in visible:
+            hot_result = visible
+            break
+    if hot_result is None or "SHA-256 / PMTiles bị thay đổi" not in hot_result:
+        picker.screenshot("private-corrupt-hot-reverify-missing-error")
+        raise AssertionError("Hot re-verification did not report stored checksum mismatch")
+    # MapLibre setStyle is asynchronous; wait for the blank fallback callback,
+    # not only the SHA error label. No network-backed fallback is allowed.
+    hot_log = ""
+    for _ in range(12):
+        time.sleep(1)
+        hot_log = picker.adb("logcat", "-d", "-v", "brief")
+        if "SHORTBREAD_INVALID_STYLE_CLEARED" in hot_log:
+            break
+    else:
+        raise AssertionError("Previously displayed invalid Shortbread style was not cleared")
+    if "SHORTBREAD_VERIFY_FAIL" not in hot_log:
+        raise AssertionError("No integrity check failure logged during hot re-verification")
+    if "SHORTBREAD_STYLE_LOADED" in hot_log:
+        raise AssertionError("Corrupt stored source was loaded during hot re-verification")
+    time.sleep(2)
+    picker.screenshot("private-corrupt-hot-style-cleared")
+    blank_shot = picker.OUT / "saf-private-corrupt-hot-style-cleared.png"
+    blank_probe = subprocess.run(
+        [sys.executable, "ci/check-shortbread-screenshot.py", str(blank_shot)],
+        capture_output=True, text=True, timeout=20,
+    )
+    if blank_probe.returncode == 0:
+        raise AssertionError("Old road pixels remained visible after checksum failure")
+    if private_file_sha(relative) == EXPECTED_HASH:
+        raise AssertionError("Hot re-verification test somehow restored corrupted private bytes")
+    print("SHORTBREAD_HOT_TAMPER_INVALID_STYLE_CLEARED_PASS " +
+          "no-road-pixels no-corrupt-source-loaded")
 
     # Force a cold start. The debug preview uses the EXACT same production
     # verifyPack -> showVerifiedShortbread path as the 35-entry catalog.

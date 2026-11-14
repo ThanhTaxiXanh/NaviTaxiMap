@@ -727,8 +727,22 @@ class MainActivity : Activity(), LocationListener {
             runOnUiThread {
                 if (isDestroyed) return@runOnUiThread
                 checked.onFailure { failure ->
-                    statusText.text = "Không mở được gói Shortbread: " + failure.message
                     Log.e("NaviTaxiMapShortbread", "SHORTBREAD_VERIFY_FAIL", failure)
+                    val failureMessage = "Không mở được gói Shortbread: " + failure.message
+                    statusText.text = failureMessage
+                    // An already displayed map can have cached vector tiles.
+                    // On explicit re-verification failure, never leave that
+                    // previous offline style visible as a trusted map.
+                    // Keep the fallback 100% local; never trigger network IO.
+                    if (offlineDemo) {
+                        val safeBlankStyle = """{"version":8,"sources":{},"layers":[{"id":"invalid-pack-background","type":"background","paint":{"background-color":"#f3f7f3"}}]}"""
+                        offlineDemo = false
+                        offlineButton.text = "PMTiles offline (mẫu)"
+                        liveMap?.setStyle(Style.Builder().fromJson(safeBlankStyle)) {
+                            statusText.text = failureMessage + " · KHÔNG dẫn đường"
+                            Log.i("NaviTaxiMapShortbread", "SHORTBREAD_INVALID_STYLE_CLEARED")
+                        }
+                    }
                 }.onSuccess { (localStyle, header) ->
                     liveMap?.setStyle(Style.Builder().fromJson(localStyle)) {
                         offlineDemo = true
