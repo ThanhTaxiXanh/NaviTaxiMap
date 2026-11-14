@@ -29,6 +29,22 @@ object Vietnam35Catalog {
     const val navigationApproved = false
     const val distributionApproved = false
 
+    // Stable, non-overlapping Android request codes; no mutable pending-selection
+    // state that could silently change across Activity recreation.
+    const val regionPickerRequestBase = 4500
+
+    fun pickerRequestCode(region: VietnamRegionSpec): Int {
+        val index = packages.indexOfFirst { it == region }
+        require(index >= 0) { "Region is not one of the 35 frozen pins" }
+        return regionPickerRequestBase + index
+    }
+
+    fun regionForPickerRequest(requestCode: Int): VietnamRegionSpec? =
+        packages.getOrNull(requestCode - regionPickerRequestBase)
+
+    fun isExpectedDocumentName(region: VietnamRegionSpec, name: String): Boolean =
+        packages.contains(region) && name == region.fileName
+
     val packages: List<VietnamRegionSpec> = listOf(
         VietnamRegionSpec("VN", "Toàn Việt Nam", "00-viet-nam-all.pmtiles", "678704befd7b4b42726199994671ddccb1c2c029daab40f53098709cd5b12d55", 0, 14, 556229998L),
         VietnamRegionSpec("01", "Hà Nội", "01-ha-noi.pmtiles", "ad6f2a78d2d7ca3d5763028965cc914195e61ec40ec4ad0b46db5d766c484139", 8, 14, 17562631L),

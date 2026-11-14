@@ -47,4 +47,22 @@ class Vietnam35CatalogTest {
         assertFalse(json.contains("\"sprite\""))
         assertFalse(json.contains("\"source-layer\": \"boundaries\""))
     }
+
+    @Test fun regionalPickerCodesAreOneToOneAndNeverAliasGenericPicker() {
+        val entries = Vietnam35Catalog.packages
+        val requestCodes = entries.map { Vietnam35Catalog.pickerRequestCode(it) }
+        assertEquals(35, requestCodes.distinct().size)
+        entries.forEachIndexed { index, region ->
+            assertEquals(region, Vietnam35Catalog.regionForPickerRequest(requestCodes[index]))
+            assertTrue(Vietnam35Catalog.isExpectedDocumentName(region, region.fileName))
+            assertFalse(Vietnam35Catalog.isExpectedDocumentName(region, entries[(index + 1) % entries.size].fileName))
+            assertFalse(Vietnam35Catalog.isExpectedDocumentName(region, region.fileName.uppercase()))
+        }
+        assertNull(Vietnam35Catalog.regionForPickerRequest(102))
+        assertNull(Vietnam35Catalog.regionForPickerRequest(Vietnam35Catalog.regionPickerRequestBase - 1))
+        assertNull(Vietnam35Catalog.regionForPickerRequest(Vietnam35Catalog.regionPickerRequestBase + 35))
+        assertThrows(IllegalArgumentException::class.java) {
+            Vietnam35Catalog.pickerRequestCode(entries.first().copy(label = "Unknown label"))
+        }
+    }
 }

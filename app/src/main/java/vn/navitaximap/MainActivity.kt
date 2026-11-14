@@ -212,13 +212,7 @@ class MainActivity : Activity(), LocationListener {
                 "35 gói Shortbread: xem offline sau khi nhập"
             )) { _, item ->
                 when (item) {
-                    0 -> {
-                        val pick = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                            addCategory(Intent.CATEGORY_OPENABLE)
-                            type = "*/*"
-                        }
-                        startActivityForResult(pick, REQUEST_PM_TILES)
-                    }
+                    0 -> launchPmtilesPicker(REQUEST_PM_TILES)
                     1 -> showLocalPacks()
                     2 -> liveMap?.let { showHanoiRoadPilot(it) }
                     3 -> showPilotCatalog()
@@ -229,12 +223,22 @@ class MainActivity : Activity(), LocationListener {
             }.show()
     }
 
+    private fun launchPmtilesPicker(requestCode: Int) {
+        val pick = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "*/*"
+        }
+        startActivityForResult(pick, requestCode)
+    }
+
     @Deprecated("Uses Activity result until Activity Result API is introduced")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode != REQUEST_PM_TILES || resultCode != RESULT_OK) return
+        val expectedRegion = Vietnam35Catalog.regionForPickerRequest(requestCode)
+        if (requestCode != REQUEST_PM_TILES && expectedRegion == null) return
+        if (resultCode != RESULT_OK) return
         val uri = data?.data ?: return
-        importUserFile(uri)
+        importUserFile(uri, expectedRegion)
     }
 
     private fun getDocumentName(uri: Uri): String {
@@ -259,13 +263,18 @@ class MainActivity : Activity(), LocationListener {
         null // Some SAF providers do not expose sizes; streaming still checks exact bytes.
     }
 
-    private fun importUserFile(uri: Uri) {
+    private fun importUserFile(uri: Uri, expectedRegion: VietnamRegionSpec? = null) {
         statusText.text = "Đang nhập PMTiles và tính SHA-256..."
         packExecutor.execute {
             val result = runCatching {
                 val name = getDocumentName(uri)
                 require(name.endsWith(".pmtiles", ignoreCase = true)) {
                     "Chỉ có thể nhập tệp .pmtiles, không phải tài liệu khác"
+                }
+                if (expectedRegion != null) {
+                    require(Vietnam35Catalog.isExpectedDocumentName(expectedRegion, name)) {
+                        "Đã chọn sai tệp. Vui lòng chọn chính xác " + expectedRegion.fileName
+                    }
                 }
                 val region = Vietnam35Catalog.packages.firstOrNull { it.fileName == name }
                 if (region != null) {
@@ -311,6 +320,11 @@ class MainActivity : Activity(), LocationListener {
                         "Đã lưu ${pack.name} • ${pack.sizeBytes / 1024} KiB • zoom ${pack.minZoom}-${pack.maxZoom}. SHA-256: ${pack.sha256}." +
                         if (region != null) " Danh mục Shortbread xác nhận byte/hash, nhưng KHÔNG duyệt dẫn đường, pháp lý hoặc phát hành."
                         else " Tệp chưa được xác minh nguồn/pháp lý; chưa kích hoạt để dẫn đường.")
+                    // Direct catalog import rechecks original SHA before opening
+                    // the same local-only preview; it never starts network download.
+                    if (expectedRegion != null && region != null) {
+                        showVerifiedShortbread(region, pack)
+                    }
                 }.onFailure { error ->
                     statusText.text = "Không thể nhập PMTiles."
                     explain("Nhập không thành công", error.message ?: "File không hợp lệ.")
@@ -657,11 +671,16 @@ class MainActivity : Activity(), LocationListener {
                         val region = entries[index]
                         val selected = imported.firstOrNull { region.matches(it) }
                         if (selected == null) {
-                            explain("Chưa nhập " + region.label,
-                                "Tải gói thử nghiệm khi artifact còn hạn, rồi chọn " +
-                                "'Dữ liệu bản đồ → Nhập tệp PMTiles từ thiết bị'. " +
-                                "Tên tệp yêu cầu: " + region.fileName +
-                                ". Không tự động tải hoặc phân phối dữ liệu chưa được duyệt.")
+                            AlertDialog.Builder(this)
+                                .setTitle("Chọn PMTiles cho " + region.label)
+                                .setMessage("Chỉ nhập tệp gốc đã lưu trên thiết bị: " +
+                                    region.fileName + ". Kiểm tra SHA-256, số byte và zoom trước " +
+                                    "khi xem offline. Không tải mạng, không dẫn đường.")
+                                .setPositiveButton("Chọn tệp trên thiết bị") { _, _ ->
+                                    launchPmtilesPicker(Vietnam35Catalog.pickerRequestCode(region))
+                                }
+                                .setNegativeButton("Hủy", null)
+                                .show()
                         } else showVerifiedShortbread(region, selected)
                     }
                     .setNegativeButton("Đóng", null).show()
