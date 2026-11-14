@@ -314,3 +314,10 @@
 - [ ] Verify targeted 43586295098 terminal log marker SHORTBREAD_HOT_TAMPER_INVALID_STYLE_CLEARED_PASS plus original 266196 road pixels, SHA and cold-start markers; investigate any test failure without weakening assertions.
 - [ ] Check 43586295069 full normal Android, 43586295082 national, 43586295062 Hanoi/HCM and all four shards 43586295180 terminal results.
 - [ ] Still requires separate continuous in-session mutation detection, Xiaomi physical QA, ODbL redistribution, approved HTTPS hosting, routing graph, legal boundaries and private B2/R2 bucket policy/lifecycle review. Owner already saved both original ZIP artifacts to B2/R2; never upload again without authorization.
+
+## 2026-11-14 17:51 ICT active-map checksum acceptance
+- [x] Prove native Android user catalog recheck clears previously displayed cached local offline style if installed pack SHA differs: 43586295098 SUCCESS, no road-colored screenshot from corrupted data, cold-start still refuses.
+- [x] Recheck original nationwide 556MB real SAF+offline screenshot 43586295082 SUCCESS; Hanoi/HCM 43586295062 and Android debug 43586295069 SUCCESS.
+- [ ] Verify all 4 provincial shards in 43586295180 to terminal SUCCESS, compile done; don't infer until complete.
+- [ ] Consider adding same fail-closed blank style for local pack management Kiểm tra lại verification UI and optionally integrity detection on app resume. Current behavior requires user explicit catalog recheck, NOT automatic real-time monitoring.
+- [ ] Xiaomi hardware, ODbL redistribution, approved HTTPS map origins, proper routing and legal boundaries still blocked. Private B2/R2 backups already exist, no new upload or release.

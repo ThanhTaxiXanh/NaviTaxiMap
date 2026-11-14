@@ -169,3 +169,7 @@
 ## 2026-11-14 hot re-verification fails closed (pending Android acceptance)
 - 86985f3a: MainActivity clears existing cached Shortbread style to a local blank background on explicit SHA/PMTiles verification failure while offline preview is active, resets offline state, records SHORTBREAD_INVALID_STYLE_CLEARED. No unreviewed online fallback or route claims.
 - Add emulator test requiring real catalog re-select after app-private corruption, blank screenshot and no original source alteration, then cold-start refusal. Android workflows running; not marked accepted until terminal QA proof.
+
+## 2026-11-14 safe blank-map fallback on hot SHA mismatch
+- Production code 86985f3a clears cached local MapLibre style when user explicitly reopens a corrupted imported Shortbread region. Android emulator 43586295098 SUCCESS, log SHORTBREAD_HOT_TAMPER_INVALID_STYLE_CLEARED_PASS confirms no corrupt style or offline roads after revalidation.
+- National 43586295082 and Hanoi/HCM 43586295062 SUCCESS; general Android 43586295069 SUCCESS. Full 34-shard 43586295180 still running at checkpoint.

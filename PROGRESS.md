@@ -239,3 +239,7 @@
 ## 2026-11-14 ~17:43 ICT active-map integrity improvement awaiting emulator proof
 - New production fail-safe 86985f3a clears local offline style on explicit reverify SHA failure rather than leaving cached road tiles. Native Android test selects real region 24 through catalog AFTER modifying imported copy, checks for blank style/pixels and keeps cold-start regression.
 - CI 43586295098 targeted, 43586295069 normal Android, 43586295082 national, 43586295062 Hanoi/HCM, 43586295180 all 34 originals RUNNING; compile/JVM steps SUCCESS. Do not claim new hot-mode PASS until emulator markers confirmed.
+
+## 2026-11-14 17:51 ICT hot tamper safety proof
+- Code 86985f3a targeted QA 43586295098 SUCCESS. Original visible map 266,196 offline road pixels, installed copy subsequently altered, reselect same region from catalog while app stays open: checksum refusal, old MapLibre style cleared to local background, no road pixels; cold restart also refuses corrupt source.
+- National 43586295082, Hanoi/HCM 43586295062 and general Android 43586295069 SUCCESS. All-34 43586295180 shards still running, compile PASS.

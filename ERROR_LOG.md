@@ -201,3 +201,7 @@
 
 ## 2026-11-14 ~17:43 ICT potential stale map after reverify, defensive fix under test
 - Prior production showVerifiedShortbread failure showed checksum error but did not explicitly invalidate the already active MapLibre offline style; old cached tiles could remain visible. New defensive code 86985f3a replaces offline style with a safe local blank map on explicit re-verification error. Targeted QA 43586295098 IN PROGRESS, no accepted pixel proof yet.
+
+## 2026-11-14 17:51 ICT cached offline style ambiguity resolved on explicit recheck
+- Before code 86985f3a, user-requested revalidation could report invalid stored SHA but leave previously cached MapLibre offline roads visible. The code now changes to local empty background on failed verification while offlineDemo is active.
+- Native emulator 43586295098 SUCCESS demonstrates cleared background and zero offline road pixels after app-private one-byte mutation and region reselection, with no style loaded from corrupt file. Not proof of automatic detection without user action.

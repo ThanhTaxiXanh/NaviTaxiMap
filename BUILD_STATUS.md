@@ -275,3 +275,8 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 ## 2026-11-14 ~17:43 ICT live offline style blanking QA pending
 - Source 86985f3a triggers 43586295098 (focused active-map tamper), 43586295069 (general), 43586295082 (real national), 43586295062 (two regions), 43586295180 (34 provincial emulator shards). Initial Gradle/JUnit compilation jobs SUCCESS; Android QA in progress at checkpoint.
 - Previous stored-file cold-start tamper 43584575417 and debug 43584575373 SUCCESS, but these do NOT prove clearing an already visible cached map. Do not promote new status until CI proof.
+
+## 2026-11-14 17:51 ICT targeted checksum fallback accepted
+- 43586295098 SUCCESS: original Bắc Ninh 11,049,420 byte SHA, real SAF and 266,196 offline pixels, then hot one-byte mutation on app-private copy, 35-region reselect, SHA refusal, blank local style, zero offline road pixels, no invalid style loaded, followed by cold-start refusal.
+- 43586295082 SUCCESS: original nationwide 556,229,998 bytes stream SHA 678704befd7b4b42726199994671ddccb1c2c029daab40f53098709cd5b12d55, 157,112 offline road pixels. 43586295062 Hanoi/HCM and 43586295069 Android general both SUCCESS.
+- 43586295180 compile SUCCESS, four provincial emulator shards IN PROGRESS. Record final separately.
