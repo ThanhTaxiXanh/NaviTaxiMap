@@ -115,3 +115,8 @@
 ## 2026-11-14 source SHA 3-way ledger, sums and Android catalog agreement
 - Pinned source preservation verifier cross-checks all 35 exact filenames, codes, SHA256 and sizes against Android Vietnam35Catalog.kt as an independent third pin, plus preserves false source-distribution and navigation flags. Added tampered-both-manifests regression; 9 tests run normal + `python -O`.
 - CI 43530846327 SUCCESS on all test modes and real 843734803 bytes original files, uploads only metadata. No durable backup, distribution host or routing approval.
+
+
+## 2026-11-14 manual secure local original ZIP copies (opt-in only)
+- Added `tools/vietnam34/copy_private_originals.py`: explicit source ZIPs and owner-approved POSIX 0700 directory, full stream PMTiles verification, no network/upload, 0600 temporary 1MiB copy, SHA of whole ZIP, atomic no-overwrite hardlink, fsync, check-on-rerun and local metadata receipt. Never writes PMTiles to GitHub/online destination.
+- Added 7 mocked ZIP regression tests and included in Android and source-verification CI. No actual private persistent backup performed; owner must run with saved originals. Previous all-green Android 43530846299 and real source 43530846327 confirmed.

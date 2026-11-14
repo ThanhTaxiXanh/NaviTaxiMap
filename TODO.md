@@ -202,3 +202,11 @@
 - [ ] Check Android CI 43530846299 final two-job status and preserve failure details honestly if emulator fails.
 - [ ] Before 2026-11-27 06:25 UTC, save both original temporary artifacts to an explicitly owner-approved **private persistent storage** and verify saved ZIPs. The CI receipt (metadata) is NOT backup; repository/CDN/Releases upload not authorized.
 - [ ] Keep distribution and navigation approvals false; ODbL, legally reviewed borders, Xiaomi, durable HTTPS origin and consent-based download remain separate gates.
+
+
+## 2026-11-14 immediate owner-driven backup readiness
+- [x] Android emulator 43530846299 SUCCESS both jobs; private original source checksum CI 43530846327 SUCCESS all 35.
+- [x] Implement manual, no-network, owner-path-required `copy_private_originals.py` storing exact original ZIP container privately, with 7 fake ZIP regression tests and atomic no-overwrite, SHA all internal originals.
+- [ ] Confirm CI 43533660474 and 43533660507 terminal results. Report failures truthfully; do not claim private backup created by CI.
+- [ ] Owner: download BOTH original artifact ZIPs from 43378133931, nominate/create a private POSIX destination (mode 0700), run `copy_private_originals.py` and re-verify saved originals BEFORE 2026-11-27 06:25 UTC. Without manual private storage, both old artifacts will expire. Do not upload real ZIP data to new services without owner authorization.
+- [ ] ODbL, hosting, source approval, Xiaomi, navigation/legal boundary gates remain CLOSED.

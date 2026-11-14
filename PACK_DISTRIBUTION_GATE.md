@@ -62,3 +62,8 @@ Chạy bằng `gradle --no-daemon :app:testDebugUnitTest :app:assembleDebug` tro
 - `PRIVATE_ORIGINAL_BACKUP.md` provides only an owner-run **private** offline preservation workflow. Python verifier reads actual 35 files or original ZIP artifacts, checks full SHA256/byte size/header and writes JSON receipt containing NO PMTiles data. CI 43526911330 successful; original source GitHub Actions artifact still expires Nov 27.
 - **No private durable backup has yet been made by this CI.** The successful metadata-only receipt (artifact 14085237703, 2872 bytes) cannot recreate the original 843734803 bytes.
 - `Vietnam35Catalog.distributionApproved=false` and empty reviewed host registry unchanged. Public cloud upload, product downloading, legal borders/routing approval remain forbidden until explicit approval.
+
+
+## 2026-11-14 local preservation is not public distribution
+- `copy_private_originals.py` is strictly operator-invoked for **local owner-approved private POSIX directory** and two already-downloaded original ZIPs. It is not called by Android or the CI to save real PMTiles; only synthetic ZIP test fixtures are used. The source 35-pack CI still uploads ONLY receipt metadata. No preconfigured private destination or Internet service is authorized.
+- `distributionApproved=false` and `ReviewedShortbreadSources.byCode=emptyMap()` remain; no uploads, releases, public map download, border/routing approvals.

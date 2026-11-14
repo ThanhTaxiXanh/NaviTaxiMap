@@ -184,3 +184,8 @@ Real OSM pilot source snapshot: workflow https://github.com/ThanhTaxiXanh/NaviTa
 ## 2026-11-14 07:05 ICT three-way source pin cross-validation
 - Private preservation verifier now checks exact 35 source pins across `PACK_BYTES_VERIFIED.tsv`, `SHA256SUMS.txt` and live Android `Vietnam35Catalog.kt`; requires distribution/navigation false. Code 64838b and a ninth regression test for simultaneous ledger+sum modification. Mandatory validation also remains enabled with Python `-O`.
 - Full actual archive CI 43530846327 SUCCESS (9/9 normal + 9/9 optimized tests, 35 real archives, 843734803 bytes, metadata receipt only). CI Android 43530846299 pending as of checkpoint. No durable backup or distribution authorization.
+
+
+## 2026-11-14 07:22 ICT local private ZIP preservation helper (not executed on originals)
+- Previous Android 43530846299 SUCCESS both build/emulator; 35 original source archive 43530846327 SUCCESS 843734803 full SHA/magic. Original source GitHub artifacts expire 2026-11-27 ~06:25 UTC, no durable backup has been made.
+- Code 40c6ffd adds explicit owner-invoked, network-free `copy_private_originals.py`. Requires manually downloaded source ZIPs, existing POSIX private destination 0700, SHA-verify source PMTiles and original ZIP container, bounded 1MiB copy to 0600 temp, full destination verify and fsync; atomic no-overwrite hardlink and safe idempotent resume, local metadata-only receipt. Seven fake ZIP unit tests cover private mode, no overwrite, corruption, symlink, low disk and receipt immutability. No real original pack copy is performed from CI or this chat. Source/Android workflows 43533660474 and 43533660507 pending.

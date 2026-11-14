@@ -179,3 +179,9 @@
 ## 2026-11-14 07:05 ICT provenance safety improvement
 - Commit 64838b: SHA ledger and sums alone are insufficient; require agreement with pinned Android catalog for all 35 file names/codes/bytes/SHA. 9 regression tests now include dual-source checksum drift, under normal Python and `-O`.
 - Actual 35 file full SHA scan CI 43530846327 SUCCESS, 843734803 verified bytes; receipt only, not backup. Android CI 43530846299 in progress.
+
+
+## 2026-11-14 07:22 ICT usable owner-controlled backup procedure
+- Finished Android CI 43530846299 SUCCESS build/emulator. Original 35-pack SHA verifier 43530846327 SUCCESS.
+- Added optional local-only PRIVATE ZIP copy tool, atomic no-overwrite, full ZIP container SHA and internal PMTiles verification, 7 fake tests. Commit 40c6ffd. The tool requires owner-specified already-private path and manual invocation; none supplied and no backup created.
+- Pending workflows 43533660474 source+fake backup tests and 43533660507 Android+fake backup tests. Two source GitHub artifacts still expire 27 Nov.

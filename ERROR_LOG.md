@@ -157,3 +157,8 @@
 ## 2026-11-14 integrity gap: mutually consistent checksum text files still could be wrong
 - Former `pinned_ledger()` docstring claimed three repository pin sources but implementation only cross-compared TSV and SHA256SUMS. Simultaneous accidental edits could pass. Code 64838b now validates the third independent `Vietnam35Catalog.kt`, including 35 distinct file pins and disabled distribution/navigation flags. A mock test changes the same hash in both text records, now properly fails against Android catalog.
 - New CI 43530846327 SUCCESS: 9 tests with and without Python `-O` and original 35 archived PMTiles full source SHA. Does not establish any physical backup; no data corruption found.
+
+
+## 2026-11-14 private source backup safety constraints
+- Not an error: 43530846299 and 43530846327 both SUCCESS; previous Android CI pending is resolved.
+- Current owner-controlled backup is NOT yet exercised on 35 true files at an approved private destination. To avoid accidental data distribution, code 40c6ffd only supplies a local manual CLI and fake ZIP tests; separate CI source verifier still reads original GitHub artifacts ephemerally and publishes only metadata receipt. Follow-up 43533660474/43533660507 pending.

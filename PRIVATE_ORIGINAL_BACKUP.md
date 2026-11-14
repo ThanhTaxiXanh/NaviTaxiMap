@@ -76,3 +76,21 @@ Từ commit `9935d982` (test chốt bằng `a1926367`), công cụ kiểm chứn
 
 ## Thêm lớp xác thực với danh mục Android (14/11/2026)
 Công cụ `verify_private_preservation.py` ngoài so sánh `PACK_BYTES_VERIFIED.tsv` và `SHA256SUMS.txt` còn đối chiếu đúng 35 mục SHA/kích thước/tên/mã với `Vietnam35Catalog.kt`, kiểm cờ không cấp phép phân phối/điều hướng. Nếu thay nhầm cùng một SHA ở cả hai tệp văn bản, công cụ phải từ chối do khác catalog. CI 43530846327 **SUCCESS** 9 test ở cả Python thường và `-O`, kiểm 35 tệp nguồn thật 843.734.803 byte. Vẫn chỉ tạo receipt, không sao lưu ZIP gốc dài hạn; cần nơi riêng tư đã phê duyệt trước 27/11/2026.
+
+
+## 5. Sao chép hai ZIP vào thư mục **riêng tư đã được chủ dự án chấp thuận** (tùy chọn)
+
+Bên cạnh công cụ **kiểm tra chỉ đọc** ở mục 2, từ commit `40c6ffd` có công cụ **sao chép thủ công** vào thư mục cục bộ. Không có thao tác tự động nào từ ChatGPT hoặc CI tạo bản backup riêng tư thực tế.
+
+Chỉ dùng trên Linux/macOS có POSIX file permissions; tạo thư mục trên ổ riêng tư đã được chủ dự án phê duyệt rồi khóa quyền mode 0700. Ví dụ minh họa bằng placeholder, không phải đường dẫn đã được duyệt:
+```bash
+mkdir -m 700 -p "/THU_MUC_RIENG_TU_DA_DUOC_DUYET"
+python3 tools/vietnam34/copy_private_originals.py \
+  --provinces "/TAP_TIN_GOC/34-tinh.zip" \
+  --national "/TAP_TIN_GOC/toan-quoc.zip" \
+  --destination "/THU_MUC_RIENG_TU_DA_DUOC_DUYET"
+```
+
+Điều kiện PASS bắt buộc: `PRIVATE_OFFLINE_BACKUP_COPY_PASS files=35 pmtiles_bytes=843734803`. Công cụ KHÔNG tải qua Internet, chỉ đọc hai ZIP **đã tải thủ công** và kiểm 35 PMTiles thật bên trong. Kiểm SHA toàn ZIP nguồn, sao chép theo luồng tới temp 0600, kiểm lại ZIP đích, tạo tệp đích bằng hard-link atomic no-overwrite để không ghi đè bản cũ, và xuất `NaviTaxiMap-private-backup-receipt.json` metadata-only trong cùng thư mục. Nếu bị gián đoạn sau ZIP đầu, lần chạy lại nhận ra ZIP đầu đã kiểm đúng và chép ZIP thứ hai; nếu có file trùng tên nhưng sai byte, từ chối ghi đè. Thư mục không được dùng symlink hoặc có quyền group/others.
+
+**QUAN TRỌNG:** Chưa có thư mục thực được chủ dự án cung cấp, nên công cụ này chưa được dùng để sao lưu 843.734.803 byte. GitHub Actions chỉ dùng **ZIP giả** trong unit tests, không sao lưu hai artifact nguồn ra nơi mới. Khuyến nghị giữ thêm một bản độc lập ngoài thiết bị và thử phục hồi sau khi có quyền lưu trữ rõ ràng. Không upload ZIP vào GitHub Releases, CDN, URL phân phối hoặc bên thứ ba khi chưa được duyệt ODbL và chính sách lưu trữ.
