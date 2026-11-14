@@ -210,3 +210,11 @@
 - [ ] Confirm CI 43533660474 and 43533660507 terminal results. Report failures truthfully; do not claim private backup created by CI.
 - [ ] Owner: download BOTH original artifact ZIPs from 43378133931, nominate/create a private POSIX destination (mode 0700), run `copy_private_originals.py` and re-verify saved originals BEFORE 2026-11-27 06:25 UTC. Without manual private storage, both old artifacts will expire. Do not upload real ZIP data to new services without owner authorization.
 - [ ] ODbL, hosting, source approval, Xiaomi, navigation/legal boundary gates remain CLOSED.
+
+
+## 2026-11-14 next concrete verification
+- [x] Build manual owner-invoked private ZIP local copy helper; fake tests, 43533660474 source checker all SUCCESS. No owner-approved private destination or real backup yet.
+- [x] Inspect failed 43533660507 emulator artifact 14088907632: real Hanoi road viewport blank even with correct OSM/non-navigation UI and previously working synthetic geometry. Strict 500+ blue-road acceptance deliberately did not pass.
+- [x] Add one bounded real OSM pilot app relaunch, preserve first blank screenshot/logcat and require same road pixels, commit 786823a.
+- [ ] Inspect terminal CI 43534938551; if still FAIL, diagnose from second-round actual screenshot/logs, do not skip real OSM road geometry.
+- [ ] PRIORITY before Nov27 2026 06:25 UTC: owner must save BOTH short-lived original ZIP artifacts to explicitly approved PRIVATE durable storage, then use copy tool or verifier to validate copied bytes. Current CI receipt is not a backup.

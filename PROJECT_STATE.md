@@ -189,3 +189,9 @@ Real OSM pilot source snapshot: workflow https://github.com/ThanhTaxiXanh/NaviTa
 ## 2026-11-14 07:22 ICT local private ZIP preservation helper (not executed on originals)
 - Previous Android 43530846299 SUCCESS both build/emulator; 35 original source archive 43530846327 SUCCESS 843734803 full SHA/magic. Original source GitHub artifacts expire 2026-11-27 ~06:25 UTC, no durable backup has been made.
 - Code 40c6ffd adds explicit owner-invoked, network-free `copy_private_originals.py`. Requires manually downloaded source ZIPs, existing POSIX private destination 0700, SHA-verify source PMTiles and original ZIP container, bounded 1MiB copy to 0600 temp, full destination verify and fsync; atomic no-overwrite hardlink and safe idempotent resume, local metadata-only receipt. Seven fake ZIP unit tests cover private mode, no overwrite, corruption, symlink, low disk and receipt immutability. No real original pack copy is performed from CI or this chat. Source/Android workflows 43533660474 and 43533660507 pending.
+
+
+## 2026-11-14 private copy helper and emulator Hanoi pilot blank viewport
+- Local private original ZIP copy CLI code 40c6ffd (never auto-run against originals), seven fake ZIP regressions and source 43533660474 all SUCCESS, 35 originals 843734803 bytes verified. Original source artifacts expire 27 Nov UTC; no destination approved, no durable backup.
+- Android 43533660507 build+unit SUCCESS but emulator FAIL on actual Hanoi pilot blank screen: zero blue roads after 9 probes; artifact 14088907632 screenshot and XML show valid UI attribution and no-navigation status, but blank map viewport. Synthetic PMTiles earlier in SAME run 39985 pixels and SAF import passed, so not evidence of original 35 source corruption.
+- CI-only fix 786823a permits one bounded relaunch of genuine pilot, then strict road pixel/attribution/SAF checks. Follow-up Android 43534938551 pending at checkpoint.

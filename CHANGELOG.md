@@ -120,3 +120,8 @@
 ## 2026-11-14 manual secure local original ZIP copies (opt-in only)
 - Added `tools/vietnam34/copy_private_originals.py`: explicit source ZIPs and owner-approved POSIX 0700 directory, full stream PMTiles verification, no network/upload, 0600 temporary 1MiB copy, SHA of whole ZIP, atomic no-overwrite hardlink, fsync, check-on-rerun and local metadata receipt. Never writes PMTiles to GitHub/online destination.
 - Added 7 mocked ZIP regression tests and included in Android and source-verification CI. No actual private persistent backup performed; owner must run with saved originals. Previous all-green Android 43530846299 and real source 43530846327 confirmed.
+
+
+## 2026-11-14 private backup helper QA and real-OSM emulator renderer retry
+- Source original private 35-pack verification workflow 43533660474 SUCCESS and private no-overwrite ZIP copy unit tests all PASS. Android same code 43533660507 failed at zero pixels in separate real Hanoi sample MapLibre map despite synthetic geometry and SAF passing; evidence artifact 14088907632 inspected.
+- Added strictly bounded single real OSM pilot relaunch in emulator CI only (786823a), retaining original pixel threshold and UI warnings; new CI 43534938551 pending.

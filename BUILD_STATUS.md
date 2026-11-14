@@ -205,3 +205,9 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 ## 2026-11-14 07:22 ICT backup tool QA
 - 43530846299 Android debug/emulator **SUCCESS** and 43530846327 all 35 original source SHA **SUCCESS**.
 - New 40c6ffd source-preservation workflow 43533660474 and Android workflow 43533660507 **PENDING**; new test module is fake ZIP only, never copies real PMTiles to uploaded artifact. No release.
+
+
+## 2026-11-14 07:32 ICT exact CI outcomes
+- **43533660474 SUCCESS** original 35 archive integrity and fake private copy tests.
+- **43533660507 FAILURE**, Android debug/JUnit SUCCESS, emulator FAILED ONLY at real OSM Hanoi pilot blue road screenshot (zero pixels), despite synthetic 39985 pixels + SAF SHA and valid UI warnings. Evidence artifact 14088907632 inspected.
+- CI-only bounded same-real-pilot relaunch code 786823aba0c2132b99200615bc0964cefeb8df81, new 43534938551 PENDING. Keep source integrity and rendering acceptance unchanged.
