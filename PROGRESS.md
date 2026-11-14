@@ -231,3 +231,7 @@
 ## 2026-11-14 ~17:05 ICT new checksum integrity regression complete
 - Test-only a1102b73 PASS GitHub 43582840539: same-name, same-size, identical-header PMTiles copy with one corrupted byte rejected with Source checksum mismatch and empty app-private store; untouched source restored and exact pinned SHA/11049420 bytes plus 266196 offline road pixels PASS.
 - General Android build/JUnit+emulator CI 43582840525 SUCCESS. B2/R2 ZIP originals already verified by 43567301480; no upload in this session.
+
+## 2026-11-14 ~17:24 ICT previously imported file tamper safety QA passed
+- New emulator regression 4facd595 + harness correction 59c40667. CI 43584575417 SUCCESS: real imported Bắc Ninh full SHA 11049420 bytes, 266196 offline road pixels, then app-private archive content mutated and private SHA intentionally differs. Cold-start verifyPack refuses corrupted stored file, logs SHORTBREAD_POST_IMPORT_TAMPER_COLD_START_REFUSED_PASS, no style load or offline roads from corrupt data; original Downloads bytes unchanged.
+- 43584575373 SUCCESS Android build/JUnit + emulator. Initial 43584011441 failure was unreliable one-byte adb read test setup, fixed, not app failure. Private backups B2/R2 untouched. No PR/main/merge/release.

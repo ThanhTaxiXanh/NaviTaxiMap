@@ -194,3 +194,7 @@
 
 ## 2026-11-14 ~16:43 ICT expected wrong-region refusal proven, not a defect
 - Real Android DocumentsUI negative test 43581299023 SUCCESS. Test alias named 01-ha-noi.pmtiles (contents of original 24-bac-ninh.pmtiles in emulator only) was rejected specifically as wrong region before any app-private import. Positive original source import immediately afterwards showed full hash and 266196 offline road pixels. No observed incorrect promotion.
+
+## 2026-11-14 ~17:24 ICT resolved Android test harness byte readback failure
+- Real emulator workflow 43584011441 FAILED in new CI-only ci/shortbread-post-import-tamper.py at AssertionError: Could not read app-private target byte. The adb exec-out run-as dd output did not provide a reliable exactly-one-byte readback. Before that stage the real original 24-bac-ninh.pmtiles imported with correct SHA/size and rendered 266196 road-colored pixels offline, so the failure does NOT demonstrate a PMTiles integrity bug.
+- Test-only commit 59c40667 removes one-byte readback, writes one byte to private test COPY and checks full source SHA differs. Targeted 43584575417 SUCCESS: internal SHA changed, stored file refused on cold start before any style load, no offline road pixels; general Android 43584575373 SUCCESS. Failure remains in history, no original archive or cloud backup was modified. This scope does not cover hot modification of an already displayed map.

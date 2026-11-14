@@ -299,3 +299,11 @@
 - [x] Confirm normal Android build/JUnit/emulator 43582840525 SUCCESS.
 - [ ] Potential next task: mutate an already imported private file and verify refusal to render, without damaging unrelated valid data. Extend direct region catalog UI QA beyond Bắc Ninh.
 - [ ] Xiaomi physical test, ODbL redistribution, reviewed app HTTPS source, routing graph, legal boundary review and B2/R2 bucket settings remain separate approval gates; no PR/merge/release/main.
+
+## 2026-11-14 ~17:24 ICT post-import tamper milestone complete
+- [x] Test real imported app-private PMTiles originally verified and rendered; flip one byte in app-private copy and prove whole-file SHA differs, original Downloads SHA intact.
+- [x] Cold-restart production code path refuses modified stored file before MapLibre style load; UI reports SHA-256/PMTiles changed, no offline road screenshot from corrupt file. Targeted CI 43584575417 SUCCESS.
+- [x] General Android build/JUnit/emulator at identical code SHA 59c40667, 43584575373 SUCCESS.
+- [x] Document prior 43584011441 FAILED due test harness one-byte dd readback returning empty; fixed with full private file hash test-only 59c40667.
+- [ ] Additional protection/QA for modification WHILE an offline MapLibre style is already displaying, plus alternate region direct-picker UX and local data management.
+- [ ] Physical Xiaomi, licensing/ODbL review, reviewed HTTPS origins/manifest and explicit download consent, legally correct maritime/admin layers, routing graph and B2/R2 private bucket-policy/lifecycle check remain not approved. Two owner ZIP backups already uploaded and checksum-confirmed; do NOT re-upload without authorization. No PR/merge/release/main.

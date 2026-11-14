@@ -161,3 +161,7 @@
 ## 2026-11-14 source SHA tampering test accepted
 - Commit a1102b73 adds test-only byte-mutation copy of original Bac Ninh PMTiles under SAME filename/size/header. Android refuses the wrong SHA, leaves no private data, restores genuine source and proves offline map/attribution.
 - CI 43582840539 SUCCESS targeted, CI 43582840525 SUCCESS normal build/emulator. Original ZIPs and B2/R2 backups remain untouched.
+
+## 2026-11-14 stored pack cold-start tamper QA
+- 4facd595 added CI-only Android post-import tamper test and workflow path trigger. Genuine Bắc Ninh PMTiles loaded successfully, then one byte of only emulator app-private copy changed. Run 43584011441 initially FAILED at test-only adb dd one-byte readback, before mutation, despite positive map QA PASS.
+- 59c40667 removed the brittle byte-readback, instead verifying a changed file via complete app-private SHA. New focused 43584575417 SUCCESS: stored tamper refused before MapLibre loads style, no offline road pixels. General 43584575373 SUCCESS. No production Android code changes or source archive/ZIP/cloud writes.
