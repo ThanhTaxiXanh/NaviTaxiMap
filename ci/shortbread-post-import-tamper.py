@@ -73,7 +73,7 @@ def main():
         raise AssertionError("Could not read app-private target byte")
     # A deterministic change with no resize and no alteration to the header.
     # If the original byte is zero, try a bounded random byte until different.
-    source = "/dev/zero" if original_byte != b"\\x00" else "/dev/urandom"
+    source = "/dev/zero" if original_byte != bytes([0]) else "/dev/urandom"
     for _ in range(12):
         picker.adb("shell", "run-as", APP, "dd",
                    "if=" + source, "of=" + relative,
