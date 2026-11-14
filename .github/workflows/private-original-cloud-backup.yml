@@ -26,16 +26,16 @@ jobs:
           echo 'PRIVATE_CLOUD_BACKUP_PREFLIGHT_PASS no cloud upload'
       - name: Check Secret names only, never read or display their values
         env:
-          B2_KEY_ID: \${{ secrets.B2_KEY_ID }}
-          B2_APPLICATION_KEY: \${{ secrets.B2_APPLICATION_KEY }}
-          B2_BUCKET: \${{ secrets.B2_BUCKET }}
-          R2_ACCESS_KEY_ID: \${{ secrets.R2_ACCESS_KEY_ID }}
-          R2_SECRET_ACCESS_KEY: \${{ secrets.R2_SECRET_ACCESS_KEY }}
-          R2_ACCOUNT_ID: \${{ secrets.R2_ACCOUNT_ID }}
-          R2_BUCKET: \${{ secrets.R2_BUCKET }}
+          B2_KEY_ID: ${{ secrets.B2_KEY_ID }}
+          B2_APPLICATION_KEY: ${{ secrets.B2_APPLICATION_KEY }}
+          B2_BUCKET: ${{ secrets.B2_BUCKET }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
         run: |
           for name in B2_KEY_ID B2_APPLICATION_KEY B2_BUCKET R2_ACCESS_KEY_ID R2_SECRET_ACCESS_KEY R2_ACCOUNT_ID R2_BUCKET; do
-            if [[ -n "\${!name:-}" ]]; then
+            if [[ -n "${!name:-}" ]]; then
               echo "Secret $name: configured"
             else
               echo "::warning::Secret $name: NOT CONFIGURED"
@@ -57,14 +57,14 @@ jobs:
           rclone version
       - name: Download pinned original ZIP artifacts, verify 35 contents, copy PRIVATE and read back
         env:
-          GH_ACTIONS_TOKEN: \${{ github.token }}
-          B2_KEY_ID: \${{ secrets.B2_KEY_ID }}
-          B2_APPLICATION_KEY: \${{ secrets.B2_APPLICATION_KEY }}
-          B2_BUCKET: \${{ secrets.B2_BUCKET }}
-          R2_ACCESS_KEY_ID: \${{ secrets.R2_ACCESS_KEY_ID }}
-          R2_SECRET_ACCESS_KEY: \${{ secrets.R2_SECRET_ACCESS_KEY }}
-          R2_ACCOUNT_ID: \${{ secrets.R2_ACCOUNT_ID }}
-          R2_BUCKET: \${{ secrets.R2_BUCKET }}
+          GH_ACTIONS_TOKEN: ${{ github.token }}
+          B2_KEY_ID: ${{ secrets.B2_KEY_ID }}
+          B2_APPLICATION_KEY: ${{ secrets.B2_APPLICATION_KEY }}
+          B2_BUCKET: ${{ secrets.B2_BUCKET }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
         run: bash ci/private-original-cloud-backup.sh
       - name: Upload METADATA receipt ONLY, never source ZIP bytes
         if: success()
