@@ -664,9 +664,9 @@ class MainActivity : Activity(), LocationListener {
                         if (imported.any { region.matches(it) }) " · đã nhập" else " · chưa nhập"
                 }.toTypedArray()
                 AlertDialog.Builder(this)
-                    .setTitle("Shortbread 1.0 · 35 gói chưa duyệt")
-                    .setMessage("Chỉ dùng PMTiles đã nhập bằng DocumentsUI với tên, zoom, SHA-256 chính xác. " +
-                        "Không có URL tải lâu dài đã duyệt. Không dẫn đường hay xác định biên giới.")
+                    // AlertDialog cannot render both a message panel and a list:
+                    // using setMessage hid all 35 selectable entries on Android.
+                    .setTitle("Shortbread 1.0 · 35 gói · KHÔNG dẫn đường")
                     .setItems(labels) { _, index ->
                         val region = entries[index]
                         val selected = imported.firstOrNull { region.matches(it) }

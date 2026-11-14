@@ -7,6 +7,7 @@ pixels in airplane mode. It never reaches an online distribution endpoint.
 """
 import importlib.util
 import os
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -25,11 +26,42 @@ if picker.EXPECTED_HASH != "6edc513adf8b8ad467982e818dc3450fcbbb14076ca2bf4bac35
     raise ValueError("Unexpected Bac Ninh SHA-256 test pin")
 
 
+def select_bac_ninh_in_scrollable_catalog():
+    # The 35-item Android AlertDialog is scrollable and Bắc Ninh is the
+    # twelfth entry, commonly below the first screen. Never assume fixed
+    # screen coordinates or silently select a different province.
+    for page in range(9):
+        root = picker.snapshot(f"region-catalog-page-{page}")
+        matches = [node for node in picker.nodes(root)
+                   if picker.candidate(node, ["24 · Bắc Ninh"])]
+        if matches:
+            picker.tap_node(matches[-1])
+            time.sleep(1.2)
+            return
+        scrollables = [node for node in picker.nodes(root)
+                       if node.get("scrollable") == "true"]
+        candidates = []
+        for node in scrollables:
+            match = re.fullmatch(r"\\[(\\d+),(\\d+)\\]\\[(\\d+),(\\d+)\\]",
+                                 node.get("bounds", ""))
+            if match:
+                x1, y1, x2, y2 = map(int, match.groups())
+                if x2 - x1 > 50 and y2 - y1 > 150:
+                    candidates.append((y2 - y1, (x1+x2)//2, y1, y2))
+        if not candidates:
+            raise RuntimeError("No scrollable 35-region catalog entries exposed")
+        _, x, y1, y2 = max(candidates)
+        picker.adb("shell", "input", "swipe", str(x), str(y2-35),
+                   str(x), str(y1+35), "450")
+        time.sleep(0.8)
+    raise RuntimeError("Region 24 missing after scrolling exact catalog")
+
+
 def open_direct_region_picker():
     picker.adb("shell", "rm", "-f", "/sdcard/navitaxi-picker.xml", check=False)
     picker.select_text("app", ["Dữ liệu bản đồ"])
     picker.select_text("menu", ["35 gói Shortbread"])
-    picker.select_text("region", ["24 · Bắc Ninh"])
+    select_bac_ninh_in_scrollable_catalog()
     picker.select_text("region-confirm", ["Chọn tệp trên thiết bị"])
     picker.screenshot("direct-region-picker-open")
     picker.snapshot("direct-region-picker-open")
