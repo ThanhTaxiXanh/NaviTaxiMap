@@ -81,3 +81,9 @@ Despite three independently proven full region PMTiles renders (CI 43387711796 a
 ## CI after 35/35 genuine original visual proofs
 - Full national pack import/sha/airplane screenshot success repeated 43454411510 (first SAF attempt, 556,229,998 byte stream, 157,112 road pixels), alongside successful Android full 43454411956 and Bac Ninh 43454411692.
 - Multi-region Hanoi/HCM duplicate QA hit OS Pixel Launcher ANR 43454411531 before selecting the file. Retry mechanism now recovers exactly once for this class only (720efe42); pre-emulator shell/Python syntax gate e05b1ed. CI 43455374999 pending, province rerun 43454411678 ongoing.
+
+## 2026-11-14 verification update, exact region-picker
+- Android local Shortbread 1.0 style and frozen 35 SHA pins remained unchanged. All 34 original provincial archives reverified in [43569186171](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43569186171) SUCCESS (4/4 emulator shards plus build). Real national archive visual/stream proof 43441211821 and repeated 43569186220 SUCCESS.
+- Region-list UI bug from simultaneous AlertDialog message and items was fixed in e5bc37de. Real user-facing catalog -> select Bac Ninh -> SAF SHA/size -> offline roads 266,196 pixels with OSM attribution and no-navigation warning PASS 43569253498. Direct catalog picker tested on Bac Ninh only, though original archives all have separate offline QA.
+- New exact wrong-region negative test ebab5fc0 intentionally labels original Bac Ninh bytes as 01-ha-noi.pmtiles on emulator only. It must be refused for selected region 24 BEFORE storing any archive; then the correct original must still import and render. CI 43581299023 IN PROGRESS, do not claim test PASSED until job proof.
+- Manual user-selected archives only; no unreviewed public map download, signed release, navigation or legal boundary approval.
