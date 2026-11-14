@@ -227,3 +227,9 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 ## 2026-11-14 ~11:12 ICT B2/R2 upload errors are configuration, not app/source faults
 - 43554976535 preflight PASS, uploader FAIL before download due malformed `R2_ACCOUNT_ID` format (expected 32-hex ID).
 - 43555218616 preflight PASS and 35/35 real PMTiles SHA/bytes full verification PASS in temporary runner, but B2 upload rejected because `B2_BUCKET` Secret mismatched Application Key restricted bucket; R2 not attempted due fail-closed. Zero confirmed cloud backups. App CI prior 43554159316 SUCCESS; code safeguards intact.
+
+
+## 2026-11-14 13:43 ICT final B2/R2 cloud backup CI
+- [43567301480](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43567301480) **SUCCESS both jobs**, full 35 original PMTiles 843734803 SHA, B2 full copy readback PASS, Cloudflare R2 full copy readback PASS; combined PASS. Receipt artifact 14103007744, 3272 bytes, metadata only.
+- R2 first attempt(s) saw transient `NotImplemented` errors under old Ubuntu rclone, automatically retried successfully; final SHA/readback and both jobs green. No PMTiles uploaded in GitHub artifacts.
+- Earlier 43555218616 failure due restricted B2 bucket secret mismatch and 43554976535 failure due bad R2_ACCOUNT_ID were resolved by owner changing GitHub Secrets. Android recent 43555218732 SUCCESS; this backup does not alter Android source gates.

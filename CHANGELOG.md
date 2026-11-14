@@ -134,3 +134,8 @@
 ## 2026-11-14 explicit owner-opt-in B2 and Cloudflare R2 preservation transfer
 - Added develop-only private original ZIP cloud uploader using exact existing source GitHub artifacts 14015875271 & 14015113186, 35 SHA/size PMTiles check, immutable B2/R2 copies, readback checks and metadata-only success receipt.
 - Source data is never uploaded to new GitHub artifacts or released, no public bucket policy or app download change. First workflow 43554159334 preflight PASS and all seven GitHub Secret names configured; uploader deliberately skipped pending explicit owner authorization. GitHub repo main not modified.
+
+
+## 2026-11-14 owner-approved Backblaze B2 + Cloudflare R2 backup of ORIGINAL ZIPs
+- Owner corrected GitHub Secrets; immutable upload of both pinned original GitHub Actions artifact ZIPs to both B2 and R2 under `originals/github-run-43378133931/`, readback validation of both copies and 35 embedded PMTiles checksums fully PASS. [Run 43567301480](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43567301480) both jobs SUCCESS.
+- Metadata-only artifact 14103007744 (3272 bytes, B2/R2 confirmations + ZIP SHA + PMTiles receipt), source bytes not published; Android `distributionApproved=false`, trusted URLs empty, no change to main or release.

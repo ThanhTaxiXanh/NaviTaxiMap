@@ -72,3 +72,8 @@ Chạy bằng `gradle --no-daemon :app:testDebugUnitTest :app:assembleDebug` tro
 ## 2026-11-14 two external PRIVATE cloud backups are separate from public distribution
 - New opt-in cloud workflow backs up ORIGINAL two GitHub Actions artifact ZIPs only after owner authorization `[private-backup-go]` on develop. GitHub preflight 43554159334 shows all 7 Secrets configured but upload job skipped; no cloud copy or valid public distribution URL exists.
 - On owner approval: full 35 original SHA-256+size+PMTiles v3 before upload, both private B2 & R2 readback after upload, metadata-only receipt. Cloud backups must remain Private and cannot be repurposed as app sources. DistributionApproved still false, reviewed HTTPS source registry empty, navigation/border review absent.
+
+
+## 2026-11-14 original source now stored privately in B2 and R2; PUBLIC DISTRIBUTION REMAINS CLOSED
+- Owner-approved source preservation run 43567301480 **SUCCESS**: SHA verified 35 original PMTiles 843734803 bytes before immutable uploads, two original artifact ZIPs copied separately into B2 and R2, full bytes readback from both cloud remotes PASS. Metadata receipt 14103007744 contains no map data. Private storage is for disaster recovery only.
+- Private bucket/object public exposure settings still require owner dashboard confirmation. This does NOT create approved HTTPS map source, ODbL redistribution clearance, traffic routing permissions or legal boundary validation. `distributionApproved=false`, `navigationApproved=false`, reviewed Shortbread HTTPS sources empty, main branch unchanged; do NOT create public links.

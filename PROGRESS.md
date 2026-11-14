@@ -201,3 +201,9 @@
 - GitHub 43554159334 SUCCESS; all 7 recommended B2/R2 Actions Secrets configured, 9 preservation unit and 7 fake ZIP copy tests passed. Upload job skipped by explicit opt-in marker gate.
 - Added CI transfer workflow with pinned two original Actions ZIPs, full 35-pack hash verification and two immutable private bucket copies plus remote readback. NOT YET RUN. No original PMTiles transferred.
 - Before Nov27 2026 original artifact expiry, owner verifies private bucket status and authorizes explicit backup run.
+
+
+## 2026-11-14 13:43 ICT first durable ORIGINAL source cloud preservation SUCCESS
+- **DONE** private B2 and R2 original artifact ZIP backup in workflow 43567301480: 35 full PMTiles SHA before upload; 2 original ZIP containers to each private configured bucket; complete byte readback check from both providers PASS. Preflight and upload jobs SUCCESS.
+- Metadata-only 3272-byte receipt artifact 14103007744 includes B2/R2 pass markers, original ZIP SHA256 and 35 pins. GitHub original source expiration Nov27 is no longer the sole source-retention point.
+- Pending follow-up: visually verify B2 bucket access=Private, Cloudflare Public Development URL=Disabled and no public custom domain; ensure lifecycle/retention/2FA, independent restore test at reasonable cadence. Original backup is not license/distribution approval.

@@ -242,3 +242,12 @@
 - [ ] On phone, GitHub → repository Settings → Secrets and variables → Actions, EDIT `B2_BUCKET` to match the Backblaze Application Key's **exact allowed bucket** and `R2_ACCOUNT_ID` to the real 32 hex Cloudflare account ID. NEVER send values to chat.
 - [ ] After fixes, trigger another owner-authorized develop [private-backup-go] run and confirm actual B2 and R2 private uploads with FULL remote byte-readback before claiming backup. Current result is FAILED/NOT BACKED UP.
 - [ ] Before 2026-11-27 06:25 UTC expiration, preserve both original GitHub Actions artifacts; remain separate from any ODbL redistribution or routing approval.
+
+
+## 2026-11-14 13:43 ICT cloud preservation accomplished
+- [x] Correct GitHub B2_BUCKET and R2_ACCOUNT_ID Secrets (owner).
+- [x] Authorized [43567301480](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43567301480) SUCCESS: exact original 2 ZIP artifacts now on B2 and R2, complete SHA-256/bytes/PMTiles readback PASS; 35 originals 843734803 bytes.
+- [x] Metadata receipt archived as artifact 14103007744; does NOT contain PMTiles itself.
+- [ ] Owner verify **Backblaze bucket Private** and Cloudflare R2 **Public Development URL Disabled/no custom public domain**, remove any public ACL/URLs, enable 2FA, establish lifecycle versions and optional immutable Object Lock retention to avoid deletion. CI verifies CONTENT, not bucket policy.
+- [ ] Schedule periodic readback integrity and test restoration of 35 PMTiles from each provider; keep separate provider credentials in secret manager. For future updates, use new versioned folders and reviewed owner-authorized upload only. No public release.
+- [ ] ODbL/provenance and Vietnam territorial boundaries review, true road graph/navigation, official HTTPS source approval/Android device tests remain independent.

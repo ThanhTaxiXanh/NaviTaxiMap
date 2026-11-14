@@ -176,3 +176,8 @@
 ## 2026-11-14 cloud upload not complete due mismatched Secrets
 - [43554976535](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43554976535): fail-closed account ID validator: `R2_ACCOUNT_ID` was not Cloudflare 32-hex format. Did not transfer bytes.
 - [43555218616](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43555218616): download and full SHA verify 35 original PMTiles succeeded; B2 native client rejects remote bucket name configured in `B2_BUCKET` since key is scoped to DIFFERENT allowed bucket. No B2/R2 cloud copy happened. Both failures require editing Github Secrets; do not print raw values. Workflow code itself not known failing after these credentials fixed because upload/readback still untested.
+
+
+## 2026-11-14 13:43 ICT resolved B2/R2 credential config issues and observed R2 retry
+- Previous failed runs: 43554976535 bad R2_ACCOUNT_ID, 43555218616 B2 bucket mismatch against scoped Application Key. User corrected both GitHub Secrets. New run 43567301480 fully SUCCESS: 35 original PMTiles full SHA, B2 and R2 remote byte readback PASS, no data loss.
+- Same run R2 rclone v1.60.1-DEV initially logged transient `NotImplemented: Not Implemented` for ZIP and metadata operations; retry attempt 2 succeeded, then full R2 byte download check succeeded. Do not claim all attempts flawless; final outcome green and cloud objects independently confirmed.

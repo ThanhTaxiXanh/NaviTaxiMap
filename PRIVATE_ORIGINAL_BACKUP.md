@@ -127,3 +127,22 @@ Hai run có sự cho phép chủ sở hữu nhưng chưa chuyển dữ liệu th
 ## 14/11/2026 13:37 ICT: chủ dự án xác nhận đã sửa hai Secrets và cho phép chạy lại
 
 Chủ dự án xác nhận **"Đã sửa 2 Secret, tiếp tục sao lưu."** Đây là lần kích hoạt lại có chủ đích, giới hạn vào hai ZIP nguồn artifact run 43378133931 và hai bucket Private B2/R2 đã cấu hình. Kết quả chưa được xác nhận trước khi job chạy xong và kiểm tra byte-readback. Không sửa main, không công bố ZIP/PMTiles, không bật cổng phân phối.
+
+
+## 8. Kết quả thực tế: hai bản sao B2 + R2 đã hoàn tất và kiểm đọc lại (14/11/2026 13:43 ICT)
+
+Workflow [43567301480](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43567301480) chạy sau khi chủ dự án sửa GitHub Secrets, **SUCCESS hai jobs**. Đã lấy hai ZIP artifact **gốc nguyên container** 34 tỉnh + toàn quốc (run 43378133931), verify checksum đầy đủ 35 PMTiles nguyên bản `PRIVATE_PRESERVATION_VERIFY_PASS files=35 bytes=843734803`, copy bằng `rclone --immutable` sang cả Backblaze B2 và Cloudflare R2, thư mục phiên bản:
+
+```text
+originals/github-run-43378133931/
+  NaviTaxiMap-34-Provinces-PRIVATE-ORIGINAL.zip
+  NaviTaxiMap-Vietnam-PRIVATE-ORIGINAL.zip
+  original-zip-sha256.txt
+  verification-receipt.json
+```
+
+Bản B2: `PRIVATE_B2_READBACK_PASS`; bản R2: `PRIVATE_R2_READBACK_PASS` (rclone check --download, không chỉ so tên/tệp). Kết luận `PRIVATE_B2_AND_R2_BACKUP_PASS originals=2 pmtiles=35 bytes=843734803`. R2 có lỗi `NotImplemented` tạm thời ở lần thử đầu nhưng retry tự động thành công; readback vẫn PASS. Không xem log lỗi tạm thành sai lệch bytes.
+
+GitHub Actions chỉ giữ **receipt metadata** `NaviTaxiMap-private-B2-R2-receipt-NO-DATA`, artifact ID **14103007744**, ZIP **3272 byte**, hết hạn **28/11/2026 06:42 UTC**; đã kiểm tra mở ZIP thấy `b2-confirmation.txt`, `r2-confirmation.txt`, `original-zip-sha256.txt`, `verification-receipt.json`, không có PMTiles. **Hai bản sao dữ liệu nằm ở bucket B2 và R2**, không phải ở receipt GitHub. Các ZIP gốc GitHub vẫn hết hạn **27/11/2026**, nhưng có đường phục hồi từ hai cloud miễn là bucket, credentials và chính sách lưu trữ được duy trì.
+
+**Lưu ý bảo mật bắt buộc sau khi sao lưu:** trên dashboard kiểm lại bucket B2 là Private, R2 Public Development URL tắt và không có Custom Domain public; quy tắc lifecycle không tự xóa tệp, 2FA, tùy chọn Object Lock/retention. CI đã xác thực nội dung tải ngược, **không chứng minh cấu hình public/private trên dashboard hoặc tính hợp pháp phân phối ODbL**. Không cung cấp cloud URL/public token cho Android, `distributionApproved=false` và registry approved HTTPS rỗng.
