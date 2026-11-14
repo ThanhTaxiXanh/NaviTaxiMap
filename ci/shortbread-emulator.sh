@@ -11,14 +11,18 @@ SIZE="$(stat -c %s "$PACK")"
 adb install -r "$APK" | tee shortbread-evidence/install.txt
 bash ci/push-emulator-download.sh "$PACK" "24-bac-ninh.pmtiles"
 adb shell am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d file:///sdcard/Download/24-bac-ninh.pmtiles > shortbread-evidence/media-scan.txt || true
-adb shell am start -W -n vn.navitaximap/.MainActivity
-sleep 7
-NAVITAXI_SAF_NAME="24-bac-ninh.pmtiles" NAVITAXI_SAF_SHA256="$SHA" NAVITAXI_SAF_BYTES="$SIZE" \
- python3 ci/saf-picker-smoke.py shortbread-evidence | tee shortbread-evidence/saf-result.txt
-adb shell am force-stop vn.navitaximap
+# Import via the 35-region picker with ALL network transports disabled.
+# Android DocumentsUI uses the exact file already copied into Downloads.
 adb shell cmd connectivity airplane-mode enable
 adb shell svc wifi disable
 adb shell svc data disable
+adb shell am start -W -n vn.navitaximap/.MainActivity
+sleep 7
+python3 -m py_compile ci/shortbread-direct-picker.py
+NAVITAXI_SAF_NAME="24-bac-ninh.pmtiles" NAVITAXI_SAF_SHA256="$SHA" NAVITAXI_SAF_BYTES="$SIZE" \
+ NAVITAXI_SAF_PRESERVE_ARCHIVE=0 \
+ python3 ci/shortbread-direct-picker.py shortbread-evidence | tee shortbread-evidence/saf-result.txt
+adb shell am force-stop vn.navitaximap
 adb logcat -c
 adb shell am start -W -n vn.navitaximap/.MainActivity --ez vn.navitaximap.SHORTBREAD_PREVIEW true | tee shortbread-evidence/offline-start.txt
 sleep 20
