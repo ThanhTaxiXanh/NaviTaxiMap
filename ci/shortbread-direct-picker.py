@@ -42,7 +42,7 @@ def select_bac_ninh_in_scrollable_catalog():
                        if node.get("scrollable") == "true"]
         candidates = []
         for node in scrollables:
-            match = re.fullmatch(r"\\[(\\d+),(\\d+)\\]\\[(\\d+),(\\d+)\\]",
+            match = re.fullmatch(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]",
                                  node.get("bounds", ""))
             if match:
                 x1, y1, x2, y2 = map(int, match.groups())
