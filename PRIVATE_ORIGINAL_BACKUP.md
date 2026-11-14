@@ -115,3 +115,11 @@ Chủ dự án nhắn rõ **"Bắt đầu sao lưu riêng tư B2 và R2"**, sau 
 ## 14/11/2026 ~11:08 ICT: lần kích hoạt đầu và chuẩn bị bản sao B2 trước
 - Chủ dự án phê duyệt upload private B2/R2. Workflow [43554976535](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43554976535) preflight PASS, nhưng uploader FAIL **trước khi tải dữ liệu** vì `R2_ACCOUNT_ID` trong GitHub Secret không theo định dạng 32 ký tự hex. Không log giá trị secret. Chưa có ZIP nào được xác nhận trên B2 hoặc R2 trong lượt đó.
 - Script đổi thứ tự: xác minh đủ 35 PMTiles nguồn rồi copy và **readback B2** trước khi kiểm R2_ACCOUNT_ID; cho phép Cloudflare ID hoặc official R2 endpoint, từ chối domain bất kỳ. Ghi biên bản `b2-confirmation.txt` metadata-only nếu B2 PASS dù R2 FAIL, không nói đủ 2 kho khi R2 chưa xong. Không sửa main, app download flags, không public ZIP.
+
+
+## 7. Sửa lỗi cấu hình Secrets trước khi có thể sao lưu hai kho (14/11/2026)
+
+Hai run có sự cho phép chủ sở hữu nhưng chưa chuyển dữ liệu thành công: `43554976535` dừng trước bước tải dữ liệu vì `R2_ACCOUNT_ID` không đúng định dạng 32 ký tự hex; `43555218616` đã đọc đủ 35 PMTiles nguồn và kiểm SHA nhưng B2 từ chối do `B2_BUCKET` khác bucket mà Application Key cho phép. **Không có bản B2 hoặc R2 nào được xác nhận.** Các lỗi này không hàm ý PMTiles hỏng và không được xử lý bằng cách bỏ kiểm tra checksum.
+- Trên iPhone/Android: GitHub → repo NaviTaxiMap → Settings → Secrets and variables → Actions → sửa `B2_BUCKET` theo đúng tên bucket Backblaze mà scoped key được phép, không thêm URL/prefix/ dấu cách. Tên có phân biệt chữ hoa-thường.
+- Sửa `R2_ACCOUNT_ID` bằng đúng **Cloudflare Account ID dạng 32 ký tự hex** trong Cloudflare Dashboard, KHÔNG phải tên bucket, không phải Access Key ID, không phải Secret Access Key hoặc token; không dán bất kỳ khóa nào vào chat.
+- Sau khi chủ dự án xác nhận đã sửa hai Secrets, mới chạy lại phát lệnh sao lưu có marker trên develop và kiểm byte-readback đủ hai dịch vụ. Hạn tải ZIP nguồn GitHub vẫn 27/11/2026. Không đụng `main` hay bật public bucket.

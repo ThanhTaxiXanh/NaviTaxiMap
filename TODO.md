@@ -234,3 +234,11 @@
 - [ ] Owner confirm B2 bucket Private and Cloudflare R2 Public Development URL disabled / no public custom domain, token scopes bucket-only, and storage budget.
 - [ ] Owner explicitly authorize private B2+R2 upload. Then trigger trusted develop commit with [private-backup-go] and verify final remote readback; DO NOT claim backup complete before both private cloud objects pass and downloaded checksums match.
 - [ ] Original Actions ZIP artifacts expire Nov27 2026 06:25 UTC; if transfer fails, investigate before expiry. Avoid putting raw PMTiles into GitHub repository/Artifacts/Release.
+
+
+## 2026-11-14 owner cloud credential correction before backup
+- [x] Trigger private B2/R2 workflow after explicit owner authorization, record run failures without claiming copy.
+- [x] Source original 35 PMTiles verified again on temporary runner, 843734803 bytes, SHA and v3 magic (43555218616).
+- [ ] On phone, GitHub → repository Settings → Secrets and variables → Actions, EDIT `B2_BUCKET` to match the Backblaze Application Key's **exact allowed bucket** and `R2_ACCOUNT_ID` to the real 32 hex Cloudflare account ID. NEVER send values to chat.
+- [ ] After fixes, trigger another owner-authorized develop [private-backup-go] run and confirm actual B2 and R2 private uploads with FULL remote byte-readback before claiming backup. Current result is FAILED/NOT BACKED UP.
+- [ ] Before 2026-11-27 06:25 UTC expiration, preserve both original GitHub Actions artifacts; remain separate from any ODbL redistribution or routing approval.

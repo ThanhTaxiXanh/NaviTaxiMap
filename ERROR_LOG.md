@@ -171,3 +171,8 @@
 
 ## 2026-11-14 07:42 ICT regression rerun passes without using fallback
 - After CI 43533660507 failed at real Hanoi OSM pilot 0 road pixels on blank screenshot (source 35 ZIP verification and mocked private backup tests passed), rerun CI 43534938551 with bounded MapView relaunch script 786823a **SUCCESS** both jobs. Real blue-road pixel probe passed at `render_round=1 attempt=1` (no restart), proving normal path works, NOT proving recovery path success. Preserve earlier failure's artifact 14088907632 as evidence of intermittency.
+
+
+## 2026-11-14 cloud upload not complete due mismatched Secrets
+- [43554976535](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43554976535): fail-closed account ID validator: `R2_ACCOUNT_ID` was not Cloudflare 32-hex format. Did not transfer bytes.
+- [43555218616](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43555218616): download and full SHA verify 35 original PMTiles succeeded; B2 native client rejects remote bucket name configured in `B2_BUCKET` since key is scoped to DIFFERENT allowed bucket. No B2/R2 cloud copy happened. Both failures require editing Github Secrets; do not print raw values. Workflow code itself not known failing after these credentials fixed because upload/readback still untested.

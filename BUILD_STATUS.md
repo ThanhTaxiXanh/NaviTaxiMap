@@ -222,3 +222,8 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 ## 2026-11-14 ~11:00 ICT cloud backup preflight (NOT upload)
 - [43554159334](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43554159334) SUCCESS preflight job: all seven Secret names configured; 9 source verifier and 7 offline backup mock tests pass, shell syntax valid. Upload job **SKIPPED**. No cloud data uploaded or remote integrity verified yet.
 - Latest prior Android [43534938551](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43534938551) SUCCESS build+emulator. New 43554159316 Android in progress as of documentation.
+
+
+## 2026-11-14 ~11:12 ICT B2/R2 upload errors are configuration, not app/source faults
+- 43554976535 preflight PASS, uploader FAIL before download due malformed `R2_ACCOUNT_ID` format (expected 32-hex ID).
+- 43555218616 preflight PASS and 35/35 real PMTiles SHA/bytes full verification PASS in temporary runner, but B2 upload rejected because `B2_BUCKET` Secret mismatched Application Key restricted bucket; R2 not attempted due fail-closed. Zero confirmed cloud backups. App CI prior 43554159316 SUCCESS; code safeguards intact.
