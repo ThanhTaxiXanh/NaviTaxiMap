@@ -227,3 +227,7 @@
 - Existing owner-confirmed original 34+national ZIP copies to B2/R2 were already successful in remote full-readback CI 43567301480; no new cloud upload.
 - New QA a1102b73: exact region 24 name + size + PMTiles v3 header, changed payload byte / changed SHA, must refuse with Source checksum mismatch and leave private archive/index/staging empty. Correct original then restored and normal SAF/SHA/offline screenshot asserted. Tested only as CODE until CI 43582840539 completes. General regression 43582840525 running.
 - Real original 35/35 offline archive proof, 34-shard 43569186171 and prior wrong-name QA 43581299023 remain PASS as separate milestones.
+
+## 2026-11-14 ~17:05 ICT new checksum integrity regression complete
+- Test-only a1102b73 PASS GitHub 43582840539: same-name, same-size, identical-header PMTiles copy with one corrupted byte rejected with Source checksum mismatch and empty app-private store; untouched source restored and exact pinned SHA/11049420 bytes plus 266196 offline road pixels PASS.
+- General Android build/JUnit+emulator CI 43582840525 SUCCESS. B2/R2 ZIP originals already verified by 43567301480; no upload in this session.

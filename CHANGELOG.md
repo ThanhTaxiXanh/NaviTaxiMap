@@ -157,3 +157,7 @@
 ## 2026-11-14 integrity QA, same filename wrong bytes
 - a1102b73: Android emulator test uses a 1-byte-mutated ephemeral copy of original 24-bac-ninh.pmtiles preserving name, length and header. Requires full SHA refusal before app-private promotion and positive re-import of original. No production code change, no published source or cloud write.
 - Initial runs 43582840539, 43582840525 pending; no PASS claim until finished.
+
+## 2026-11-14 source SHA tampering test accepted
+- Commit a1102b73 adds test-only byte-mutation copy of original Bac Ninh PMTiles under SAME filename/size/header. Android refuses the wrong SHA, leaves no private data, restores genuine source and proves offline map/attribution.
+- CI 43582840539 SUCCESS targeted, CI 43582840525 SUCCESS normal build/emulator. Original ZIPs and B2/R2 backups remain untouched.

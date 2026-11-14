@@ -292,3 +292,10 @@
 - [ ] Check 43582840525 Gradle/JUnit and emulator final result.
 - [x] Recognize existing B2/R2 backup SUCCESS 43567301480; do not upload them again without owner approval.
 - [ ] Expand regional direct UI QA or local pack lifecycle QA only after tamper regression. ODbL, approved HTTPS source, Xiaomi, routing and legal boundary gates remain blocked.
+
+## 2026-11-14 ~17:05 ICT SHA corruption acceptance
+- [x] Test bad checksum with SAME file name, SAME size and SAME 127-byte PMTiles header through actual Android DocumentsUI: 43582840539 SUCCESS, rejected without private archive/index/partial.
+- [x] Re-import true source after restore and verify 11049420 bytes, frozen SHA, 266196 offline Shortbread pixels and credits: 43582840539 SUCCESS.
+- [x] Confirm normal Android build/JUnit/emulator 43582840525 SUCCESS.
+- [ ] Potential next task: mutate an already imported private file and verify refusal to render, without damaging unrelated valid data. Extend direct region catalog UI QA beyond Bắc Ninh.
+- [ ] Xiaomi physical test, ODbL redistribution, reviewed app HTTPS source, routing graph, legal boundary review and B2/R2 bucket settings remain separate approval gates; no PR/merge/release/main.

@@ -262,3 +262,7 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 ## 2026-11-14 ~17:05 ICT tampered same-name PMTiles QA starting
 - Latest test-only SHA a1102b73; focused 43582840539 started, general Android 43582840525 started. Test proof requires fake body-byte flip with preserved v3 header/size, exact SHA rejection, no private archive/index, restored original full hash and offline road pixels.
 - Prior successful workflows: 43581299023 wrong-region rejection and positive original, 43581299079 normal Android, 43569186171 complete 34 regions. Private B2/R2 original source backups verified 43567301480, no new cloud transfer.
+
+## 2026-11-14 ~17:05 ICT new terminal green
+- 43582840539 SUCCESS: original region 24 source hash verified, isolated one-byte-flipped copy preserved first 127 PMTiles bytes and entire 11049420 byte length; wrong-name negative and same-name SHA mismatch negative both PASS, zero private archive/index/partial, restored original SHA PASS. Native SAF true source imported and 266196 road-colored offline pixels rendered/re-rendered, OSM attribution/no-navigation retained.
+- 43582840525 SUCCESS: Android Gradle/JUnit and emulator both jobs. No new public distribution or original cloud copy.
