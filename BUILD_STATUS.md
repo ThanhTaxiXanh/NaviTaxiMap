@@ -249,3 +249,8 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 - On same SHA Android general 43569253506 SUCCESS full build/JUnit/emulator.
 - Original feature 34/34 provincials 43568446697 SUCCESS; newer UI-fix SHA national 43569186220 SUCCESS, HN/HCM 43569186134 SUCCESS, Android 43569186209 SUCCESS. UI-fix SHA all-34 43569186171 IN PROGRESS at checkpoint.
 - Historical failure 43568694110 is documented and fixed, not erased. Xiaomi, legal redistribution and navigation not accepted.
+
+## 2026-11-14 ~16:43 ICT new negative Android acceptance
+- Full original 34 province recheck after UI fix 43569186171 SUCCESS, Gradle plus 4/4 emulator shards.
+- Focused 43581299023 SUCCESS: wrong-name 01-ha-noi.pmtiles selected for region 24 rejected with empty private archive store, marker SHORTBREAD_WRONG_REGION_REJECTED_PASS. Correct original 24-bac-ninh.pmtiles imported with 11049420 bytes, pinned SHA and 266196 Shortbread road pixels in airplane mode; secondary reload geometry also passed.
+- Standard 43581299079 Gradle/JUnit job SUCCESS, emulator job still IN PROGRESS at checkpoint; not all green yet.

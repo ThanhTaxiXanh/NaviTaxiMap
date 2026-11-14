@@ -191,3 +191,6 @@
 - CI 43568694110 FAILED at choosing region 24 after original PMTiles SHA and JVM passed: simultaneous AlertDialog.setMessage and setItems hid selectable province rows entirely.
 - UI fix e5bc37de removes message from list dialog, maintains safety title. Script fallback scroll bounds regex fixed e6675812; path filter af93e2ab.
 - CI 43569253498 SUCCESS: true native DocumentsUI picker, original 11,049,420-byte pinned SHA, immediate 266,196 road-color pixels in airplane mode and OSM/non-navigation warnings. General Android 43569253506 SUCCESS. This does not prove 35 separate picker interactions or physical Xiaomi.
+
+## 2026-11-14 ~16:43 ICT expected wrong-region refusal proven, not a defect
+- Real Android DocumentsUI negative test 43581299023 SUCCESS. Test alias named 01-ha-noi.pmtiles (contents of original 24-bac-ninh.pmtiles in emulator only) was rejected specifically as wrong region before any app-private import. Positive original source import immediately afterwards showed full hash and 266196 offline road pixels. No observed incorrect promotion.

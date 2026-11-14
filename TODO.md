@@ -274,3 +274,10 @@
 - [ ] Check UI-fix-specific full 34-shard 43569186171 to final verdict; do not infer completion while pending.
 - [ ] Add wrong-file selected UI negative test and more direct UI province coverage when resources allow; unique-code/filename JUnit already exists.
 - [ ] ODbL redistribution and official immutable HTTPS source consent, private B2/R2 policy verification, actual Xiaomi QA, road graph and border legality remain unapproved. No PR/merge/release/main.
+
+## 2026-11-14 ~16:43 ICT follow-through
+- [x] Confirm all 34 provincial recheck 43569186171 SUCCESS (compile plus 4/4 emulator shards).
+- [x] Add and prove Android SAF wrong-region negative case ebab5fc0, no app-private artifact written and genuine Bắc Ninh import remains functional: CI 43581299023 SUCCESS.
+- [ ] Confirm full Android 43581299079 emulator terminal result; do not infer from Gradle job alone.
+- [ ] Later test correctly named but corrupted PMTiles bytes on emulator, and direct catalog selection of other provinces; no host or release approvals granted.
+- [ ] Keep independent review gates for ODbL redistribution, private B2/R2 access/lifecycle, immutable HTTPS service with user consent, Xiaomi device, routing graph and territorial data. Do not change main, PR, merge or release.

@@ -149,3 +149,7 @@
 - b0e8f600 region-specific SAF picker, exact name/size/SHA guard, same local style. 932282c0 true direct picker emulator QA.
 - 43568694110 correctly FAILED because 35-row AlertDialog list was hidden. Fixed e5bc37de, scroll-parser corrected e6675812, CI filter af93e2ab.
 - Direct region Android QA 43569253498 SUCCESS with pinned Bac Ninh 11,049,420 bytes SHA and 266,196 offline road pixels. Android compile/JUnit/emulator 43569253506 SUCCESS. No public distribution/route changes.
+
+## 2026-11-14 Android wrong-region refusal CI
+- QA ebab5fc0 introduces emulator-only misleading filename 01-ha-noi.pmtiles (copy of original Bac Ninh data) to verify direct region 24 DocumentsUI path rejects it without installing, followed by genuine Bac Ninh import and offline pixel assertion.
+- CI 43581299023 SUCCESS, 11049420 original bytes and SHA checked; 266196 pixels. Full 34-province UI-fix regression 43569186171 SUCCESS. No public distribution or app release.

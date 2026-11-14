@@ -217,3 +217,8 @@
 - Implemented 35 unique SAF request codes + exact province name import and automatic local Shortbread preview. UI bug discovered by CI 43568694110 FAILED, corrected e5bc37de, QA regex corrected e6675812.
 - Genuine catalog-selected Bac Ninh Android SAF readback and road visual success CI 43569253498: 11,049,420 bytes correct SHA, 266,196 offline road pixels; normal Android CI 43569253506 SUCCESS.
 - Feature 34/34 province CI 43568446697 SUCCESS, national CI 43569186220 SUCCESS on UI fix. No network download, Xiaomi or routing approval.
+
+## 2026-11-14 ~16:43 ICT verified wrong-name SAF defensive flow
+- Full 34-region recheck 43569186171 SUCCESS, five jobs all pass.
+- QA ebab5fc0 SUCCESS 43581299023: wrong filename 01-ha-noi.pmtiles rejected for selected region 24 with no private import; original 24-bac-ninh.pmtiles then imported through native DocumentsUI with full SHA/size and 266196 offline road-colored pixels.
+- Android standard 43581299079 build/JUnit job SUCCESS, emulator completion pending. App distributionApproved remains false, public download source registry empty.
