@@ -258,3 +258,7 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 ## 2026-11-14 16:45 ICT terminal CI update
 - 43581299023 SUCCESS, exact wrong region rejection plus valid original real SAF/pixel 266196 PASS.
 - 43581299079 SUCCESS, both Gradle/JUnit and emulator jobs. No pending CI for test commit ebab5fc0. Prior 34-shard 43569186171 SUCCESS.
+
+## 2026-11-14 ~17:05 ICT tampered same-name PMTiles QA starting
+- Latest test-only SHA a1102b73; focused 43582840539 started, general Android 43582840525 started. Test proof requires fake body-byte flip with preserved v3 header/size, exact SHA rejection, no private archive/index, restored original full hash and offline road pixels.
+- Prior successful workflows: 43581299023 wrong-region rejection and positive original, 43581299079 normal Android, 43569186171 complete 34 regions. Private B2/R2 original source backups verified 43567301480, no new cloud transfer.

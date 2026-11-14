@@ -285,3 +285,10 @@
 ## 2026-11-14 16:45 ICT close final remaining CI
 - [x] Final Android debug 43581299079 SUCCESS, both build/JUnit and emulator jobs; focused wrong-file QA 43581299023 SUCCESS. Corrective work validated, no open test result from this batch.
 - [ ] Additional negative case for same correct filename with modified bytes; physical Xiaomi and all other approvals still separate.
+
+## 2026-11-14 ~17:05 ICT checksum-tampering acceptance gate
+- [x] Write emulator-only same-name/same-length/header-preserving corrupt PMTiles copy and negative SAF test on develop, commit a1102b73. Original ZIPs and B2/R2 remain untouched.
+- [ ] Inspect 43582840539 Android full-payload hash rejection, no archive/index/partial, genuine restored source SHA, road pixels; FAIL CLOSED if mismatch in assertions. Confirm terminal result, not just code presence.
+- [ ] Check 43582840525 Gradle/JUnit and emulator final result.
+- [x] Recognize existing B2/R2 backup SUCCESS 43567301480; do not upload them again without owner approval.
+- [ ] Expand regional direct UI QA or local pack lifecycle QA only after tamper regression. ODbL, approved HTTPS source, Xiaomi, routing and legal boundary gates remain blocked.

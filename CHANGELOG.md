@@ -153,3 +153,7 @@
 ## 2026-11-14 Android wrong-region refusal CI
 - QA ebab5fc0 introduces emulator-only misleading filename 01-ha-noi.pmtiles (copy of original Bac Ninh data) to verify direct region 24 DocumentsUI path rejects it without installing, followed by genuine Bac Ninh import and offline pixel assertion.
 - CI 43581299023 SUCCESS, 11049420 original bytes and SHA checked; 266196 pixels. Full 34-province UI-fix regression 43569186171 SUCCESS. No public distribution or app release.
+
+## 2026-11-14 integrity QA, same filename wrong bytes
+- a1102b73: Android emulator test uses a 1-byte-mutated ephemeral copy of original 24-bac-ninh.pmtiles preserving name, length and header. Requires full SHA refusal before app-private promotion and positive re-import of original. No production code change, no published source or cloud write.
+- Initial runs 43582840539, 43582840525 pending; no PASS claim until finished.

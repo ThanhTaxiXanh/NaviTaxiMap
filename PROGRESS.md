@@ -222,3 +222,8 @@
 - Full 34-region recheck 43569186171 SUCCESS, five jobs all pass.
 - QA ebab5fc0 SUCCESS 43581299023: wrong filename 01-ha-noi.pmtiles rejected for selected region 24 with no private import; original 24-bac-ninh.pmtiles then imported through native DocumentsUI with full SHA/size and 266196 offline road-colored pixels.
 - Android standard 43581299079 build/JUnit job SUCCESS, emulator completion pending. App distributionApproved remains false, public download source registry empty.
+
+## 2026-11-14 ~17:05 ICT new targeted corruption regression
+- Existing owner-confirmed original 34+national ZIP copies to B2/R2 were already successful in remote full-readback CI 43567301480; no new cloud upload.
+- New QA a1102b73: exact region 24 name + size + PMTiles v3 header, changed payload byte / changed SHA, must refuse with Source checksum mismatch and leave private archive/index/staging empty. Correct original then restored and normal SAF/SHA/offline screenshot asserted. Tested only as CODE until CI 43582840539 completes. General regression 43582840525 running.
+- Real original 35/35 offline archive proof, 34-shard 43569186171 and prior wrong-name QA 43581299023 remain PASS as separate milestones.
