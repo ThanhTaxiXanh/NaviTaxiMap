@@ -5,6 +5,8 @@ on:
     paths:
       - 'tools/vietnam34/verify_private_preservation.py'
       - 'tools/vietnam34/test_preservation_receipt.py'
+      - 'tools/vietnam34/copy_private_originals.py'
+      - 'tools/vietnam34/test_private_original_copy.py'
       - '.github/workflows/private-shortbread-preservation.yml'
   workflow_dispatch:
 
@@ -22,6 +24,7 @@ jobs:
         run: |
           python3 -m unittest discover -s tools/vietnam34 -p 'test_preservation_receipt.py' -v
           python3 -O -m unittest discover -s tools/vietnam34 -p 'test_preservation_receipt.py' -v
+          python3 -m unittest discover -s tools/vietnam34 -p 'test_private_original_copy.py' -v
       - name: Download 34 original source PMTiles into temporary CI workspace
         uses: actions/download-artifact@v4
         with:

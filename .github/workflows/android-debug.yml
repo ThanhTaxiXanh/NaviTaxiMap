@@ -38,6 +38,7 @@ jobs:
         run: |
           python3 -m unittest discover -s tools/vietnam34 -p 'test_android_shortbread.py' -v
           python3 -m unittest discover -s tools/vietnam34 -p 'test_preservation_receipt.py' -v
+          python3 -m unittest discover -s tools/vietnam34 -p 'test_private_original_copy.py' -v
       - name: Verify real OSM Hanoi pilot source snapshot and bundled PMTiles bytes
         run: python3 tools/osm_hanoi_pilot/verify_embedded_pilot.py
       - name: Upload debug APK (not a release)
