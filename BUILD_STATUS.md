@@ -238,3 +238,8 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 - b0e8f600 compiled/tested: normal Android debug+emulator 43568446708 SUCCESS, real Bắc Ninh offline 43568446745 SUCCESS, true 556MB national offline 43568446748 SUCCESS, HN/HCM 43568446724 SUCCESS. All-34 provincial workflow 43568446697 IN PROGRESS.
 - 932282c0 introduced NEW direct catalog DocumentsUI smoke, real Bac Ninh SHA/pixel in airplane mode; runs 43568694110 (targeted) and 43568694116 (normal Android) IN PROGRESS. Not yet permissible to call new direct UI path PASS.
 - Previous 35 distinct archive Android evidence 43438780272 + 43441211821 SUCCESS, owner B2/R2 readback 43567301480 SUCCESS. Xiaomi still untested, redistribution/routing disabled.
+
+## 2026-11-14 ~14:03 ICT direct picker failure and recheck
+- Real UI regression 43568694110 FAILURE: no 35 list rows visible due to AlertDialog setMessage/setItems conflict; source 24-bac-ninh.pmtiles SHA checked successfully before UI. Kotlin build/JVM portion PASSED. Feature general Android 43568694116 SUCCESS.
+- Fix e5bc37de displays list instead of message; e6675812 corrects test XML bounds regex; af93e2ab ensures direct picker script changes retrigger targeted workflow.
+- Retest focused 43569253498 and general 43569253506 RUNNING. Old visual 35/35 evidence remains valid and independent; new direct catalog import path is NOT yet proven.

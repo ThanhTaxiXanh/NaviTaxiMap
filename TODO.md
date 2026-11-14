@@ -259,3 +259,9 @@
 - [ ] Verify four-shard 43568446697 and both newer 43568694116/43568694110 to terminal state. For direct picker require real original SAF/hash and road pixel evidence, not just build success; investigate any FAIL.
 - [ ] Owner independently confirm private B2 and R2 bucket privacy, no public URLs, 2FA and retention. Existing copy/readback CI confirms exact content, not security settings.
 - [ ] ODbL redistribution, immutable approved HTTPS hosting/manifest, explicit network opt-in, Xiaomi QA, routable road graph, legal borders remain blocked. Keep distributionApproved=false, no PR/main/merge/release.
+
+## 2026-11-14 ~14:03 ICT required direct picker bug acceptance
+- [x] Investigate real failed 43568694110 log, identifying AlertDialog message suppressing selectable 35-region list.
+- [x] Fix e5bc37de UI list with warning title, add scroll-by-accessibility in smoke; correct Python bounds regex e6675812 and rerun trigger af93e2ab.
+- [ ] Confirm 43569253498 native DocumentsUI region 24 selection, full SHA/bytes, immediate offline Shortbread pixels+OSM/no-navigation status; success required before closing UX bug.
+- [ ] Check 43569253506 normal Android and all-34 provinces prior and new shard CI final; no false green assertions.

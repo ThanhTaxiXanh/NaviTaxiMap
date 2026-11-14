@@ -181,3 +181,8 @@
 ## 2026-11-14 13:43 ICT resolved B2/R2 credential config issues and observed R2 retry
 - Previous failed runs: 43554976535 bad R2_ACCOUNT_ID, 43555218616 B2 bucket mismatch against scoped Application Key. User corrected both GitHub Secrets. New run 43567301480 fully SUCCESS: 35 original PMTiles full SHA, B2 and R2 remote byte readback PASS, no data loss.
 - Same run R2 rclone v1.60.1-DEV initially logged transient `NotImplemented: Not Implemented` for ZIP and metadata operations; retry attempt 2 succeeded, then full R2 byte download check succeeded. Do not claim all attempts flawless; final outcome green and cloud objects independently confirmed.
+
+## 2026-11-14 ~14:03 ICT, real 35-region catalog list hidden in Android emulator
+- Workflow 43568694110 FAILED after Gradle/JUnit passed and source Bắc Ninh SHA was correct: UIAutomator showed the 35-catalog dialog title and warning message but ZERO selectable province rows; direct smoke could not tap '24 · Bắc Ninh'. Not an archive/hash or MapLibre decoder failure.
+- Root cause: Android AlertDialog.Builder used both setMessage and setItems for same dialog; message panel suppressed list. Fix e5bc37de removes setMessage, retains no-driving warning in title and per-region prompt. Direct QA script now scrolls the actual ListView instead of assuming region 24 visible initially.
+- Initial scroll-regex accidental double escaping in e5bc37de's new Python test corrected by e6675812; CI paths include this test after af93e2ab. Retest 43569253498 IN PROGRESS. Do not mark fixed on emulator before terminal PASS + offline pixel assertions.
