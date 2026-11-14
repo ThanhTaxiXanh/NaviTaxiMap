@@ -20,6 +20,8 @@ if spec is None or spec.loader is None:
 picker = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(picker)
 
+WRONG_REGION_NAME = "01-ha-noi.pmtiles"  # negative-test alias of the original Bac Ninh bytes
+
 if picker.EXPECTED_NAME != "24-bac-ninh.pmtiles":
     raise ValueError("Direct region selection QA must use pinned Bac Ninh filename")
 if picker.EXPECTED_HASH != "6edc513adf8b8ad467982e818dc3450fcbbb14076ca2bf4bac352f1b9ca9ee7f":
@@ -67,8 +69,53 @@ def open_direct_region_picker():
     picker.snapshot("direct-region-picker-open")
 
 
+def verify_wrong_region_rejected_before_import():
+    """Choose Hanoi filename while the pinned selection is Bac Ninh.
+
+    This intentionally mislabeled test document contains original Bac Ninh bytes.
+    It is never installed as Hanoi, uploaded or exposed as a catalog source.
+    """
+    before = picker.installed_archives()
+    original_name = picker.EXPECTED_NAME
+    try:
+        picker.EXPECTED_NAME = WRONG_REGION_NAME
+        open_direct_region_picker()
+        picker.find_pilot_file()  # exact DocumentsUI title, not preview icon
+    finally:
+        picker.EXPECTED_NAME = original_name
+
+    until = time.monotonic() + 35
+    while time.monotonic() < until:
+        root = picker.snapshot("wrong-region-result")
+        visible = " ".join((n.get("text", "") or "") for n in picker.nodes(root))
+        if "Nhập không thành công" in visible:
+            if "Đã chọn sai tệp" not in visible or "24-bac-ninh.pmtiles" not in visible:
+                raise AssertionError("Wrong region was rejected for an unexpected reason: " + visible)
+            picker.screenshot("wrong-region-rejected")
+            break
+        if "Đã lưu PMTiles" in visible:
+            raise AssertionError("Wrong region document was incorrectly installed")
+        time.sleep(1)
+    else:
+        raise AssertionError("Wrong-region SAF selection did not show explicit filename rejection")
+
+    after = picker.installed_archives()
+    if before != after:
+        raise AssertionError(f"Wrong-region picker changed imported archives: {before} -> {after}")
+    # Do not merely trust UI text. The app-private index or staging files
+    # must not have been written by the rejected selection.
+    entries = picker.adb("shell", "run-as", "vn.navitaximap",
+                         "ls", "-A", "files/offline-packs")
+    if entries.strip():
+        raise AssertionError("Rejected region left app-private offline data: " + entries)
+    picker.select_text("dismiss-wrong-region", ["Đóng"], timeout=15)
+    print("SHORTBREAD_WRONG_REGION_REJECTED_PASS wrong=" + WRONG_REGION_NAME +
+          " expected=24-bac-ninh.pmtiles no-app-private-archive")
+
+
 def main():
     picker.open_picker = open_direct_region_picker
+    verify_wrong_region_rejected_before_import()
     picker.main()  # DocumentsUI selected exact pin, app-private full SHA and size
     picker.select_text("dismiss-import-confirmation", ["Đóng"], timeout=20)
 
