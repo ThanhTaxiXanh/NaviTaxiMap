@@ -254,3 +254,7 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 - Full original 34 province recheck after UI fix 43569186171 SUCCESS, Gradle plus 4/4 emulator shards.
 - Focused 43581299023 SUCCESS: wrong-name 01-ha-noi.pmtiles selected for region 24 rejected with empty private archive store, marker SHORTBREAD_WRONG_REGION_REJECTED_PASS. Correct original 24-bac-ninh.pmtiles imported with 11049420 bytes, pinned SHA and 266196 Shortbread road pixels in airplane mode; secondary reload geometry also passed.
 - Standard 43581299079 Gradle/JUnit job SUCCESS, emulator job still IN PROGRESS at checkpoint; not all green yet.
+
+## 2026-11-14 16:45 ICT terminal CI update
+- 43581299023 SUCCESS, exact wrong region rejection plus valid original real SAF/pixel 266196 PASS.
+- 43581299079 SUCCESS, both Gradle/JUnit and emulator jobs. No pending CI for test commit ebab5fc0. Prior 34-shard 43569186171 SUCCESS.

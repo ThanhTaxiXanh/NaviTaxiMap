@@ -281,3 +281,7 @@
 - [ ] Confirm full Android 43581299079 emulator terminal result; do not infer from Gradle job alone.
 - [ ] Later test correctly named but corrupted PMTiles bytes on emulator, and direct catalog selection of other provinces; no host or release approvals granted.
 - [ ] Keep independent review gates for ODbL redistribution, private B2/R2 access/lifecycle, immutable HTTPS service with user consent, Xiaomi device, routing graph and territorial data. Do not change main, PR, merge or release.
+
+## 2026-11-14 16:45 ICT close final remaining CI
+- [x] Final Android debug 43581299079 SUCCESS, both build/JUnit and emulator jobs; focused wrong-file QA 43581299023 SUCCESS. Corrective work validated, no open test result from this batch.
+- [ ] Additional negative case for same correct filename with modified bytes; physical Xiaomi and all other approvals still separate.
