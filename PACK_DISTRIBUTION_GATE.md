@@ -67,3 +67,8 @@ Chạy bằng `gradle --no-daemon :app:testDebugUnitTest :app:assembleDebug` tro
 ## 2026-11-14 local preservation is not public distribution
 - `copy_private_originals.py` is strictly operator-invoked for **local owner-approved private POSIX directory** and two already-downloaded original ZIPs. It is not called by Android or the CI to save real PMTiles; only synthetic ZIP test fixtures are used. The source 35-pack CI still uploads ONLY receipt metadata. No preconfigured private destination or Internet service is authorized.
 - `distributionApproved=false` and `ReviewedShortbreadSources.byCode=emptyMap()` remain; no uploads, releases, public map download, border/routing approvals.
+
+
+## 2026-11-14 two external PRIVATE cloud backups are separate from public distribution
+- New opt-in cloud workflow backs up ORIGINAL two GitHub Actions artifact ZIPs only after owner authorization `[private-backup-go]` on develop. GitHub preflight 43554159334 shows all 7 Secrets configured but upload job skipped; no cloud copy or valid public distribution URL exists.
+- On owner approval: full 35 original SHA-256+size+PMTiles v3 before upload, both private B2 & R2 readback after upload, metadata-only receipt. Cloud backups must remain Private and cannot be repurposed as app sources. DistributionApproved still false, reviewed HTTPS source registry empty, navigation/border review absent.

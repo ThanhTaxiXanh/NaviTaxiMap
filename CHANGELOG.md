@@ -129,3 +129,8 @@
 
 ## 2026-11-14 Android emulator regression restored, private ZIP backup remains manual
 - CI 43534938551 SUCCESS Gradle/JUnit & emulator after a prior intermittent zero-pixel Hanoi pilot rendering error; real OSM roads passed first screenshot, fallback not exercised. Source 43533660474 SUCCESS verifies originals and private backup mocked tests. No source file uploaded to new hosting, no real durable private backup made.
+
+
+## 2026-11-14 explicit owner-opt-in B2 and Cloudflare R2 preservation transfer
+- Added develop-only private original ZIP cloud uploader using exact existing source GitHub artifacts 14015875271 & 14015113186, 35 SHA/size PMTiles check, immutable B2/R2 copies, readback checks and metadata-only success receipt.
+- Source data is never uploaded to new GitHub artifacts or released, no public bucket policy or app download change. First workflow 43554159334 preflight PASS and all seven GitHub Secret names configured; uploader deliberately skipped pending explicit owner authorization. GitHub repo main not modified.

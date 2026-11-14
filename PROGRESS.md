@@ -195,3 +195,9 @@
 ## 2026-11-14 07:42 ICT CI final verdict
 - 43533660474 source/verifier PRIVATE backup unit QA SUCCESS.
 - 43534938551 Android app build/JUnit & emulator both SUCCESS; real Hanoi OSM roads drawn in round 1 with no retry. Maintain earlier blank screenshot issue as intermittent CI evidence, not confirmed application-data defect. No private original backup created.
+
+
+## 2026-11-14 ~11:00 ICT private cloud backup preflight
+- GitHub 43554159334 SUCCESS; all 7 recommended B2/R2 Actions Secrets configured, 9 preservation unit and 7 fake ZIP copy tests passed. Upload job skipped by explicit opt-in marker gate.
+- Added CI transfer workflow with pinned two original Actions ZIPs, full 35-pack hash verification and two immutable private bucket copies plus remote readback. NOT YET RUN. No original PMTiles transferred.
+- Before Nov27 2026 original artifact expiry, owner verifies private bucket status and authorizes explicit backup run.

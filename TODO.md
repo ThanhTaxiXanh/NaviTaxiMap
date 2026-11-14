@@ -226,3 +226,11 @@
 - [ ] If the intermittent real OSM empty viewport recurs, investigate rendering/lifecycle from actual screenshot+logcat; CI-only one restart is bounded and still enforces strict pixel threshold, but not yet separately exercised by a forced blank-map test.
 - [ ] **Before 2026-11-27 06:25 UTC**, owner manually copy both original temporary PMTiles ZIPs to approved durable PRIVATE storage and verify real saved bytes. Neither CI receipt nor synthetic backup test is durable source backup.
 - [ ] Keep routing, border/legal review, ODbL redistribution, reviewed HTTPS origin, Xiaomi device tests as separate prohibited/unapproved gates.
+
+
+## 2026-11-14 ~11:00 ICT private cloud backup gates
+- [x] Install development-only B2/R2 private ZIP backup workflow using GH artifact IDs; full PMTiles and container hashes, immutable copy, readback both, metadata-only CI evidence, no PR/main/public release.
+- [x] Preflight GitHub run 43554159334 SUCCESS: all 7 secrets configured, 9+7 tests PASS; uploader intentionally skipped.
+- [ ] Owner confirm B2 bucket Private and Cloudflare R2 Public Development URL disabled / no public custom domain, token scopes bucket-only, and storage budget.
+- [ ] Owner explicitly authorize private B2+R2 upload. Then trigger trusted develop commit with [private-backup-go] and verify final remote readback; DO NOT claim backup complete before both private cloud objects pass and downloaded checksums match.
+- [ ] Original Actions ZIP artifacts expire Nov27 2026 06:25 UTC; if transfer fails, investigate before expiry. Avoid putting raw PMTiles into GitHub repository/Artifacts/Release.

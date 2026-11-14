@@ -201,3 +201,9 @@ Real OSM pilot source snapshot: workflow https://github.com/ThanhTaxiXanh/NaviTa
 - Source 43533660474 SUCCESS (35 original PMTiles full SHA/magic, 9+9 tests Python normal/optimized + 7 mock private ZIP copy tests). Android 43534938551 SUCCESS (Gradle/JUnit+emulator, synthetic offline, real SAF, real Hanoi OSM roads and ODbL).
 - The fallback for blank MapLibre pilot was added in CI 786823a but this successful run rendered real OSM at render_round=1 attempt=1, so fallback wasn't exercised; previous 43533660507 failure remains documented in ERROR_LOG with screenshot evidence.
 - No real owner-approved private data copy exists; GitHub artifacts for two PMTiles ZIPs expire Nov27 06:25 UTC. Distribution source list remains empty, distribution flag false.
+
+
+## 2026-11-14 ~11:00 ICT configured external private backup destinations, upload opt-in still locked
+- User reports Backblaze B2 and Cloudflare R2 created + GitHub secrets. Workflow 43554159334 preflight SUCCESS verified seven *names configured* without exposing secret values; Bash syntax + source verifier nine unit tests and seven private-copy mock tests passed. Auth correctness and private bucket flags not programmatically verified.
+- New uploader ci/private-original-cloud-backup.sh + .github/workflows/private-original-cloud-backup.yml pinned to original run 43378133931 artifact ZIP IDs, validates 35 original PMTiles SHA, performs immutable no-overwrite B2/R2 uploads and downloaded readback, emits metadata receipts only. It is blocked by exact marker [private-backup-go] on trusted develop branch and **has not transferred any source ZIP**. Main unchanged, distributionApproved=false.
+- Manual owner confirmation/private bucket check required prior transfer; original Actions artifacts expire 2026-11-27 06:25 UTC.

@@ -217,3 +217,8 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 - **43534938551 SUCCESS** both jobs, real OSM blue roads rendered `render_round=1 attempt=1`, SAF fixture SHA and synthetic PMTiles checks PASS. New bounded second round not exercised during this green run.
 - **43533660474 SUCCESS** source 35 original full SHA/size/PMTiles magic, 9 normal and 9 optimized verifier + 7 private ZIP copy mock tests.
 - Prior 43533660507 FAILURE isolated to blank real Hanoi road viewport after nine screenshots; evidence still retained as artifact 14088907632. Not hidden from CI history.
+
+
+## 2026-11-14 ~11:00 ICT cloud backup preflight (NOT upload)
+- [43554159334](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43554159334) SUCCESS preflight job: all seven Secret names configured; 9 source verifier and 7 offline backup mock tests pass, shell syntax valid. Upload job **SKIPPED**. No cloud data uploaded or remote integrity verified yet.
+- Latest prior Android [43534938551](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43534938551) SUCCESS build+emulator. New 43554159316 Android in progress as of documentation.
