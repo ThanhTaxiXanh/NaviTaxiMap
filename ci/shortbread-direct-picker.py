@@ -21,6 +21,11 @@ picker = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(picker)
 
 WRONG_REGION_NAME = "01-ha-noi.pmtiles"  # negative-test alias of the original Bac Ninh bytes
+PINNED_NAME = "24-bac-ninh.pmtiles"
+TAMPERED_SHA = os.environ.get("NAVITAXI_TAMPERED_SHA256", "")
+ORIGINAL_PACK_PATH = os.environ.get("NAVITAXI_BAC_NINH_ORIGINAL_PACK", "")
+if TAMPERED_SHA and (len(TAMPERED_SHA) != 64 or TAMPERED_SHA == picker.EXPECTED_HASH):
+    raise ValueError("Tampered local input needs a distinct, valid SHA-256")
 
 if picker.EXPECTED_NAME != "24-bac-ninh.pmtiles":
     raise ValueError("Direct region selection QA must use pinned Bac Ninh filename")
@@ -113,9 +118,80 @@ def verify_wrong_region_rejected_before_import():
           " expected=24-bac-ninh.pmtiles no-app-private-archive")
 
 
+def assert_private_store_empty(phase):
+    """Check all entries, not only UUID .pmtiles: no index or partial can survive."""
+    names = picker.adb("shell", "run-as", "vn.navitaximap",
+                       "ls", "-A", "files/offline-packs")
+    if names.strip():
+        raise AssertionError(f"{phase} left private archive/index/staging: " + names)
+    if picker.installed_archives():
+        raise AssertionError(f"{phase} unexpectedly committed an archive")
+
+
+def shared_download_sha256():
+    result = picker.adb("shell", "sha256sum", "/sdcard/Download/" + PINNED_NAME)
+    fields = result.split()
+    if len(fields) < 2 or len(fields[0]) != 64:
+        raise RuntimeError("Could not read local Android Downloads SHA-256")
+    return fields[0].lower()
+
+
+def verify_same_name_tamper_rejected_and_restore():
+    """A valid name/header/length must NOT bypass the SHA pin.
+
+    Only a temporary corrupted on-runner COPY goes into Android Downloads.
+    No original artifact, B2/R2 backup or app catalog source is modified.
+    """
+    if not TAMPERED_SHA or not ORIGINAL_PACK_PATH:
+        raise ValueError("Missing CI-only tamper SHA or original local path")
+    if shared_download_sha256() != TAMPERED_SHA:
+        raise AssertionError("Android test document was not the tampered same-name copy")
+    before = picker.installed_archives()
+    open_direct_region_picker()
+    picker.find_pilot_file()
+    deadline = time.monotonic() + 55
+    while time.monotonic() < deadline:
+        root = picker.snapshot("same-name-corrupt-result")
+        visible = " ".join((n.get("text", "") or "") for n in picker.nodes(root))
+        if "Nhập không thành công" in visible:
+            if "Source checksum mismatch" not in visible:
+                raise AssertionError("Corrupt same-name PMTiles rejected for wrong reason: " + visible)
+            picker.screenshot("same-name-corrupt-rejected")
+            break
+        if "Đã lưu PMTiles" in visible:
+            raise AssertionError("Corrupt same-name PMTiles incorrectly imported")
+        time.sleep(1)
+    else:
+        raise AssertionError("Corrupt same-name PMTiles did not show checksum failure")
+    if before != picker.installed_archives():
+        raise AssertionError("Corrupt same-name file changed installed archives")
+    assert_private_store_empty("same-name corrupt PMTiles")
+    picker.select_text("dismiss-corrupt-checksum", ["Đóng"], timeout=15)
+    print("SHORTBREAD_SAME_NAME_BAD_SHA_REJECTED_PASS bytes=" +
+          str(picker.EXPECTED_BYTES) + " no-app-private-archive")
+
+    # Replace only local Downloads copy, not an app-indexed file or source ZIP.
+    # Verify the restored file matches the frozen original before positive QA.
+    source = Path(ORIGINAL_PACK_PATH)
+    if not source.is_file() or source.name != PINNED_NAME:
+        raise ValueError("Original test source path/filename not pinned")
+    restored = subprocess.run(
+        ["bash", "ci/push-emulator-download.sh", str(source), PINNED_NAME],
+        check=True, capture_output=True, text=True, timeout=180,
+    )
+    print(restored.stdout.strip())
+    picker.adb("shell", "am", "broadcast",
+               "-a", "android.intent.action.MEDIA_SCANNER_SCAN_FILE",
+               "-d", "file:///sdcard/Download/" + PINNED_NAME, check=False)
+    if shared_download_sha256() != picker.EXPECTED_HASH:
+        raise AssertionError("Original Bac Ninh file was not restored byte-exactly")
+    print("SHORTBREAD_ORIGINAL_RESTORED_SHA_PASS")
+
+
 def main():
     picker.open_picker = open_direct_region_picker
     verify_wrong_region_rejected_before_import()
+    verify_same_name_tamper_rejected_and_restore()
     picker.main()  # DocumentsUI selected exact pin, app-private full SHA and size
     picker.select_text("dismiss-import-confirmation", ["Đóng"], timeout=20)
 

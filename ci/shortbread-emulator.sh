@@ -8,8 +8,33 @@ test -s "$APK"
 test -s "$PACK"
 echo "$SHA  $PACK" | sha256sum -c -
 SIZE="$(stat -c %s "$PACK")"
+# Never alter original data/ZIP: mutate one byte in a temporary runner copy,
+# preserving PMTiles v3 header, filename and exact byte length.
+TAMPER_DIR="$(mktemp -d)"
+trap 'rm -rf "$TAMPER_DIR"' EXIT
+TAMPERED="$TAMPER_DIR/24-bac-ninh.pmtiles"
+python3 - "$PACK" "$TAMPERED" <<'PY'
+import pathlib
+import shutil
+import sys
+source, destination = map(pathlib.Path, sys.argv[1:])
+shutil.copyfile(source, destination)
+with destination.open("r+b") as f:
+    f.seek(-4096, 2)
+    original = f.read(1)
+    assert len(original) == 1
+    f.seek(-4096, 2)
+    f.write(bytes([original[0] ^ 1]))
+assert destination.stat().st_size == source.stat().st_size
+assert destination.open("rb").read(127) == source.open("rb").read(127)
+PY
+TAMPERED_SHA="$(sha256sum "$TAMPERED" | cut -d' ' -f1)"
+test "$TAMPERED_SHA" != "$SHA"
+test "$(stat -c %s "$TAMPERED")" = "$SIZE"
+cmp -n 127 "$PACK" "$TAMPERED"
+echo "SHORTBREAD_TEST_COPY_TAMPERED bytes=$SIZE header-preserved SHA-differs"
 adb install -r "$APK" | tee shortbread-evidence/install.txt
-bash ci/push-emulator-download.sh "$PACK" "24-bac-ninh.pmtiles"
+bash ci/push-emulator-download.sh "$TAMPERED" "24-bac-ninh.pmtiles"
 # Misnamed 01 archive is deliberately a NEGATIVE-TEST ALIAS of Bac Ninh bytes.
 # The app must refuse it before streaming, never promote it as Hanoi data.
 bash ci/push-emulator-download.sh "$PACK" "01-ha-noi.pmtiles"
@@ -24,6 +49,7 @@ adb shell am start -W -n vn.navitaximap/.MainActivity
 sleep 7
 python3 -m py_compile ci/shortbread-direct-picker.py
 NAVITAXI_SAF_NAME="24-bac-ninh.pmtiles" NAVITAXI_SAF_SHA256="$SHA" NAVITAXI_SAF_BYTES="$SIZE" \
+ NAVITAXI_TAMPERED_SHA256="$TAMPERED_SHA" NAVITAXI_BAC_NINH_ORIGINAL_PACK="$PACK" \
  NAVITAXI_SAF_PRESERVE_ARCHIVE=0 \
  python3 ci/shortbread-direct-picker.py shortbread-evidence | tee shortbread-evidence/saf-result.txt
 adb shell am force-stop vn.navitaximap
