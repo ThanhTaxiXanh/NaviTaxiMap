@@ -123,3 +123,7 @@ Hai run có sự cho phép chủ sở hữu nhưng chưa chuyển dữ liệu th
 - Trên iPhone/Android: GitHub → repo NaviTaxiMap → Settings → Secrets and variables → Actions → sửa `B2_BUCKET` theo đúng tên bucket Backblaze mà scoped key được phép, không thêm URL/prefix/ dấu cách. Tên có phân biệt chữ hoa-thường.
 - Sửa `R2_ACCOUNT_ID` bằng đúng **Cloudflare Account ID dạng 32 ký tự hex** trong Cloudflare Dashboard, KHÔNG phải tên bucket, không phải Access Key ID, không phải Secret Access Key hoặc token; không dán bất kỳ khóa nào vào chat.
 - Sau khi chủ dự án xác nhận đã sửa hai Secrets, mới chạy lại phát lệnh sao lưu có marker trên develop và kiểm byte-readback đủ hai dịch vụ. Hạn tải ZIP nguồn GitHub vẫn 27/11/2026. Không đụng `main` hay bật public bucket.
+
+## 14/11/2026 13:37 ICT: chủ dự án xác nhận đã sửa hai Secrets và cho phép chạy lại
+
+Chủ dự án xác nhận **"Đã sửa 2 Secret, tiếp tục sao lưu."** Đây là lần kích hoạt lại có chủ đích, giới hạn vào hai ZIP nguồn artifact run 43378133931 và hai bucket Private B2/R2 đã cấu hình. Kết quả chưa được xác nhận trước khi job chạy xong và kiểm tra byte-readback. Không sửa main, không công bố ZIP/PMTiles, không bật cổng phân phối.
