@@ -69,3 +69,9 @@ grep -q "SHORTBREAD_STYLE_LOADED" shortbread-evidence/logcat.txt
 ! grep -q "FATAL EXCEPTION" shortbread-evidence/logcat.txt
 adb shell pidof vn.navitaximap | tr -d '\r' | grep -Eq '^[0-9]+'
 echo "SHORTBREAD_BAC_NINH_OFFLINE_RENDER_PASS"
+# After successful genuine original rendering, independently prove that a
+# subsequent one-byte mutation in the app-private imported COPY is refused.
+# Do not change source artifact, user Downloads original or cloud backups.
+python3 -m py_compile ci/shortbread-post-import-tamper.py
+NAVITAXI_SAF_NAME="24-bac-ninh.pmtiles" NAVITAXI_SAF_SHA256="$SHA" NAVITAXI_SAF_BYTES="$SIZE" \
+ python3 ci/shortbread-post-import-tamper.py shortbread-evidence | tee shortbread-evidence/private-post-import-result.txt

@@ -8,6 +8,7 @@ on:
       - 'app/src/main/assets/shortbread_offline_style.json'
       - 'ci/shortbread-emulator.sh'
       - 'ci/shortbread-direct-picker.py'
+      - 'ci/shortbread-post-import-tamper.py'
       - 'ci/push-emulator-download.sh'
       - 'ci/check-shortbread-screenshot.py'
       - 'ci/saf-picker-smoke.py'
