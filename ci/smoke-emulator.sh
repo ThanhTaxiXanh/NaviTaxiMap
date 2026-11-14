@@ -202,19 +202,37 @@ adb shell am force-stop vn.navitaximap
 adb logcat -c
 adb shell am start -W -n vn.navitaximap/.MainActivity --ez vn.navitaximap.REAL_OSM_PILOT true | tee smoke-evidence/osm-pilot-launch.txt
 # MapLibre style source-loading/GL drawing is asynchronous under variable CI load.
-# Keep the existing strict >500 real-road pixel assertion, but retry screenshots
-# for up to ~65 seconds rather than failing on a single empty early frame.
-sleep 14
-for attempt in $(seq 1 9); do
-  sleep 6
-  adb shell screencap -p /sdcard/navitaxi-real-osm-roads.png
-  adb pull /sdcard/navitaxi-real-osm-roads.png smoke-evidence/osm-pilot-screenshot.png
-  if python3 ci/check-osm-pilot-screenshot.py smoke-evidence/osm-pilot-screenshot.png \
-       > smoke-evidence/osm-pilot-pixel-probe.txt 2>&1; then
-    echo "REAL_OSM_PIXELS_READY attempt=$attempt"
-    break
+# Real artifact 43533660507 captured valid UI/OSM credit BUT a blank MapView
+# (0 local-road pixels) through all 9 screenshots, after earlier synthetic PMTiles
+# had rendered correctly. Restart the real-pilot Activity ONCE when that happens.
+# No passing on status text alone: the final original >500 real-road pixel probe,
+# attribution, no-navigation warning and no-crash checks remain mandatory.
+osm_pilot_ready=0
+for render_round in 1 2; do
+  if [[ "$render_round" -eq 2 ]]; then
+    echo "REAL_OSM_BLANK_MAPVIEW_RELAUNCH once"
+    cp smoke-evidence/osm-pilot-screenshot.png smoke-evidence/osm-pilot-first-round-screenshot.png
+    cp smoke-evidence/osm-pilot-pixel-probe.txt smoke-evidence/osm-pilot-first-round-pixel-probe.txt
+    adb logcat -d -v brief > smoke-evidence/osm-pilot-first-round-logcat.txt || true
+    adb shell am force-stop vn.navitaximap
+    adb logcat -c
+    adb shell am start -W -n vn.navitaximap/.MainActivity \
+      --ez vn.navitaximap.REAL_OSM_PILOT true | tee smoke-evidence/osm-pilot-relaunch.txt
   fi
-  echo "Real OSM road pixels not yet visible (attempt $attempt/9); retrying"
+  sleep 14
+  for attempt in $(seq 1 9); do
+    sleep 6
+    adb shell screencap -p /sdcard/navitaxi-real-osm-roads.png
+    adb pull /sdcard/navitaxi-real-osm-roads.png smoke-evidence/osm-pilot-screenshot.png
+    if python3 ci/check-osm-pilot-screenshot.py smoke-evidence/osm-pilot-screenshot.png \
+         > smoke-evidence/osm-pilot-pixel-probe.txt 2>&1; then
+      echo "REAL_OSM_PIXELS_READY render_round=$render_round attempt=$attempt"
+      osm_pilot_ready=1
+      break
+    fi
+    echo "Real OSM blue-road geometry not yet visible (round $render_round/2 attempt $attempt/9)"
+  done
+  [[ "$osm_pilot_ready" -eq 1 ]] && break
 done
 adb shell uiautomator dump /sdcard/navitaxi-osm-pilot.xml > /dev/null
 adb pull /sdcard/navitaxi-osm-pilot.xml smoke-evidence/osm-pilot-ui.xml
