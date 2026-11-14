@@ -65,16 +65,12 @@ def main():
     print("SHORTBREAD_PRE_TAMPER_PRIVATE_SHA_PASS")
 
     offset = EXPECTED_SIZE - 4096
-    original_byte = picker.adb(
-        "exec-out", "run-as", APP, "dd", "if=" + relative,
-        "bs=1", "skip=" + str(offset), "count=1", binary=True
-    )
-    if len(original_byte) != 1:
-        raise AssertionError("Could not read app-private target byte")
-    # A deterministic change with no resize and no alteration to the header.
-    # If the original byte is zero, try a bounded random byte until different.
-    source = "/dev/zero" if original_byte != bytes([0]) else "/dev/urandom"
-    for _ in range(12):
+    # Android toybox dd through 'adb exec-out run-as' is not a reliable
+    # one-byte readback: it may return empty stdout even with a valid pack.
+    # The integrity oracle is the entire pinned SHA-256, not a byte probe.
+    # Try a deterministic zero byte first; on rare no-change, use random.
+    for attempt in range(12):
+        source = "/dev/zero" if attempt == 0 else "/dev/urandom"
         picker.adb("shell", "run-as", APP, "dd",
                    "if=" + source, "of=" + relative,
                    "bs=1", "seek=" + str(offset),
