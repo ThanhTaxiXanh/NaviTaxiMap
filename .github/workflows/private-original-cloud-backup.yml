@@ -1,0 +1,76 @@
+name: Owner-approved private B2 and R2 original ZIP backup
+on:
+  push:
+    branches: ['develop/phase0-android-maplibre']
+    paths:
+      - 'ci/private-original-cloud-backup.sh'
+      - '.github/workflows/private-original-cloud-backup.yml'
+      - 'PRIVATE_ORIGINAL_BACKUP.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  dry-run-readiness:
+    name: Validate private backup script without transferring data
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bash syntax and offline pin-regression tests
+        run: |
+          bash -n ci/private-original-cloud-backup.sh
+          python3 -m unittest discover -s tools/vietnam34 -p 'test_preservation_receipt.py' -v
+          python3 -m unittest discover -s tools/vietnam34 -p 'test_private_original_copy.py' -v
+          echo 'PRIVATE_CLOUD_BACKUP_PREFLIGHT_PASS no cloud upload'
+      - name: Check Secret names only, never read or display their values
+        env:
+          B2_KEY_ID: \${{ secrets.B2_KEY_ID }}
+          B2_APPLICATION_KEY: \${{ secrets.B2_APPLICATION_KEY }}
+          B2_BUCKET: \${{ secrets.B2_BUCKET }}
+          R2_ACCESS_KEY_ID: \${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: \${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ACCOUNT_ID: \${{ secrets.R2_ACCOUNT_ID }}
+          R2_BUCKET: \${{ secrets.R2_BUCKET }}
+        run: |
+          for name in B2_KEY_ID B2_APPLICATION_KEY B2_BUCKET R2_ACCESS_KEY_ID R2_SECRET_ACCESS_KEY R2_ACCOUNT_ID R2_BUCKET; do
+            if [[ -n "\${!name:-}" ]]; then
+              echo "Secret $name: configured"
+            else
+              echo "::warning::Secret $name: NOT CONFIGURED"
+            fi
+          done
+
+  private-backup:
+    name: Upload ONLY after explicit marker on trusted development branch
+    if: github.event_name == 'push' && contains(github.event.head_commit.message, '[private-backup-go]')
+    needs: dry-run-readiness
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install rclone from Ubuntu repositories
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq rclone
+          rclone version
+      - name: Download pinned original ZIP artifacts, verify 35 contents, copy PRIVATE and read back
+        env:
+          GH_ACTIONS_TOKEN: \${{ github.token }}
+          B2_KEY_ID: \${{ secrets.B2_KEY_ID }}
+          B2_APPLICATION_KEY: \${{ secrets.B2_APPLICATION_KEY }}
+          B2_BUCKET: \${{ secrets.B2_BUCKET }}
+          R2_ACCESS_KEY_ID: \${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: \${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ACCOUNT_ID: \${{ secrets.R2_ACCOUNT_ID }}
+          R2_BUCKET: \${{ secrets.R2_BUCKET }}
+        run: bash ci/private-original-cloud-backup.sh
+      - name: Upload METADATA receipt ONLY, never source ZIP bytes
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: NaviTaxiMap-private-B2-R2-receipt-NO-DATA
+          path: private-backup-receipt-only
+          if-no-files-found: error
+          retention-days: 14
