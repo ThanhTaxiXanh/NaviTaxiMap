@@ -173,3 +173,8 @@
 ## 2026-11-14 safe blank-map fallback on hot SHA mismatch
 - Production code 86985f3a clears cached local MapLibre style when user explicitly reopens a corrupted imported Shortbread region. Android emulator 43586295098 SUCCESS, log SHORTBREAD_HOT_TAMPER_INVALID_STYLE_CLEARED_PASS confirms no corrupt style or offline roads after revalidation.
 - National 43586295082 and Hanoi/HCM 43586295062 SUCCESS; general Android 43586295069 SUCCESS. Full 34-shard 43586295180 still running at checkpoint.
+
+## 2026-11-14 hot-map SHA guard, full regression complete
+- 86985f3a prevents old cached Shortbread offline style from remaining visible after explicitly requested bad SHA re-verification. Local blank fallback only; no online requests. Targeted Android 43586295098 SUCCESS on one-byte mutation of imported copy while map remains open.
+- All-34 43586295180 SUCCESS 34 distinct source archive SAF/offline passes across four shards plus compile. Nationwide real 556MB 43586295082 SUCCESS, two-region 43586295062 SUCCESS and general Android 43586295069 SUCCESS. All 5/5 workflows accepted.
+- Original two ZIPs on private B2/R2 unchanged and independently verified prior; no release or production map approval.

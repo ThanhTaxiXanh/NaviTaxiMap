@@ -280,3 +280,9 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 - 43586295098 SUCCESS: original Bắc Ninh 11,049,420 byte SHA, real SAF and 266,196 offline pixels, then hot one-byte mutation on app-private copy, 35-region reselect, SHA refusal, blank local style, zero offline road pixels, no invalid style loaded, followed by cold-start refusal.
 - 43586295082 SUCCESS: original nationwide 556,229,998 bytes stream SHA 678704befd7b4b42726199994671ddccb1c2c029daab40f53098709cd5b12d55, 157,112 offline road pixels. 43586295062 Hanoi/HCM and 43586295069 Android general both SUCCESS.
 - 43586295180 compile SUCCESS, four provincial emulator shards IN PROGRESS. Record final separately.
+
+## 2026-11-14 17:54 ICT all five affected workflows green
+- 43586295098 SUCCESS targeted: genuine 24-bac-ninh.pmtiles 11049420 bytes, exact pinned SHA, 266196 road pixels, hot one-byte private-file tamper and user explicit catalog recheck cause checksum fail and local empty style, screenshot zero offline roads and no invalid style, later cold-start refusal PASS.
+- 43586295082 SUCCESS real nationwide 556229998 bytes, full streamed SHA 678704befd7b4b42726199994671ddccb1c2c029daab40f53098709cd5b12d55, 157112 road pixels offline.
+- 43586295062 SUCCESS Hanoi/HCM real archives; 43586295069 SUCCESS Android build/JUnit/emulator; 43586295180 SUCCESS compile and 4/4 34-region original emulator shards, log cross-check 34 distinct PROVINCE_PASS codes (9+8+9+8).
+- Accepted product source/test commit 86985f3a. No tests currently pending for this commit. Xiaomi physical QA, licensing/routing/distribution still separate.

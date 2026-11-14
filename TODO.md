@@ -321,3 +321,10 @@
 - [ ] Verify all 4 provincial shards in 43586295180 to terminal SUCCESS, compile done; don't infer until complete.
 - [ ] Consider adding same fail-closed blank style for local pack management Kiểm tra lại verification UI and optionally integrity detection on app resume. Current behavior requires user explicit catalog recheck, NOT automatic real-time monitoring.
 - [ ] Xiaomi hardware, ODbL redistribution, approved HTTPS map origins, proper routing and legal boundaries still blocked. Private B2/R2 backups already exist, no new upload or release.
+
+## 2026-11-14 17:54 ICT close all current CI gates
+- [x] Final targeted live-view verification 43586295098 SUCCESS: explicit regional catalog reselect after app-private byte tamper invalidates stale cached offline map, no corrupt style/roads and cold-start still fails.
+- [x] Entire provincial archive recheck 43586295180 SUCCESS five jobs including four emulator shards: 34 unique PROVINCE_PASS codes, no duplicates; 34/34.
+- [x] Nationwide 556MB real SAF SHA + 157112 offline road pixels 43586295082 SUCCESS; Hanoi/HCM 43586295062 SUCCESS; general Android 43586295069 SUCCESS.
+- [ ] Next: ensure pack-management Kiểm tra lại action uses the same cached-offline-style invalidation when verifying a corrupt pack. Optional resume-time integrity monitoring requires separate design/test; no background continuous monitoring exists yet.
+- [ ] Continue reviewing ODbL distribution, official approved HTTPS map source and opt-in download, Xiaomi device, legal maritime borders, routing graph and owner B2/R2 bucket policy/lifecycle before release; keep distributionApproved=false and navigationApproved=false, main unchanged.

@@ -205,3 +205,7 @@
 ## 2026-11-14 17:51 ICT cached offline style ambiguity resolved on explicit recheck
 - Before code 86985f3a, user-requested revalidation could report invalid stored SHA but leave previously cached MapLibre offline roads visible. The code now changes to local empty background on failed verification while offlineDemo is active.
 - Native emulator 43586295098 SUCCESS demonstrates cleared background and zero offline road pixels after app-private one-byte mutation and region reselection, with no style loaded from corrupt file. Not proof of automatic detection without user action.
+
+## 2026-11-14 17:54 ICT cached map re-verification defect resolved for tested path
+- Before 86985f3a, checksum failure could leave cached Shortbread road tiles visible if user rechecked an already open offline map. Fix replaces local style with no-network blank MapLibre background on explicit verification failure; focused emulator 43586295098 SUCCESS verifies correct checksum error, clears cached geometry and retains cold-start rejection. No new runtime issue in five final workflows; all-34 provincial 43586295180, national 43586295082, HN/HCM 43586295062, general 43586295069 also SUCCESS.
+- Limitation: file changes are not automatically watched continuously; the fix responds when user explicitly re-verifies through catalog. Further pack-management and app-resume handling still open.

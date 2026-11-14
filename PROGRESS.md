@@ -243,3 +243,8 @@
 ## 2026-11-14 17:51 ICT hot tamper safety proof
 - Code 86985f3a targeted QA 43586295098 SUCCESS. Original visible map 266,196 offline road pixels, installed copy subsequently altered, reselect same region from catalog while app stays open: checksum refusal, old MapLibre style cleared to local background, no road pixels; cold restart also refuses corrupt source.
 - National 43586295082, Hanoi/HCM 43586295062 and general Android 43586295069 SUCCESS. All-34 43586295180 shards still running, compile PASS.
+
+## 2026-11-14 17:54 ICT completed 5/5 CI on live offline integrity change
+- 86985f3a accepted with focused 43586295098 SUCCESS: when imported offline pack is changed while map remains open, explicit catalog reselect rejects SHA mismatch, replaces cached MapLibre offline style with local blank background, screenshot zero road pixels and cold-start refusal PASS.
+- Real 34/34 original provincial independent emulator passes 43586295180 SUCCESS, four shards 9+8+9+8, build PASS. Nationwide 556MB full real SAF/visual 43586295082 SUCCESS (157112 pixels). Hanoi/HCM 43586295062 and Android debug 43586295069 SUCCESS.
+- User-confirmed already uploaded two original ZIPs B2/R2 remain untouched. No main/PR/merge/release, network source gates stay blocked.
