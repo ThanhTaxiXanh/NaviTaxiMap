@@ -211,3 +211,9 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 - **43533660474 SUCCESS** original 35 archive integrity and fake private copy tests.
 - **43533660507 FAILURE**, Android debug/JUnit SUCCESS, emulator FAILED ONLY at real OSM Hanoi pilot blue road screenshot (zero pixels), despite synthetic 39985 pixels + SAF SHA and valid UI warnings. Evidence artifact 14088907632 inspected.
 - CI-only bounded same-real-pilot relaunch code 786823aba0c2132b99200615bc0964cefeb8df81, new 43534938551 PENDING. Keep source integrity and rendering acceptance unchanged.
+
+
+## 2026-11-14 07:42 ICT post-source-backup Android CI
+- **43534938551 SUCCESS** both jobs, real OSM blue roads rendered `render_round=1 attempt=1`, SAF fixture SHA and synthetic PMTiles checks PASS. New bounded second round not exercised during this green run.
+- **43533660474 SUCCESS** source 35 original full SHA/size/PMTiles magic, 9 normal and 9 optimized verifier + 7 private ZIP copy mock tests.
+- Prior 43533660507 FAILURE isolated to blank real Hanoi road viewport after nine screenshots; evidence still retained as artifact 14088907632. Not hidden from CI history.

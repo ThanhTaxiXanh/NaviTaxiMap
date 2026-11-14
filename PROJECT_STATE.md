@@ -195,3 +195,9 @@ Real OSM pilot source snapshot: workflow https://github.com/ThanhTaxiXanh/NaviTa
 - Local private original ZIP copy CLI code 40c6ffd (never auto-run against originals), seven fake ZIP regressions and source 43533660474 all SUCCESS, 35 originals 843734803 bytes verified. Original source artifacts expire 27 Nov UTC; no destination approved, no durable backup.
 - Android 43533660507 build+unit SUCCESS but emulator FAIL on actual Hanoi pilot blank screen: zero blue roads after 9 probes; artifact 14088907632 screenshot and XML show valid UI attribution and no-navigation status, but blank map viewport. Synthetic PMTiles earlier in SAME run 39985 pixels and SAF import passed, so not evidence of original 35 source corruption.
 - CI-only fix 786823a permits one bounded relaunch of genuine pilot, then strict road pixel/attribution/SAF checks. Follow-up Android 43534938551 pending at checkpoint.
+
+
+## 2026-11-14 07:42 ICT private copy helper regression all green
+- Source 43533660474 SUCCESS (35 original PMTiles full SHA/magic, 9+9 tests Python normal/optimized + 7 mock private ZIP copy tests). Android 43534938551 SUCCESS (Gradle/JUnit+emulator, synthetic offline, real SAF, real Hanoi OSM roads and ODbL).
+- The fallback for blank MapLibre pilot was added in CI 786823a but this successful run rendered real OSM at render_round=1 attempt=1, so fallback wasn't exercised; previous 43533660507 failure remains documented in ERROR_LOG with screenshot evidence.
+- No real owner-approved private data copy exists; GitHub artifacts for two PMTiles ZIPs expire Nov27 06:25 UTC. Distribution source list remains empty, distribution flag false.

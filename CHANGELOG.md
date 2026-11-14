@@ -125,3 +125,7 @@
 ## 2026-11-14 private backup helper QA and real-OSM emulator renderer retry
 - Source original private 35-pack verification workflow 43533660474 SUCCESS and private no-overwrite ZIP copy unit tests all PASS. Android same code 43533660507 failed at zero pixels in separate real Hanoi sample MapLibre map despite synthetic geometry and SAF passing; evidence artifact 14088907632 inspected.
 - Added strictly bounded single real OSM pilot relaunch in emulator CI only (786823a), retaining original pixel threshold and UI warnings; new CI 43534938551 pending.
+
+
+## 2026-11-14 Android emulator regression restored, private ZIP backup remains manual
+- CI 43534938551 SUCCESS Gradle/JUnit & emulator after a prior intermittent zero-pixel Hanoi pilot rendering error; real OSM roads passed first screenshot, fallback not exercised. Source 43533660474 SUCCESS verifies originals and private backup mocked tests. No source file uploaded to new hosting, no real durable private backup made.

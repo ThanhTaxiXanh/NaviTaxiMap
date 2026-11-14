@@ -167,3 +167,7 @@
 ## 2026-11-14 43533660507 real Hanoi OSM pilot emulator blank render
 - New backup utility itself did NOT run on original PMTiles; build/JUnit passed, source workflow 43533660474 fully SUCCESS. Standard Android emulator 43533660507 FAIL with exact `REAL OSM local-road line pixels ... 0` 9/9; downloaded evidence artifact 14088907632, screenshot showed entire central MapView blank beige, app visible with OSM attribution and `KHÔNG dẫn đường`. Synthetic demo earlier passed 39985 vector pixels and SAF imported 1268 bytes with exact SHA. No app crash in extracted runtime errors; likely emulator MapLibre render state transient, not proven cause.
 - CI-only commit 786823a adds at most ONE extra clean app relaunch of REAL_OSM_PILOT after 9 empty screenshot checks, keeps final independent screenshot pixel threshold, UI credit and no-navigation assertion. New 43534938551 pending; don't mark fixed unless full run SUCCESS.
+
+
+## 2026-11-14 07:42 ICT regression rerun passes without using fallback
+- After CI 43533660507 failed at real Hanoi OSM pilot 0 road pixels on blank screenshot (source 35 ZIP verification and mocked private backup tests passed), rerun CI 43534938551 with bounded MapView relaunch script 786823a **SUCCESS** both jobs. Real blue-road pixel probe passed at `render_round=1 attempt=1` (no restart), proving normal path works, NOT proving recovery path success. Preserve earlier failure's artifact 14088907632 as evidence of intermittency.

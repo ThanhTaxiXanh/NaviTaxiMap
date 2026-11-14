@@ -218,3 +218,11 @@
 - [x] Add one bounded real OSM pilot app relaunch, preserve first blank screenshot/logcat and require same road pixels, commit 786823a.
 - [ ] Inspect terminal CI 43534938551; if still FAIL, diagnose from second-round actual screenshot/logs, do not skip real OSM road geometry.
 - [ ] PRIORITY before Nov27 2026 06:25 UTC: owner must save BOTH short-lived original ZIP artifacts to explicitly approved PRIVATE durable storage, then use copy tool or verifier to validate copied bytes. Current CI receipt is not a backup.
+
+
+## 2026-11-14 07:42 ICT immediate decisions
+- [x] Close 43534938551 Android CI; both Gradle and emulator SUCCESS (real OSM render round 1, no fallback triggered).
+- [x] Close private copy helper QA, 43533660474 source 35 real ZIP verification and 7 mock ZIP copy tests SUCCESS.
+- [ ] If the intermittent real OSM empty viewport recurs, investigate rendering/lifecycle from actual screenshot+logcat; CI-only one restart is bounded and still enforces strict pixel threshold, but not yet separately exercised by a forced blank-map test.
+- [ ] **Before 2026-11-27 06:25 UTC**, owner manually copy both original temporary PMTiles ZIPs to approved durable PRIVATE storage and verify real saved bytes. Neither CI receipt nor synthetic backup test is durable source backup.
+- [ ] Keep routing, border/legal review, ODbL redistribution, reviewed HTTPS origin, Xiaomi device tests as separate prohibited/unapproved gates.
