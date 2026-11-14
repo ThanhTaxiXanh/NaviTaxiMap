@@ -152,3 +152,8 @@
 ## 2026-11-14 security loophole closed in source archive verifier
 - Prior `verify_private_preservation.py` used regular Python `assert` for business-critical SHA/full byte size/PMTiles v3 magic/path checks; interpreter `python -O` removes asserts entirely and could falsely claim a damaged original valid. Fixed commits 9935d982 and a1926367: 31 mandatory require/ValueError checks, optimized-mode subprocess test for bad header and correct-header/wrong-SHA.
 - QA [43530370885](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43530370885) SUCCESS both 8-test suites with and without `-O` and the full original private sources. No data copied to durable/private storage; original source expiration unresolved.
+
+
+## 2026-11-14 integrity gap: mutually consistent checksum text files still could be wrong
+- Former `pinned_ledger()` docstring claimed three repository pin sources but implementation only cross-compared TSV and SHA256SUMS. Simultaneous accidental edits could pass. Code 64838b now validates the third independent `Vietnam35Catalog.kt`, including 35 distinct file pins and disabled distribution/navigation flags. A mock test changes the same hash in both text records, now properly fails against Android catalog.
+- New CI 43530846327 SUCCESS: 9 tests with and without Python `-O` and original 35 archived PMTiles full source SHA. Does not establish any physical backup; no data corruption found.

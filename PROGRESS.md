@@ -174,3 +174,8 @@
 - Fixed fail-open `python -O` integrity assertions in source archive checker; 31 checks now always fail closed. Two optimized-mode failure cases include real PMTiles magic with corrupted SHA. Code commits 9935d982 and a1926367.
 - 43530370885 SUCCESS: normal and optimized Python 8/8 tests, real 35 source PMTiles SHA+size checks over 843734803 bytes; receipt-only, NO backup or redistribution. Android 43530370833 pending.
 - Original 34 + VN artifacts from 43378133931 expire 27 Nov 2026; owner-approved private storage unresolved. Existing 35/35 Android offline screenshot proofs unchanged.
+
+
+## 2026-11-14 07:05 ICT provenance safety improvement
+- Commit 64838b: SHA ledger and sums alone are insufficient; require agreement with pinned Android catalog for all 35 file names/codes/bytes/SHA. 9 regression tests now include dual-source checksum drift, under normal Python and `-O`.
+- Actual 35 file full SHA scan CI 43530846327 SUCCESS, 843734803 verified bytes; receipt only, not backup. Android CI 43530846299 in progress.

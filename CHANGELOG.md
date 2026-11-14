@@ -110,3 +110,8 @@
 ## 2026-11-14 original source verification fail-closed even when Python optimized
 - Replaced all 31 business integrity `assert` statements in `verify_private_preservation.py` with mandatory `require` exceptions. New optimized-mode subprocess checks reject fake header and corrupt SHA even with real PMTiles v3 magic. Added `python3 -O -m unittest` CI alongside normal mode.
 - Workflow 43530370885 SUCCESS, 8/8 tests normal + optimized and full 35 original PMTiles 843734803 byte exact SHA/size/magic. Metadata receipt only, no backup or license approval.
+
+
+## 2026-11-14 source SHA 3-way ledger, sums and Android catalog agreement
+- Pinned source preservation verifier cross-checks all 35 exact filenames, codes, SHA256 and sizes against Android Vietnam35Catalog.kt as an independent third pin, plus preserves false source-distribution and navigation flags. Added tampered-both-manifests regression; 9 tests run normal + `python -O`.
+- CI 43530846327 SUCCESS on all test modes and real 843734803 bytes original files, uploads only metadata. No durable backup, distribution host or routing approval.

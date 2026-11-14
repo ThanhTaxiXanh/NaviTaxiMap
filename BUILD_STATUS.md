@@ -195,3 +195,8 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 ## 2026-11-14 06:54 ICT optimized Python source verifier CI
 - Private original source QA [43530370885](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43530370885) **SUCCESS** with 8 normal + 8 `python -O` tests and all 843734803 bytes / 35 original PMTiles verified, metadata only uploaded.
 - Android debug regression [43530370833](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43530370833) IN PROGRESS at documentation checkpoint. Do not claim emulator green until it finishes; Android 43527115725 previous SUCCESS.
+
+
+## 2026-11-14 07:05 ICT source preservation CI
+- **43530846327 SUCCESS**, 9/9 tests standard and 9/9 with `python -O`, 35 original PMTiles SHA/byte/header cross-checked against three independent repository pin records; metadata-only upload.
+- Android 43530846299 for code 64838b **PENDING** at checkpoint. Previous actual map render evidence unaffected. No release or source distribution.

@@ -72,3 +72,7 @@ quyết định của chủ dự án và đánh giá ODbL/nguồn dữ liệu tr
 
 ## Cảnh báo an toàn mới (14/11/2026)
 Từ commit `9935d982` (test chốt bằng `a1926367`), công cụ kiểm chứng không còn dùng Python `assert` để xác minh SHA, byte count, magic PMTiles hoặc ZIP path. Chạy với `python -O` cũng **không** bỏ qua kiểm tra nguồn. Workflow GitHub [43530370885](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43530370885) SUCCESS 8 bài kiểm thử ở cả chế độ thường và `-O`, 35 tệp gốc đọc đủ 843.734.803 byte. **Vẫn cần tải và giữ hai ZIP gốc ở nơi riêng tư đã được đồng ý** trước 27/11/2026, receipt không là backup.
+
+
+## Thêm lớp xác thực với danh mục Android (14/11/2026)
+Công cụ `verify_private_preservation.py` ngoài so sánh `PACK_BYTES_VERIFIED.tsv` và `SHA256SUMS.txt` còn đối chiếu đúng 35 mục SHA/kích thước/tên/mã với `Vietnam35Catalog.kt`, kiểm cờ không cấp phép phân phối/điều hướng. Nếu thay nhầm cùng một SHA ở cả hai tệp văn bản, công cụ phải từ chối do khác catalog. CI 43530846327 **SUCCESS** 9 test ở cả Python thường và `-O`, kiểm 35 tệp nguồn thật 843.734.803 byte. Vẫn chỉ tạo receipt, không sao lưu ZIP gốc dài hạn; cần nơi riêng tư đã phê duyệt trước 27/11/2026.

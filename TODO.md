@@ -194,3 +194,11 @@
 - [ ] Confirm emulator/Android CI 43530370833 for a1926367 and do not mark green before both jobs conclude.
 - [ ] URGENT: approved private durable destination and copy of two original source ZIPs **before 2026-11-27 06:25 UTC**; verify saved copies after copying. Existing receipt is NOT backup; no new storage decision without authorization.
 - [ ] Keep HTTPS origin approval empty and `distributionApproved=false`; physical Xiaomi/ODbL/route graph/border approvals remain independent.
+
+
+## 2026-11-14 07:05 ICT urgent remaining work
+- [x] Make private verifier fail-closed with Python optimized mode (31 mandatory checks) and validate all 35 pins against Android catalog in addition to ledger + SHA sums.
+- [x] CI 43530846327 SUCCESS, 9/9 regular + `python -O`, 35 originals exact full SHA, 843734803 bytes, no PMTiles uploaded.
+- [ ] Check Android CI 43530846299 final two-job status and preserve failure details honestly if emulator fails.
+- [ ] Before 2026-11-27 06:25 UTC, save both original temporary artifacts to an explicitly owner-approved **private persistent storage** and verify saved ZIPs. The CI receipt (metadata) is NOT backup; repository/CDN/Releases upload not authorized.
+- [ ] Keep distribution and navigation approvals false; ODbL, legally reviewed borders, Xiaomi, durable HTTPS origin and consent-based download remain separate gates.
