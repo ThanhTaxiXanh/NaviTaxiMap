@@ -265,3 +265,12 @@
 - [x] Fix e5bc37de UI list with warning title, add scroll-by-accessibility in smoke; correct Python bounds regex e6675812 and rerun trigger af93e2ab.
 - [ ] Confirm 43569253498 native DocumentsUI region 24 selection, full SHA/bytes, immediate offline Shortbread pixels+OSM/no-navigation status; success required before closing UX bug.
 - [ ] Check 43569253506 normal Android and all-34 provinces prior and new shard CI final; no false green assertions.
+
+## 2026-11-14 ~14:11 ICT completed direct picker gate
+- [x] Restore all 35 Android Shortbread catalog rows hidden by AlertDialog message/list interaction; preserve safety warning.
+- [x] Verify direct select Bắc Ninh through actual DocumentsUI and SHA+byte+offline 266,196 pixel proof: CI 43569253498 SUCCESS.
+- [x] Revalidate full Android compile/JVM/emulator on same latest test/code SHA: 43569253506 SUCCESS.
+- [x] Full original 34-province feature regression CI 43568446697 SUCCESS.
+- [ ] Check UI-fix-specific full 34-shard 43569186171 to final verdict; do not infer completion while pending.
+- [ ] Add wrong-file selected UI negative test and more direct UI province coverage when resources allow; unique-code/filename JUnit already exists.
+- [ ] ODbL redistribution and official immutable HTTPS source consent, private B2/R2 policy verification, actual Xiaomi QA, road graph and border legality remain unapproved. No PR/merge/release/main.

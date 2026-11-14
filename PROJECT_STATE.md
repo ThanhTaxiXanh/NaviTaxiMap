@@ -221,3 +221,10 @@ Real OSM pilot source snapshot: workflow https://github.com/ThanhTaxiXanh/NaviTa
 - Test 932282c0 on develop: actual Bac Ninh DocumentsUI selection from catalog in airplane mode plus app-private SHA, OSM attribution and road pixels. Its own Android CI 43568694110 is IN PROGRESS, not yet proof.
 - Feature SHA CI: Android general 43568446708 SUCCESS, Bac Ninh 43568446745 SUCCESS, national 556MB 43568446748 SUCCESS, HN/HCM 43568446724 SUCCESS; all-34-shards 43568446697 IN PROGRESS. New test SHA Android general 43568694116 IN PROGRESS.
 - No PR, merge, release, edit to main or unapproved distribution. DistributionApproved=false; reviewed map HTTPS sources empty. Private B2/R2 are backups, NOT app-serving URLs.
+
+## 2026-11-14 ~14:11 ICT verified 35-region picker
+- New feature b0e8f600 opens the exact selected province PMTiles via system DocumentsUI, rejects a wrong region filename, checks original pinned SHA/size/zoom before rendering with local Shortbread. No network transfer.
+- CI 43568694110 FAILURE exposed preexisting AlertDialog setMessage/setItems conflict hiding province rows. Fixed by e5bc37de, Python scroll bounds regex corrected e6675812, workflow path filter af93e2ab.
+- Final commit af93e2ab Android direct picker CI 43569253498 SUCCESS: authentic 24-bac-ninh.pmtiles 11,049,420 bytes, SHA-256 6edc513adf8b8ad467982e818dc3450fcbbb14076ca2bf4bac352f1b9ca9ee7f, immediate airplane-mode 266,196 road pixels, OSM attribution and warning; normal build/JVM/emulator 43569253506 SUCCESS.
+- CI full 34 original provinces on feature b0e8f600 43568446697 SUCCESS; national 556MB 43569186220, HN/HCM 43569186134, general 43569186209 SUCCESS on UI-fix SHA; 34-shard UI-fix run 43569186171 pending at checkpoint. Earlier 35/35 original visual evidence unchanged, but direct picker UX tested only in Bac Ninh.
+- main remains ea76d1c110bd32f3393be7c4dbf24f8424772a2a, no PR/merge/release. Sources for public download still not approved, B2/R2 backup is private, navigation/legal boundaries and Xiaomi still unverified.

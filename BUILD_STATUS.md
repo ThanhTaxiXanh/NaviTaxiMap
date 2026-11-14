@@ -243,3 +243,9 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 - Real UI regression 43568694110 FAILURE: no 35 list rows visible due to AlertDialog setMessage/setItems conflict; source 24-bac-ninh.pmtiles SHA checked successfully before UI. Kotlin build/JVM portion PASSED. Feature general Android 43568694116 SUCCESS.
 - Fix e5bc37de displays list instead of message; e6675812 corrects test XML bounds regex; af93e2ab ensures direct picker script changes retrigger targeted workflow.
 - Retest focused 43569253498 and general 43569253506 RUNNING. Old visual 35/35 evidence remains valid and independent; new direct catalog import path is NOT yet proven.
+
+## 2026-11-14 ~14:11 ICT final direct picker test results
+- Final functional+test commit af93e2ab: 43569253498 SUCCESS, actual 24-bac-ninh.pmtiles DocumentsUI selected in catalog, 11,049,420 app-private bytes and correct SHA, 266,196 offline road pixels, OpenStreetMap and KHÔNG dẫn đường visible. Marker SHORTBREAD_DIRECT_REGION_PICKER_OFFLINE_PASS.
+- On same SHA Android general 43569253506 SUCCESS full build/JUnit/emulator.
+- Original feature 34/34 provincials 43568446697 SUCCESS; newer UI-fix SHA national 43569186220 SUCCESS, HN/HCM 43569186134 SUCCESS, Android 43569186209 SUCCESS. UI-fix SHA all-34 43569186171 IN PROGRESS at checkpoint.
+- Historical failure 43568694110 is documented and fixed, not erased. Xiaomi, legal redistribution and navigation not accepted.

@@ -144,3 +144,8 @@
 - b0e8f600: 35-row catalog now starts a DocumentsUI picker for a chosen missing region and refuses the wrong filename before streaming. After a valid SHA/byte import, it enters existing local Shortbread visual preview. No new URL/permission/download setting.
 - 932282c0: add emulator coverage for selecting Bac Ninh via catalog with airplane mode, full app-private SHA readback and road-pixel/attribution assertions. New dedicated test run 43568694110 pending.
 - Feature Android CI 43568446708, Bac Ninh 43568446745, national 43568446748 and HN/HCM 43568446724 already SUCCESS; other shards remain in progress. No release or main change.
+
+## 2026-11-14 real Android Shortbread selector
+- b0e8f600 region-specific SAF picker, exact name/size/SHA guard, same local style. 932282c0 true direct picker emulator QA.
+- 43568694110 correctly FAILED because 35-row AlertDialog list was hidden. Fixed e5bc37de, scroll-parser corrected e6675812, CI filter af93e2ab.
+- Direct region Android QA 43569253498 SUCCESS with pinned Bac Ninh 11,049,420 bytes SHA and 266,196 offline road pixels. Android compile/JUnit/emulator 43569253506 SUCCESS. No public distribution/route changes.

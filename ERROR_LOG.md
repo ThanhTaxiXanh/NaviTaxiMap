@@ -186,3 +186,8 @@
 - Workflow 43568694110 FAILED after Gradle/JUnit passed and source Bắc Ninh SHA was correct: UIAutomator showed the 35-catalog dialog title and warning message but ZERO selectable province rows; direct smoke could not tap '24 · Bắc Ninh'. Not an archive/hash or MapLibre decoder failure.
 - Root cause: Android AlertDialog.Builder used both setMessage and setItems for same dialog; message panel suppressed list. Fix e5bc37de removes setMessage, retains no-driving warning in title and per-region prompt. Direct QA script now scrolls the actual ListView instead of assuming region 24 visible initially.
 - Initial scroll-regex accidental double escaping in e5bc37de's new Python test corrected by e6675812; CI paths include this test after af93e2ab. Retest 43569253498 IN PROGRESS. Do not mark fixed on emulator before terminal PASS + offline pixel assertions.
+
+## 2026-11-14 ~14:11 ICT 35-row list Android UX defect: RESOLVED for verified Bac Ninh path
+- CI 43568694110 FAILED at choosing region 24 after original PMTiles SHA and JVM passed: simultaneous AlertDialog.setMessage and setItems hid selectable province rows entirely.
+- UI fix e5bc37de removes message from list dialog, maintains safety title. Script fallback scroll bounds regex fixed e6675812; path filter af93e2ab.
+- CI 43569253498 SUCCESS: true native DocumentsUI picker, original 11,049,420-byte pinned SHA, immediate 266,196 road-color pixels in airplane mode and OSM/non-navigation warnings. General Android 43569253506 SUCCESS. This does not prove 35 separate picker interactions or physical Xiaomi.

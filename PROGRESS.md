@@ -212,3 +212,8 @@
 - Feature b0e8f600: direct exact-filename SAF picker per each of 35 frozen catalog rows; original pinned SHA/bytes/zoom and existing local renderer, without URL download. Added 35 one-to-one request code and wrong-name JVM test.
 - QA 932282c0: dedicated direct Bac Ninh picker Android script under airplane mode, SHA/size/attribution/pixel gates.
 - Four feature CI workflows terminal SUCCESS: 43568446708, 43568446745, 43568446748, 43568446724. Full 34 region coverage 43568446697 and newer targeted direct picker 43568694110 + Android 43568694116 remain pending; do not claim direct UI end-to-end DONE yet.
+
+## 2026-11-14 ~14:11 ICT direct regional selection acceptance
+- Implemented 35 unique SAF request codes + exact province name import and automatic local Shortbread preview. UI bug discovered by CI 43568694110 FAILED, corrected e5bc37de, QA regex corrected e6675812.
+- Genuine catalog-selected Bac Ninh Android SAF readback and road visual success CI 43569253498: 11,049,420 bytes correct SHA, 266,196 offline road pixels; normal Android CI 43569253506 SUCCESS.
+- Feature 34/34 province CI 43568446697 SUCCESS, national CI 43569186220 SUCCESS on UI fix. No network download, Xiaomi or routing approval.
