@@ -233,3 +233,8 @@ Physical Xiaomi debugging and live GPS; actual Android system-picker interaction
 - [43567301480](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43567301480) **SUCCESS both jobs**, full 35 original PMTiles 843734803 SHA, B2 full copy readback PASS, Cloudflare R2 full copy readback PASS; combined PASS. Receipt artifact 14103007744, 3272 bytes, metadata only.
 - R2 first attempt(s) saw transient `NotImplemented` errors under old Ubuntu rclone, automatically retried successfully; final SHA/readback and both jobs green. No PMTiles uploaded in GitHub artifacts.
 - Earlier 43555218616 failure due restricted B2 bucket secret mismatch and 43554976535 failure due bad R2_ACCOUNT_ID were resolved by owner changing GitHub Secrets. Android recent 43555218732 SUCCESS; this backup does not alter Android source gates.
+
+## 2026-11-14 ~14:00 ICT regional picker validation
+- b0e8f600 compiled/tested: normal Android debug+emulator 43568446708 SUCCESS, real Bắc Ninh offline 43568446745 SUCCESS, true 556MB national offline 43568446748 SUCCESS, HN/HCM 43568446724 SUCCESS. All-34 provincial workflow 43568446697 IN PROGRESS.
+- 932282c0 introduced NEW direct catalog DocumentsUI smoke, real Bac Ninh SHA/pixel in airplane mode; runs 43568694110 (targeted) and 43568694116 (normal Android) IN PROGRESS. Not yet permissible to call new direct UI path PASS.
+- Previous 35 distinct archive Android evidence 43438780272 + 43441211821 SUCCESS, owner B2/R2 readback 43567301480 SUCCESS. Xiaomi still untested, redistribution/routing disabled.

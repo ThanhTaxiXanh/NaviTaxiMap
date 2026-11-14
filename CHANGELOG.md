@@ -139,3 +139,8 @@
 ## 2026-11-14 owner-approved Backblaze B2 + Cloudflare R2 backup of ORIGINAL ZIPs
 - Owner corrected GitHub Secrets; immutable upload of both pinned original GitHub Actions artifact ZIPs to both B2 and R2 under `originals/github-run-43378133931/`, readback validation of both copies and 35 embedded PMTiles checksums fully PASS. [Run 43567301480](https://github.com/ThanhTaxiXanh/NaviTaxiMap/actions/runs/43567301480) both jobs SUCCESS.
 - Metadata-only artifact 14103007744 (3272 bytes, B2/R2 confirmations + ZIP SHA + PMTiles receipt), source bytes not published; Android `distributionApproved=false`, trusted URLs empty, no change to main or release.
+
+## 2026-11-14 Android Shortbread region-specific SAF picker
+- b0e8f600: 35-row catalog now starts a DocumentsUI picker for a chosen missing region and refuses the wrong filename before streaming. After a valid SHA/byte import, it enters existing local Shortbread visual preview. No new URL/permission/download setting.
+- 932282c0: add emulator coverage for selecting Bac Ninh via catalog with airplane mode, full app-private SHA readback and road-pixel/attribution assertions. New dedicated test run 43568694110 pending.
+- Feature Android CI 43568446708, Bac Ninh 43568446745, national 43568446748 and HN/HCM 43568446724 already SUCCESS; other shards remain in progress. No release or main change.

@@ -214,3 +214,10 @@ Real OSM pilot source snapshot: workflow https://github.com/ThanhTaxiXanh/NaviTa
 - Metadata-only receipt artifact 14103007744 3272-byte ZIP, contains only two cloud confirmation texts, original ZIP sha256 and 35-file JSON receipt; not original map data.
 - Cloudflare R2 first transfer attempts returned transient NotImplemented with rclone v1.60.1-DEV; retries succeeded, remote readback passed. No permanent backup integrity error remains. Bucket public exposure, object lock and lifecycle controls still require owner dashboard verification; cloud access rights and continuing retention not proven by checksum CI.
 - GitHub originals expire Nov27 but now have TWO verified private cloud copies. No app source URL/approval changed, distributionApproved=false and reviewed sources empty.
+
+## 2026-11-14 ~14:00 ICT 35-region Shortbread direct picker (partial CI proven)
+- Verified original 35/35 standalone PMTiles Android offline evidence: provincial run 43438780272 and national 556MB run 43441211821 SUCCESS. Pre-change normal Android 43567301415 SUCCESS; owner-authorized private B2/R2 ZIP readback 43567301480 SUCCESS. These do not imply legal or navigation clearance.
+- Feature b0e8f600 on develop: exact region-specific Android DocumentsUI import directly from frozen 35-row catalog, 35 non-overlapping request codes, mandatory original filename/size/SHA/zoom checks, unchanged native local Shortbread preview and no HTTP transfer. JUnit test covers all region picker codes and wrong names.
+- Test 932282c0 on develop: actual Bac Ninh DocumentsUI selection from catalog in airplane mode plus app-private SHA, OSM attribution and road pixels. Its own Android CI 43568694110 is IN PROGRESS, not yet proof.
+- Feature SHA CI: Android general 43568446708 SUCCESS, Bac Ninh 43568446745 SUCCESS, national 556MB 43568446748 SUCCESS, HN/HCM 43568446724 SUCCESS; all-34-shards 43568446697 IN PROGRESS. New test SHA Android general 43568694116 IN PROGRESS.
+- No PR, merge, release, edit to main or unapproved distribution. DistributionApproved=false; reviewed map HTTPS sources empty. Private B2/R2 are backups, NOT app-serving URLs.

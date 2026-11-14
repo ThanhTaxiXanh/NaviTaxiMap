@@ -207,3 +207,8 @@
 - **DONE** private B2 and R2 original artifact ZIP backup in workflow 43567301480: 35 full PMTiles SHA before upload; 2 original ZIP containers to each private configured bucket; complete byte readback check from both providers PASS. Preflight and upload jobs SUCCESS.
 - Metadata-only 3272-byte receipt artifact 14103007744 includes B2/R2 pass markers, original ZIP SHA256 and 35 pins. GitHub original source expiration Nov27 is no longer the sole source-retention point.
 - Pending follow-up: visually verify B2 bucket access=Private, Cloudflare Public Development URL=Disabled and no public custom domain; ensure lifecycle/retention/2FA, independent restore test at reasonable cadence. Original backup is not license/distribution approval.
+
+## 2026-11-14 ~14:00 ICT regional Shortbread catalog device selection
+- Feature b0e8f600: direct exact-filename SAF picker per each of 35 frozen catalog rows; original pinned SHA/bytes/zoom and existing local renderer, without URL download. Added 35 one-to-one request code and wrong-name JVM test.
+- QA 932282c0: dedicated direct Bac Ninh picker Android script under airplane mode, SHA/size/attribution/pixel gates.
+- Four feature CI workflows terminal SUCCESS: 43568446708, 43568446745, 43568446748, 43568446724. Full 34 region coverage 43568446697 and newer targeted direct picker 43568694110 + Android 43568694116 remain pending; do not claim direct UI end-to-end DONE yet.

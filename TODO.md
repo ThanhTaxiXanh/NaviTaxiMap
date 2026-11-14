@@ -251,3 +251,11 @@
 - [ ] Owner verify **Backblaze bucket Private** and Cloudflare R2 **Public Development URL Disabled/no custom public domain**, remove any public ACL/URLs, enable 2FA, establish lifecycle versions and optional immutable Object Lock retention to avoid deletion. CI verifies CONTENT, not bucket policy.
 - [ ] Schedule periodic readback integrity and test restoration of 35 PMTiles from each provider; keep separate provider credentials in secret manager. For future updates, use new versioned folders and reviewed owner-authorized upload only. No public release.
 - [ ] ODbL/provenance and Vietnam territorial boundaries review, true road graph/navigation, official HTTPS source approval/Android device tests remain independent.
+
+## 2026-11-14 14:00 ICT new regional selector acceptance gates
+- [x] Commit b0e8f600 exact region DocumentsUI picker and frozen 35 SHA/size/zoom guard; no download endpoint.
+- [x] Commit 932282c0 direct picker emulator smoke script; airplane mode, real Bac Ninh, strict SAF SHA/bytes + screenshot assertions. Script written, run pending.
+- [x] Verify feature CI 43568446708 (Android), 43568446745 (Bac Ninh), 43568446748 (556MB national), 43568446724 (HN/HCM): SUCCESS.
+- [ ] Verify four-shard 43568446697 and both newer 43568694116/43568694110 to terminal state. For direct picker require real original SAF/hash and road pixel evidence, not just build success; investigate any FAIL.
+- [ ] Owner independently confirm private B2 and R2 bucket privacy, no public URLs, 2FA and retention. Existing copy/readback CI confirms exact content, not security settings.
+- [ ] ODbL redistribution, immutable approved HTTPS hosting/manifest, explicit network opt-in, Xiaomi QA, routable road graph, legal borders remain blocked. Keep distributionApproved=false, no PR/main/merge/release.
